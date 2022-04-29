@@ -1,0 +1,24 @@
+.shoppingCart {
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.badge-notif {
+    position: relative;
+
+    &[data-badge]:after {
+        content: attr(data-badge);
+        position: absolute;
+        top: -5px;
+        right: 0px;
+        font-size: .7em;
+        background: #e53935;
+        color: white;
+        width: 18px;
+        height: 18px;
+        text-align: center;
+        line-height: 18px;
+        border-radius: 50%;
+    }
+}
