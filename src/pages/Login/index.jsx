@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { dummyImmage } from '../../assets/images';
 import { userLogin } from '../../app/features/Auth/actions';
+// import Home from '../Home';
 
 
 const Login = () => {
@@ -12,27 +13,25 @@ const Login = () => {
     const [userState, setUserState] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const message = useSelector(state => state.auth.user.message);
+    const { message } = useSelector(state => state.auth.user);
 
-    const isLoggedin = useSelector(state => state.auth.isLoggedIn);
+    const auth = useSelector(state => state.auth);
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(userLogin(userState));
 
+        dispatch(userLogin(userState));
+        if (auth.isLoggedIn === true) {
+            navigate("/");
+        }
     }
 
-
     useEffect(() => {
-        if (isLoggedin === true) {
-            navigate("/")
+        if (auth.isLoggedIn === true) {
+            navigate("/");
         }
-
-
-    }, [isLoggedin, navigate]);
-
-    console.log(isLoggedin);
+    }, [auth, navigate]);
 
 
     return (
@@ -56,6 +55,7 @@ const Login = () => {
                                 onChange={(e) => {
                                     const email = e.target.value;
                                     setUserState({ ...userState, ...{ email } });
+                                    { console.log(auth) }
                                 }}
                             />
 

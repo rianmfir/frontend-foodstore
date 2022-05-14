@@ -3,4 +3,5 @@ import CartItem from './CartItem';
 import Navigation from './Navigation';
 import Tag from './Tag';
 
-export { CardProduct, CartItem, Navigation, Tag };
+
+export { CardProduct, Navigation, Tag, CartItem };
