@@ -1,40 +1,30 @@
-import { useSelector } from "react-redux";
 import {
     ADD_TO_CART,
-    ADD_CART,
-    REMOVE_ITEM,
+    ADD_CART_EXAMPLE,
     GET_ITEM,
-    ADD_CART_EXAMPLE
+    GET_CART_DB,
+    REMOVE_ITEM,
+    ADD_ITEM
 } from "./constants";
 
-const initialState = {
-    data: [],
-}
 
+const initialState = localStorage.getItem('cart')
+    ? JSON.parse(localStorage.getItem('cart'))
+    : [];
 
-const cartReducer = (state = [], { type, payload }) => {
-    let doesItemExist;
+const cartReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ADD_TO_CART:
-            return {
-                ...state,
-                data: payload
+            if (state.find(item => item._id === payload.item._id)) {
+                return state.map(item => ({
+                    ...item,
+                    qty: item._id === payload.item._id
+                        ? item.qty + 1
+                        : item.qty
+                }));
+            } else {
+                return [...state, { ...payload.item, qty: 1 }]
             }
-
-        case ADD_CART_EXAMPLE:
-            doesItemExist = false;
-            const newState = state.map((item) => {
-                if (item.id === payload.id) {
-                    item.quantity += 1;
-                    doesItemExist = true;
-                }
-                return item;
-            });
-            if (doesItemExist) {
-                return newState;
-            }
-
-            return [...state, { ...payload, quantity: 1 }];
 
 
         case GET_ITEM:
@@ -42,8 +32,12 @@ const cartReducer = (state = [], { type, payload }) => {
                 ...state,
                 data: payload
             }
-        // return [...state, { ...payload }];
 
+        case GET_CART_DB:
+            return {
+                ...state,
+                data: payload
+            }
         default:
             return state;
     }

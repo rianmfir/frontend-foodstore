@@ -1,43 +1,35 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, getCartItem, removeItem, } from '../../app/features/Cart/actions';
+import { getCartDBAPI, saveCart } from '../../app/api/cart';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
     const dispatch = useDispatch();
-    let data = useSelector((state) => state.cart);
-    console.log("Ini Data Cart : ", data);
 
-    const [count, setCount] = useState(1);
+    const data = JSON.parse(localStorage.getItem('cart'));
 
     const handlePlus = () => {
-        // e.preventDefault();
-        // dispatch(addToCart({ product: data.product, qty: data.qty + 1 }));
-        // setCount(data.qty);
         console.log("Ditambah");
     };
 
     const handleMinus = () => {
-        // e.preventDefault();
-        // dispatch(addToCart({ product: data.product, qty: data.qty - 1 }));
-        // setCount(data.qty);
         console.log("Dikurang");
-
     };
-
-    // useEffect(() => {
-    //     dispatch(getCartItem())
-    // }, [dispatch])
-
-    // let cart = useSelector((state) => state.cart);
-
-    // console.log("Cart Data : ", cart)
 
 
     function sumPrice(items) {
-        return items.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+        return items.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
     }
+
+    // let { token } = localStorage.getItem("auth")
+    //     ? JSON.stringify(localStorage.getItem("auth"))
+    //     : {}
+
+    // console.log("Token : ", token)
+    // useEffect(() => {
+    //     dispatch(getCartDBAPI(token));
+    // }, [dispatch])
 
     return (
         <div className='container'>
@@ -59,7 +51,8 @@ const CartItem = () => {
                                 <tr key={index}>
                                     <td>
                                         <div className="card" style={{ width: "5rem" }}>
-                                            <img src={`${baseURL}images/products/${item.image}`} className="card-img-top" alt="..." />
+                                            {/* <img src={`${baseURL}images/products/${item.image}`} className="card-img-top" alt="..." /> */}
+                                            <img src={`${baseURL}images/products/${item.image_url}`} className="card-img-top" alt="..." />
                                         </div>
                                     </td>
                                     <td>{item.name}</td>
@@ -68,12 +61,14 @@ const CartItem = () => {
                                         <button onClick={handleMinus}>
                                             -
                                         </button>
-                                        {' '} <span>{item.quantity}</span> {' '}
+                                        {/* {' '} <span>{item.quantity}</span> {' '} */}
+                                        {' '} <span>{item.qty}</span> {' '}
                                         <button onClick={handlePlus}>
                                             +
                                         </button>
                                     </td>
-                                    <td>{item.price * item.quantity}</td>
+                                    {/* <td>{item.price * item.quantity}</td> */}
+                                    <td>{item.price * item.qty}</td>
                                 </tr>
 
                             )

@@ -22,11 +22,8 @@ import { userLogout } from '../../app/features/Auth/actions';
 
 const Navigation = () => {
 
-    // const [show, setShow] = useState(false);
-
     const [navLinks, setNavLinks] = useState([]);
     let { data } = useSelector((state) => state.cart);
-    let datas = useSelector((state) => state.cart);
     const [Qty, setQty] = useState(0);
     const dispatch = useDispatch();
     const auth = JSON.parse(localStorage.getItem('auth'));
@@ -43,17 +40,6 @@ const Navigation = () => {
         ];
         setNavLinks(navs);
     }, [])
-
-    console.log(datas);
-
-    // const totalItemCart = items => {
-    //     return items.reduce((acc, curr) => acc + curr.qty, 0);
-    // }
-    // useEffect(() => {
-    //     setQty(
-    //         totalItemCart(data)
-    //     )
-    // }, [totalItemCart(data), setQty])
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -109,7 +95,7 @@ const Navigation = () => {
                     {/* Profile/Account */}
                     <>
                         {
-                            auth && auth.user.full_name ?
+                            auth && auth.user?.full_name ?
                                 // auth ?
                                 <Dropdown className="ms-auto">
                                     <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: '#f9a825' }}>

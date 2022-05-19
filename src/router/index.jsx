@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Navigation } from "../components";
-import { Account, Cart, Dashboard, Error, Home, Login, Register } from "../pages";
+import { Account, Cart, Dashboard, Home, Login, Register } from "../pages";
 
 const Routing = () => {
     return (

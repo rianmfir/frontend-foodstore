@@ -10,7 +10,7 @@ import { CgNotes } from 'react-icons/cg';
 
 const Dashboard = () => {
 
-    const auth = JSON.parse(localStorage.getItem('token'));
+    const auth = JSON.parse(localStorage.getItem('auth'));
     const [menu, setMenu] = useState([]);
     const [pages, setPages] = useState("");
     const role = "user";
@@ -74,6 +74,8 @@ const Dashboard = () => {
         sideBar();
     }, [])
 
+    console.log(auth)
+
     return (
 
         <div className="row">
@@ -85,9 +87,14 @@ const Dashboard = () => {
                             <div className='d-flex flex-column'>
                                 <BsPersonCircle size="5em" color='#f9a825' className="mx-auto" />
                                 <div className='d-flex flex-column text-center' >
-                                    <span className="fw-semibold ">{auth.user.full_name}</span>
-                                    <span className="lh-tight " >{auth.user.role}</span>
-                                    {console.log(auth)}
+                                    <span className="fw-semibold ">
+                                        {auth.user?.full_name}
+                                        {/* Rian */}
+                                    </span>
+                                    <span className="lh-tight " >
+                                        {auth.user?.role}
+                                        {/* User */}
+                                    </span>
                                 </div>
                             </div>
                         </a>

@@ -3,16 +3,13 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CardProduct, Tag } from "../../components";
 import { getProducts, getTags } from '../../app/features/Product/actions';
+import { addItem, addToCart } from '../../app/features/Cart/actions';
 
-const Home = ({ nama }) => {
+const Home = () => {
 
     const { product, tags } = useSelector(state => state.products);
     const dispatch = useDispatch();
     // const loggedIn = useSelector((state) => state.auth.isLoggedIn);
-
-    const { data } = useSelector(state => state.cart);
-    const datas = useSelector(state => state.cart);
-    console.log(datas);
 
     useEffect(() => {
         dispatch(getProducts());
@@ -38,7 +35,7 @@ const Home = ({ nama }) => {
                     product.map((item, index) => {
                         return (
                             <div key={index} className="col-lg-3">
-                                <CardProduct item={item} />
+                                <CardProduct item={item} onAddToCart={() => dispatch(addToCart(item))} />
                             </div>
                         )
                     })

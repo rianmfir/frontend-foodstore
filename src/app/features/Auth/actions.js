@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS } from "./constants";
 
 const userRegister = (user) => {
+
     return async (dispatch) => {
         await axios.post('/auth/register', user)
             .then(res => {
@@ -24,38 +25,29 @@ const userRegister = (user) => {
 }
 
 const userLogin = (user) => {
-
-    return async (dispatch) => {
-        await axios.post('/auth/login', user)
+    return (dispatch) => {
+        axios.post('/auth/login', user)
             .then(res => {
                 let { data } = res;
-                localStorage.setItem('auth', JSON.stringify(data));
-                dispatch({
-                    // type: data.error ? LOGIN_FAIL : LOGIN_SUCCESS,
-                    type: LOGIN_SUCCESS,
-                    payload: data
 
-                })
+                if (data.error) {
+                    dispatch({
+                        type: LOGIN_FAIL,
+                        payload: data
+                    });
+                } else {
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: data
+                    })
+                    localStorage.setItem('auth', JSON.stringify(data));
+                }
             })
             .catch(err => {
-                // const message =
-                // (
-                // err.response &&
-                // err.response.data &&
-                // err.response.data.message) ||
-                // err
-                // err.toString();
-                // )
-                dispatch({
-                    type: LOGIN_FAIL,
-                    payload: err,
-                });
+                console.log("Ini Pesan Errornya : ", err)
 
-                // console.log(err.message);
-                // dispatch({
-                //     type: LOGIN_FAIL,
-                //     payload: err
-                // })
+
+
             })
     }
 }
@@ -79,6 +71,7 @@ const userLogout = () => {
                 }
                 console.log(data);
                 window.location.reload();
+
             })
             .catch(err => {
                 console.log(err);

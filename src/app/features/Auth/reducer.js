@@ -6,24 +6,12 @@ import {
     LOGOUT_SUCCESS,
 } from "./constants";
 
-// const user = JSON.parse(localStorage.getItem("token"));
-// const initialState = user && Boolean(user.error)
-//     ? { isLoggedIn: false, user: null }
-//     : { isLoggedIn: true, user };
+const auth = localStorage.getItem('auth');
+const initState = auth
+    ? { isLoggedIn: true, user: JSON.stringify(auth) }
+    : { isLoggedIn: false, user: null };
 
-// console.log("Reducer : ", Boolean(user.error))
-
-const initialState = {
-    isLoggedIn: false,
-    user: {}
-}
-
-
-// const authState = token
-//     ? { isLoggedIn: true, role: token.user.role, token }
-//     : { user: null, token: null, isLoggedIn: false };
-
-const authReducer = (state = initialState, { type, payload }) => {
+const authReducer = (state = initState, { type, payload }) => {
     switch (type) {
         case REGISTER_SUCCESS:
             return {
@@ -39,12 +27,12 @@ const authReducer = (state = initialState, { type, payload }) => {
                 ...state,
                 isLoggedIn: true,
                 user: payload,
-                // token: config
             }
         case LOGIN_FAIL:
             return {
                 ...state,
-                user: payload.message,
+                isLoggedIn: false,
+                user: payload,
             }
         case LOGOUT_SUCCESS:
             return {

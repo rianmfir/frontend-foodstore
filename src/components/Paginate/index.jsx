@@ -1,9 +1,9 @@
 import React from 'react'
 
-const index = () => {
+const Paginate = () => {
     return (
-        <div>index</div>
+        <div>Paginate</div>
     )
 }
 
-export default index
+export default Paginate;
