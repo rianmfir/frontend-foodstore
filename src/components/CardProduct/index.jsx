@@ -2,7 +2,7 @@
 import Tag from '../Tag';
 import './cardProduct.scss';
 import { Card, Button } from 'react-bootstrap'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 
@@ -10,7 +10,7 @@ const CardProduct = ({ item, onAddToCart }) => {
 
     const baseURL = axios.defaults.baseURL;
     const dispatch = useDispatch();
-
+    console.log("Card Item : ", useSelector(state => state.cart))
     return (
         <>
             <Card className="card mb-4 ms-auto" style={{ height: "30rem" }}>

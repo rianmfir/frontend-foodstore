@@ -5,6 +5,7 @@ import {
     GET_CART_DB,
     GET_ITEM,
     REMOVE_ITEM,
+    GET_CART_SUCCESS
 } from "./constants";
 
 let { token } = localStorage.getItem("auth")
@@ -24,6 +25,28 @@ export const addToCart = (item) => {
         }
     }
 }
+
+
+export const getCart = (item) => {
+    return {
+        type: GET_CART_SUCCESS,
+        payload: item
+    }
+}
+
+export function removeItem(item) {
+    return {
+        type: REMOVE_ITEM,
+        payload: {
+            item: item
+        }
+    }
+}
+
+
+
+
+
 export const getCartDBSuccess = (item) => {
     return {
         type: GET_CART_DB,
@@ -32,7 +55,6 @@ export const getCartDBSuccess = (item) => {
         }
     }
 }
-
 
 export const getCartItem = () => {
     return async (dispatch) => {
@@ -56,4 +78,3 @@ export const getCartItem = () => {
     }
 }
 
-// export { getCartItem };

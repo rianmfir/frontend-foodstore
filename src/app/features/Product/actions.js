@@ -1,9 +1,9 @@
 import axios from "axios"
 import { GET_PRODUCT_SUCCESS, GET_TAG_SUCCESS } from "./constants";
 
-export const getProducts = (product) => {
+export const getProducts = () => {
     return async (dispatch) => {
-        await axios.get('/api/products', product)
+        await axios.get('/api/products')
             .then(res => {
                 let { data } = res
                 // console.log(data);
@@ -17,9 +17,9 @@ export const getProducts = (product) => {
             })
     }
 }
-export const getTags = (tags) => {
+export const getTags = () => {
     return async (dispatch) => {
-        await axios.get('/api/tags', tags)
+        await axios.get('/api/tags')
             .then(res => {
                 let { data } = res
                 // console.log(data);

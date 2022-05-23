@@ -7,8 +7,9 @@ import {
 } from "./constants";
 
 const auth = localStorage.getItem('auth');
+const user = JSON.parse(auth);
 const initState = auth
-    ? { isLoggedIn: true, user: JSON.stringify(auth) }
+    ? { isLoggedIn: true, user }
     : { isLoggedIn: false, user: null };
 
 const authReducer = (state = initState, { type, payload }) => {
@@ -37,7 +38,7 @@ const authReducer = (state = initState, { type, payload }) => {
         case LOGOUT_SUCCESS:
             return {
                 ...state,
-                isLoggedIn: false,
+                // isLoggedIn: false,
                 message: payload
             }
         default:

@@ -62,6 +62,7 @@ const userLogout = () => {
         })
             .then(res => {
                 localStorage.removeItem('auth');
+                localStorage.removeItem('cart');
                 let { data } = res;
                 if (data.error === 0) {
                     dispatch({

@@ -2,19 +2,25 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getCartDBAPI, saveCart } from '../../app/api/cart';
+import { addToCart, removeItem } from '../../app/features/Cart/actions';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
     const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart);
 
     const data = JSON.parse(localStorage.getItem('cart'));
 
-    const handlePlus = () => {
+    const handlePlus = (item) => {
         console.log("Ditambah");
+        console.log("Cart ", item);
+        dispatch(addToCart(item))
     };
 
-    const handleMinus = () => {
+    // console.log('Cart From store : ', cart);
+    const handleMinus = (item) => {
         console.log("Dikurang");
+        dispatch(removeItem(item));
     };
 
 
@@ -22,14 +28,6 @@ const CartItem = () => {
         return items.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
     }
 
-    // let { token } = localStorage.getItem("auth")
-    //     ? JSON.stringify(localStorage.getItem("auth"))
-    //     : {}
-
-    // console.log("Token : ", token)
-    // useEffect(() => {
-    //     dispatch(getCartDBAPI(token));
-    // }, [dispatch])
 
     return (
         <div className='container'>
@@ -46,7 +44,7 @@ const CartItem = () => {
 
                 <tbody>
                     {
-                        data.map((item, index) => {
+                        cart.map((item, index) => {
                             return (
                                 <tr key={index}>
                                     <td>
@@ -58,12 +56,12 @@ const CartItem = () => {
                                     <td>{item.name}</td>
                                     <td>{item.price}</td>
                                     <td>
-                                        <button onClick={handleMinus}>
+                                        <button onClick={() => handleMinus(item)}>
                                             -
                                         </button>
                                         {/* {' '} <span>{item.quantity}</span> {' '} */}
                                         {' '} <span>{item.qty}</span> {' '}
-                                        <button onClick={handlePlus}>
+                                        <button onClick={() => handlePlus(item)}>
                                             +
                                         </button>
                                     </td>

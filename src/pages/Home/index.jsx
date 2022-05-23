@@ -4,16 +4,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { CardProduct, Tag } from "../../components";
 import { getProducts, getTags } from '../../app/features/Product/actions';
 import { addItem, addToCart } from '../../app/features/Cart/actions';
+import { getCartItem } from '../../app/api/cart';
 
 const Home = () => {
 
     const { product, tags } = useSelector(state => state.products);
     const dispatch = useDispatch();
-    // const loggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+    const auth = useSelector(state => state.auth.user);
+
+    let { token } = localStorage.getItem("auth")
+        ? JSON.parse(localStorage.getItem("auth"))
+        : {};
+
+    let userID = auth !== null ? auth.user._id : auth;
+
+    console.log("Auth : ", userID);
+    console.log("Token : ", token);
 
     useEffect(() => {
         dispatch(getProducts());
         dispatch(getTags());
+        dispatch(getCartItem(token, userID));
+
     }, [dispatch]);
 
     return (
