@@ -13,7 +13,7 @@ const CartItem = () => {
 
     const handlePlus = (item) => {
         console.log("Ditambah");
-        console.log("Cart ", item);
+        console.log("Cart From Basket", item);
         dispatch(addToCart(item))
     };
 
@@ -44,7 +44,7 @@ const CartItem = () => {
 
                 <tbody>
                     {
-                        cart.map((item, index) => {
+                        data.map((item, index) => {
                             return (
                                 <tr key={index}>
                                     <td>

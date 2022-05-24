@@ -1,6 +1,6 @@
 import {
     ADD_TO_CART,
-    GET_CART_SUCCESS,
+    GET_CART,
     ADD_CART_EXAMPLE,
     GET_ITEM,
     GET_CART_DB,
@@ -16,20 +16,33 @@ const initialState = localStorage.getItem('cart')
 const cartReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ADD_TO_CART:
-            if (state.find(item => item._id === payload.item._id)) {
+            // state.find(item =>
+            //     console.log("(1) Intial State item._id : ", item.product._id),
+            //     console.log("(1) New Input payload.item._id : ", payload._id)
+            // )
+            // state.map(item => (
+            //     console.log("Ada Check Lagi "),
+            //     console.log("(2) Intial State item._id : ", item.product._id),
+            //     console.log("(2) New Input payload.item._id : ", payload.product._id),
+            //     console.log("____________________________________")
+            // ))
+
+            if (state.find(item => item.product._id === payload.product._id)) {
+
                 return state.map(item => ({
                     ...item,
-                    qty: item._id === payload.item._id
+                    qty: item.product._id === payload.product._id
                         ? item.qty + 1
                         : item.qty
+
                 }));
+
             } else {
-                return [...state, { ...payload.item, qty: 1 }]
+                return [...state, { ...payload, qty: 1 }]
             }
 
-        case GET_CART_SUCCESS:
+        case GET_CART:
             return (
-                // ...state,
                 payload
             )
 
@@ -38,17 +51,6 @@ const cartReducer = (state = initialState, { type, payload }) => {
                 .map(item => ({ ...item, qty: item._id === payload.item._id ? item.qty - 1 : item.qty }))
                 .filter(item => item.qty > 0);
 
-        case GET_ITEM:
-            return {
-                ...state,
-                data: payload
-            }
-
-        case GET_CART_DB:
-            return {
-                ...state,
-                data: payload
-            }
         default:
             return state;
     }

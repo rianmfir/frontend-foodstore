@@ -71,7 +71,8 @@ const userLogout = () => {
                     })
                 }
                 console.log(data);
-                window.location.reload();
+                window.location.href = "/";
+
 
             })
             .catch(err => {

@@ -23,11 +23,14 @@ import { userLogout } from '../../app/features/Auth/actions';
 const Navigation = () => {
 
     const [navLinks, setNavLinks] = useState([]);
-    let { data } = useSelector((state) => state.cart);
+    let cart = useSelector((state) => state.cart);
     const [Qty, setQty] = useState(0);
     const dispatch = useDispatch();
     const auth = JSON.parse(localStorage.getItem('auth'));
 
+    const totalItemCart = items => {
+        return items.reduce((acc, curr) => acc + curr.qty, 0);
+    }
 
     useEffect(() => {
         const navs = [
@@ -39,13 +42,17 @@ const Navigation = () => {
             }
         ];
         setNavLinks(navs);
-    }, [])
+        setQty(totalItemCart(cart));
+    }, [cart])
 
     const handleLogout = (e) => {
         e.preventDefault();
         dispatch(userLogout());
     }
 
+
+
+    // console.log("QTY : ", totalItemCart(cart));
 
     return (
         <>

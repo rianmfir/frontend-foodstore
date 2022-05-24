@@ -7,12 +7,16 @@ import { Link, NavLink, Outlet, Route, Routes } from "react-router-dom";
 import { Account, Home, Login, Register } from "..";
 import { FaFileInvoice } from 'react-icons/fa';
 import { CgNotes } from 'react-icons/cg';
+import { userLogout } from '../../app/features/Auth/actions';
+import { useDispatch } from 'react-redux';
 
 const Dashboard = () => {
 
     const auth = JSON.parse(localStorage.getItem('auth'));
     const [menu, setMenu] = useState([]);
     const [pages, setPages] = useState("");
+    const dispatch = useDispatch();
+
     const role = "user";
 
     const sideBar = () => {
@@ -68,6 +72,7 @@ const Dashboard = () => {
                 )
             )
         }
+
     }
 
     useEffect(() => {
@@ -118,7 +123,7 @@ const Dashboard = () => {
                             }
                         </ul>
                         <hr />
-                        <a href="#" className="nav-link link-dark">
+                        <a href="#" className="nav-link link-dark" onClick={() => dispatch(userLogout())}>
                             <IoMdLogOut strokeWidth='3' size="2em" color='#f9a825' className="me-1 " />
                             Logout
                         </a>
@@ -132,7 +137,7 @@ const Dashboard = () => {
             <div className="col-9 p-3">
                 <Outlet />
             </div>
-        </div>
+        </div >
 
 
     )

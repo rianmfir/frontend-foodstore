@@ -19,8 +19,8 @@ const Home = () => {
 
     let userID = auth !== null ? auth.user._id : auth;
 
-    console.log("Auth : ", userID);
-    console.log("Token : ", token);
+    // console.log("Auth : ", userID);
+    // console.log("Token : ", token);
 
     useEffect(() => {
         dispatch(getProducts());
@@ -28,6 +28,18 @@ const Home = () => {
         dispatch(getCartItem(token, userID));
 
     }, [dispatch]);
+
+    let data = (item) => {
+        return {
+            image_url: item.image_url,
+            name: item.name,
+            price: item.price,
+            product: item,
+            // qty: item.qty,
+            // user: item.user,
+            _id: item._id
+        }
+    }
 
     return (
 
@@ -48,7 +60,13 @@ const Home = () => {
                     product.map((item, index) => {
                         return (
                             <div key={index} className="col-lg-3">
-                                <CardProduct item={item} onAddToCart={() => dispatch(addToCart(item))} />
+                                <CardProduct item={item} onAddToCart={() =>
+                                    dispatch(addToCart(item),
+                                        // console.log("cart Ftom Home : ", item)
+                                    )} />
+                                {/* <CardProduct item={item} onAddToCart={() => dispatch(addToCart(data(item)))} /> */}
+                                {/* <CardProduct item={item} onAddToCart={() => console.log("cart Ftom Home : ", data(item))} /> */}
+                                {/* <CardProduct item={item} onAddToCart={() => console.log("cart Ftom Home : ", item)} /> */}
                             </div>
                         )
                     })
