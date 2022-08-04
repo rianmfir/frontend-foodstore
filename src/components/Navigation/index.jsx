@@ -6,14 +6,15 @@ import {
     InputGroup,
     Nav, Navbar,
     Button,
-    Dropdown
+    Dropdown,
+    Form
 } from 'react-bootstrap';
 
 import { useEffect, useState } from "react";
 
 import { FaSearch } from "react-icons/fa";
 import { BsPersonCircle } from "react-icons/bs";
-import { MdShoppingCart } from 'react-icons/md'
+import { MdShoppingBasket, MdShoppingCart } from 'react-icons/md'
 import { CgNotes } from 'react-icons/cg'
 import { IoMdLogOut } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +25,7 @@ const Navigation = () => {
 
     const [navLinks, setNavLinks] = useState([]);
     let cart = useSelector((state) => state.cart);
-    const [Qty, setQty] = useState(0);
+    const [Qty, setQty] = useState();
     const dispatch = useDispatch();
     const auth = JSON.parse(localStorage.getItem('auth'));
 
@@ -51,32 +52,60 @@ const Navigation = () => {
     }
 
 
-
-    // console.log("QTY : ", totalItemCart(cart));
-
     return (
         <>
             {/* {console.log("ini Isi Auth : ", tes)} */}
             <Navbar sticky="top" className="p-3 shadow-sm mb-5 rounded opacity-100 bg-Navbar" >
                 <Container>
 
-                    <Navbar.Brand as={Link} to={"/"}>
-                        <img
-                            alt=""
-                            src="/logo192.png"
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                        />{' '}
+                    <Navbar.Brand as={Link} to={"/"} className="d-flex">
+                        <MdShoppingBasket size={30} className="me-1 text-success" />
                         <strong><span style={{ color: '#f9a825' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong>
                     </Navbar.Brand>
 
                     <Nav className="w-50 ms-auto">
                         <InputGroup>
-                            <FormControl className="rounded-pill position-relative" type="text" placeholder="Cari Apa..." />
-                            <Button variant="none" className="position-absolute top-0 end-0 me-2 rounded-circle"><FaSearch size="1rem" /></Button>
+                            <Form.Control
+                                type="search"
+                                placeholder='ex. Pizza, Martbak, Lemon Tea, etc...'
+                                aria-label="Search"
+                                variant='red'
+                            />
+                            <Button variant="outline-success" className="">
+                                <FaSearch size="1rem" />
+                            </Button>
+                            {/* <InputGroup.Text>$</InputGroup.Text>
+                            <InputGroup.Text>0.00</InputGroup.Text> */}
                         </InputGroup>
+
+                        {/* <Form className="w-50 ms-auto">
+                            <Form.Control
+                                type="search"
+                                placeholder="Search"
+                                className="rounded-pill"
+                                aria-label="Search"
+                            />
+                            <Button variant="outline-success" className="">
+                                <FaSearch size="1rem" />
+                            </Button>
+                        </Form> */}
                     </Nav>
+
+                    {/* <Nav className="w-50 ms-auto">
+                        <InputGroup>
+                            <FormControl 
+                            className="rounded-pill 
+                            position-relative" 
+                            type="text" 
+                            placeholder="Cari Apa..." />
+                            
+                            <Button 
+                            variant="none" 
+                            className="position-absolute top-0 end-0 me-2 rounded-circle">
+                            <FaSearch size="1rem" />
+                            </Button>
+                        </InputGroup>
+                    </Nav> */}
 
                     {/* Basket */}
                     <>
@@ -84,6 +113,7 @@ const Navigation = () => {
                             <Link to="/cart" >
                                 <MdShoppingCart size="2em" color='black' />
                                 {
+
                                     Qty ?
                                         <span className="position-absolute translate-middle badge rounded-pill bg-danger">
                                             {Qty}
@@ -92,9 +122,7 @@ const Navigation = () => {
                                         ""
                                 }
                             </Link>
-                            {
-                                // console.log("Banyak Item : ", totalItemCart(data))
-                            }
+
                         </Nav>
                         {/* Akhir Basket */}
                     </>
@@ -136,12 +164,11 @@ const Navigation = () => {
 
                                 :
                                 <Nav className='ms-auto'>
-                                    <Link to='/login' style={{ color: 'dark', fontSize: '1.5em' }} className="link-dark ">
+                                    <Link to='/login' style={{ color: 'dark', fontSize: '1.5em' }} className="link-dark text-decoration-none">
                                         Login
                                     </Link>
-                                    {/* <a href='/login' style={{ color: 'dark', fontSize: '1.5em' }} className="link-dark">Login</a> */}
-                                    <span style={{ border: '1px #d1caca solid', height: '2rem' }} className="my-auto"></span>
-                                    <Button href="/register" className="px-3 ms-2" style={{ backgroundColor: "#9eeb47f7" }}>
+                                    {/* <span style={{ border: '1px #d1caca solid', height: '2rem' }} className="my-auto"></span> */}
+                                    <Button as={Link} to="/register" className="px-3 ms-2 btn-outline-success" style={{ backgroundColor: "#9eeb47f7" }}>
                                         <span className="fw-bold " style={{ color: "white", fontSize: '1.3em' }}>Sign Up</span>
                                     </Button>
                                 </Nav>

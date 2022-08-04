@@ -27,24 +27,10 @@ export const getCartItem = (token, userID) => {
         )
             .then(res => {
                 let { data } = res
-                let cart = [];
-
 
                 if (userID) {
-                    data.forEach(item => {
-                        if (item.user === userID) {
-                            cart.push(item);
-                        }
-                    });
                     dispatch(getCart(data))
-                    // console.log("USER ID : ", userID)
                 }
-                else {
-                    // console.log("USER ID : ", userID)
-                }
-                // console.log("Filter : ", cart);
-
-                // console.log("data From DB : 'bea' ", data)
             })
             .catch(err => {
                 console.log(err.response);

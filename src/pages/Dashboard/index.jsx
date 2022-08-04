@@ -93,7 +93,7 @@ const Dashboard = () => {
                                 <BsPersonCircle size="5em" color='#f9a825' className="mx-auto" />
                                 <div className='d-flex flex-column text-center' >
                                     <span className="fw-semibold ">
-                                        {auth.user?.full_name}
+                                        {auth?.user?.full_name}
                                         {/* Rian */}
                                     </span>
                                     <span className="lh-tight " >

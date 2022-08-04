@@ -1,3 +1,3 @@
-import dummyImmage from './minuman.jpg';
+import dummyImage from './minuman.jpg';
 
-export { dummyImmage };
+export { dummyImage };

@@ -6,6 +6,7 @@ import {
     GET_CART_DB,
     REMOVE_ITEM,
     ADD_ITEM,
+    CLEAR_ITEM,
 } from "./constants";
 
 
@@ -16,17 +17,6 @@ const initialState = localStorage.getItem('cart')
 const cartReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case ADD_TO_CART:
-            // state.find(item =>
-            //     console.log("(1) Intial State item._id : ", item.product._id),
-            //     console.log("(1) New Input payload.item._id : ", payload._id)
-            // )
-            // state.map(item => (
-            //     console.log("Ada Check Lagi "),
-            //     console.log("(2) Intial State item._id : ", item.product._id),
-            //     console.log("(2) New Input payload.item._id : ", payload.product._id),
-            //     console.log("____________________________________")
-            // ))
-
             if (state.find(item => item.product._id === payload.product._id)) {
 
                 return state.map(item => ({
@@ -50,6 +40,9 @@ const cartReducer = (state = initialState, { type, payload }) => {
             return state
                 .map(item => ({ ...item, qty: item._id === payload.item._id ? item.qty - 1 : item.qty }))
                 .filter(item => item.qty > 0);
+
+        case CLEAR_ITEM:
+            return []
 
         default:
             return state;

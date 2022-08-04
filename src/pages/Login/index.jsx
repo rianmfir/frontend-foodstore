@@ -3,9 +3,10 @@ import './login.scss'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { dummyImmage } from '../../assets/images';
+import { dummyImage } from '../../assets/images';
 import { userLogin } from '../../app/features/Auth/actions';
 import store from '../../app/store';
+import { MdShoppingBasket } from 'react-icons/md';
 // import Home from '../Home';
 
 
@@ -13,42 +14,38 @@ const Login = () => {
 
     const [userState, setUserState] = useState({});
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const auth = useSelector(state => state.auth);
-    const isLoggedIn = auth.isLoggedIn;
 
     // const user = useSelector(state => state.auth.user);
     const message = auth
         ? auth.user?.message
         : ""
 
-    const stores = store.getState().auth;
-
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(userLogin(userState));
     }
 
-    console.log("Store : ", stores);
-    console.log("Auth : ", auth);
-    console.log("isLoggedIn : ", isLoggedIn);
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            navigate('/')
-        }
-    }, [isLoggedIn, navigate]);
-
     return (
-        <div className='container shadow-lg p-3 mb-5 bg-body rounded'>
+        <div className='container shadow-lg my-4 rounded'>
             <div className="row">
-                <div className="col-6 z-index-2">
-                    <img src={dummyImmage} height='100%' alt='' />
+                <div className="col-md-6 col-sm-12">
+                    <img src={dummyImage} height='100%' alt='' />
                 </div>
-                <div className="col-6 container">
+                <div className="col-md-6 col-sm-12 container">
+
+                    <Link to='/' className='pt-3 text-decoration-none'>
+                        <div className='d-flex justify-content-center'>
+                            <MdShoppingBasket size={70} className="me-1 text-success" />
+                        </div>
+                        <div className='d-flex justify-content-center fs-1'>
+                            <strong><span style={{ color: '#f9a825' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong>
+                        </div>
+                    </Link>
+
                     <form onSubmit={handleSubmit}>
 
-                        <div className="py-5 container">
+                        <div className="container">
                             <h5 className='fs-2'>Login</h5>
                             <p className='text-center text-danger mb-5'>
                                 {message}
@@ -85,7 +82,7 @@ const Login = () => {
                     </form>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

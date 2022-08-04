@@ -4,7 +4,8 @@ import {
     ADD_TO_CART,
     GET_ITEM,
     REMOVE_ITEM,
-    GET_CART
+    GET_CART,
+    CLEAR_ITEM
 } from "./constants";
 
 
@@ -32,5 +33,11 @@ export function removeItem(item) {
         payload: {
             item: item
         }
+    }
+}
+
+export function clearItem() {
+    return {
+        type: CLEAR_ITEM
     }
 }

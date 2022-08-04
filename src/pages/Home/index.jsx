@@ -1,15 +1,30 @@
-import { Container } from 'react-bootstrap'
-import { useEffect } from "react";
+import { Container, Col, Row } from 'react-bootstrap'
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { CardProduct, Tag } from "../../components";
-import { getProducts, getTags } from '../../app/features/Product/actions';
-import { addItem, addToCart } from '../../app/features/Cart/actions';
+import { CardProduct, ListCategories, ListTags, Tag } from "../../components";
+import { getCategories, getProducts, getTags, setCategory, setPage } from '../../app/features/Product/actions';
+import { addToCart } from '../../app/features/Cart/actions';
 import { getCartItem } from '../../app/api/cart';
+import { getAddresses } from '../../app/features/Address/actions';
+import Paginate from '../../components/Paginate';
+import { useCallback } from 'react';
 
 const Home = () => {
 
-    const { product, tags } = useSelector(state => state.products);
     const dispatch = useDispatch();
+    const {
+        product,
+        categories,
+        tags,
+        currentPage,
+        totalItems,
+        perPage,
+        keyword,
+        category,
+        tag
+    } = useSelector(state => state.products);
+
+    const test = useSelector(state => state.products);
 
     const auth = useSelector(state => state.auth.user);
 
@@ -19,63 +34,89 @@ const Home = () => {
 
     let userID = auth !== null ? auth.user._id : auth;
 
-    // console.log("Auth : ", userID);
-    // console.log("Token : ", token);
+    // console.log("Reduce Product : ", test)
 
-    useEffect(() => {
+    const getProduct = useCallback(() => {
         dispatch(getProducts());
+        dispatch(getCategories());
         dispatch(getTags());
         dispatch(getCartItem(token, userID));
-
     }, [dispatch]);
 
-    let data = (item) => {
-        return {
-            image_url: item.image_url,
-            name: item.name,
-            price: item.price,
-            product: item,
-            // qty: item.qty,
-            // user: item.user,
-            _id: item._id
-        }
-    }
+    useEffect(() => {
+        getProduct();
+        // dispatch(getProducts());
+        // dispatch(getTags());
+        // dispatch(getCartItem(token, userID));
+        // dispatch(getAddresses(token));
+        // }, [dispatch]);
+    }, [currentPage, category, tag]);
 
+
+
+    // console.log("Category : ", category);
+    // console.log('Tags Home: ', tags);
+
+
+    // console.log("Tag Product : ",)
+
+
+    // console.log("Tag Product : ", FilterTags)
+    // console.log("Total Items : ", totalItems)
     return (
+        <div >
+            <Container fluid>
+                <Row className="justify-content-center">
 
-        <Container className="mt-5">
-            <div className="d-flex">
-                <strong>
-                    <h2>Tags: </h2>
-                </strong>
-                <div className="my-1">
-                    <Tag items={tags} />
-                </div>
+                    <Col md={2} >
 
-            </div>
+                        <h4 >
+                            <span>
+                                FILTER
+                            </span>
+                        </h4>
 
-            {/* Card */}
-            <div className="row">
-                {
-                    product.map((item, index) => {
-                        return (
-                            <div key={index} className="col-lg-3">
-                                <CardProduct item={item} onAddToCart={() =>
-                                    dispatch(addToCart(item),
-                                        // console.log("cart Ftom Home : ", item)
-                                    )} />
-                                {/* <CardProduct item={item} onAddToCart={() => dispatch(addToCart(data(item)))} /> */}
-                                {/* <CardProduct item={item} onAddToCart={() => console.log("cart Ftom Home : ", data(item))} /> */}
-                                {/* <CardProduct item={item} onAddToCart={() => console.log("cart Ftom Home : ", item)} /> */}
+                        <ListCategories
+                            categories={categories}
+                            category={category}
+                            onFilterCategory={(category) => { dispatch(setCategory(category)) }}
+
+                        />
+
+                        <ListTags
+                            tags={tags}
+                        />
+
+                    </Col>
+
+                    <Col md={9} className="text-center ">
+                        <h4>
+                            <strong>Daftar Produk</strong>
+                        </h4>
+                        <hr />
+
+                        <Row >
+                            <CardProduct products={product} />
+                        </Row>
+
+                        {/* Pagination */}
+                        <Row>
+                            <div className='d-flex justify-content-center mt-5'>
+
+                                <Paginate
+                                    activePage={currentPage}
+                                    total={Math.ceil(totalItems / perPage)}
+                                    onPageChange={(page) => dispatch(setPage(page))}
+                                    coba={tags}
+                                />
+
                             </div>
-                        )
-                    })
-                }
+                        </Row>
+                    </Col>
+                </Row>
+            </Container>
 
-            </div>
-            {/* Akhir Card */}
-
-        </Container >
+        </div>
     )
 }
 

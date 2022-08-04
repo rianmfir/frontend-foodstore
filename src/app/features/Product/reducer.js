@@ -1,26 +1,64 @@
-import { GET_PRODUCT_SUCCESS, GET_TAG_SUCCESS } from "./constants";
+import {
+    GET_PRODUCT,
+    GET_TAGS,
+    GET_CATEGORIES,
+    SET_PAGE,
+    SET_CATEGORY,
+    SET_TAG
+} from "./constants";
+
 
 const productState = {
     product: [],
-    // category: '',
+    categories: [],
     tags: [],
+    perPage: 2,
+    totalItems: 0,
+    currentPage: 1,
+    category: '',
+    tag: '',
+    keyword: '',
 }
 
 const productReducer = (state = productState, { type, payload }) => {
     switch (type) {
-        case GET_PRODUCT_SUCCESS:
+        case GET_PRODUCT:
             return {
                 ...state,
-                product: payload.data
-                // category: payload.category.name,
-                // tags: payload.tags.name
+                product: payload.data,
+
+                totalItems: payload.count
+
             };
-        case GET_TAG_SUCCESS:
+        case GET_TAGS:
             return {
                 ...state,
                 tags: payload
-                // category: payload.category.name,
-                // tags: payload.tags.name
+            };
+        case GET_CATEGORIES:
+            return {
+                ...state,
+                categories: payload
+            };
+
+        case SET_PAGE:
+            return {
+                ...state,
+                currentPage: payload.currentPage
+            };
+        case SET_CATEGORY:
+            return {
+                ...state,
+                category: payload.category,
+                currentPage: 1,
+
+            };
+        case SET_TAG:
+            return {
+                ...state,
+                tag: payload.tag,
+                currentPage: 1,
+
             };
         default:
             return state;

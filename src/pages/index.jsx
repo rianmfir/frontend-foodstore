@@ -5,6 +5,16 @@ import Login from './Login';
 import Register from './Register';
 import Cart from './Cart';
 import Error from './Error';
+import Checkout from './Checkout';
 
 
-export { Account, Home, Login, Register, Dashboard, Cart, Error };
+export {
+    Account,
+    Home,
+    Login,
+    Register,
+    Dashboard,
+    Cart,
+    Error,
+    Checkout
+};
