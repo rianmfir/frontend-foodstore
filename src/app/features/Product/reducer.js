@@ -4,7 +4,8 @@ import {
     GET_CATEGORIES,
     SET_PAGE,
     SET_CATEGORY,
-    SET_TAG
+    SET_TAG,
+    SET_KEYWORD
 } from "./constants";
 
 
@@ -12,7 +13,7 @@ const productState = {
     product: [],
     categories: [],
     tags: [],
-    perPage: 2,
+    perPage: 8,
     totalItems: 0,
     currentPage: 1,
     category: '',
@@ -58,8 +59,14 @@ const productReducer = (state = productState, { type, payload }) => {
                 ...state,
                 tag: payload.tag,
                 currentPage: 1,
-
             };
+        case SET_KEYWORD:
+            return {
+                ...state,
+                keyword: payload.keyword,
+                currentPage: 1,
+            };
+
         default:
             return state;
     }

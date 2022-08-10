@@ -5,14 +5,15 @@ import {
     GET_CATEGORIES,
     SET_PAGE,
     SET_CATEGORY,
-    SET_TAG
+    SET_TAG,
+    SET_KEYWORD
 } from "./constants";
 
 export const getProducts = () => {
 
     return async (dispatch, getState) => {
 
-        let perPage = getState().products.perPage || 9;
+        let perPage = getState().products.perPage || 8;
         let currentPage = getState().products.currentPage || 1;
         let category = getState().products.category || '';
         let tags = getState().products.tag || '';
@@ -87,9 +88,17 @@ export const setCategory = (category) => ({
         category: category
     }
 })
+
 export const setTag = (tag) => ({
     type: SET_TAG,
     payload: {
         tag: tag
+    }
+})
+
+export const setKeyword = (keyword) => ({
+    type: SET_KEYWORD,
+    payload: {
+        keyword: keyword
     }
 })

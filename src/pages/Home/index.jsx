@@ -1,13 +1,12 @@
 import { Container, Col, Row } from 'react-bootstrap'
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { CardProduct, ListCategories, ListTags, Tag } from "../../components";
+import { Alert, CardProduct, ListCategories, ListTags, Tag } from "../../components";
 import { getCategories, getProducts, getTags, setCategory, setPage } from '../../app/features/Product/actions';
-import { addToCart } from '../../app/features/Cart/actions';
 import { getCartItem } from '../../app/api/cart';
-import { getAddresses } from '../../app/features/Address/actions';
 import Paginate from '../../components/Paginate';
 import { useCallback } from 'react';
+import { BsFilter } from 'react-icons/bs';
 
 const Home = () => {
 
@@ -23,8 +22,6 @@ const Home = () => {
         category,
         tag
     } = useSelector(state => state.products);
-
-    const test = useSelector(state => state.products);
 
     const auth = useSelector(state => state.auth.user);
 
@@ -50,73 +47,84 @@ const Home = () => {
         // dispatch(getCartItem(token, userID));
         // dispatch(getAddresses(token));
         // }, [dispatch]);
-    }, [currentPage, category, tag]);
+    }, [currentPage, category, tag, keyword]);
 
+    let tanggalWaktu = "2022-03-24T10:01:18.716Z";
+    let date = new Date(tanggalWaktu);
 
+    console.log("Tanggal : ", date.getDate());
+    console.log("Bulan : ", date.getMonth());
+    console.log("Tahun : ", date.getFullYear());
 
-    // console.log("Category : ", category);
-    // console.log('Tags Home: ', tags);
-
-
-    // console.log("Tag Product : ",)
-
-
-    // console.log("Tag Product : ", FilterTags)
-    // console.log("Total Items : ", totalItems)
     return (
-        <div >
-            <Container fluid>
-                <Row className="justify-content-center">
+        <Container fluid style={{ backgroundColor: "#f9f9f9" }}>
+            <Row className="justify-content-center pt-5" >
+                <Col md={2} >
+                    <div>
 
-                    <Col md={2} >
-
-                        <h4 >
-                            <span>
+                        <span className="d-flex" size="1.5 rem">
+                            <BsFilter />
+                            <h4 >
                                 FILTER
-                            </span>
-                        </h4>
-
+                            </h4>
+                        </span>
                         <ListCategories
                             categories={categories}
                             category={category}
                             onFilterCategory={(category) => { dispatch(setCategory(category)) }}
-
                         />
-
                         <ListTags
                             tags={tags}
                         />
+                    </div>
+                </Col>
 
-                    </Col>
+                <Col md={9} >
 
-                    <Col md={9} className="text-center ">
-                        <h4>
-                            <strong>Daftar Produk</strong>
-                        </h4>
-                        <hr />
+                    <h4 className="text-center">
+                        <strong>Produk</strong>
+                    </h4>
+                    <Row >
+                        <CardProduct products={product} />
+                    </Row>
 
-                        <Row >
-                            <CardProduct products={product} />
-                        </Row>
+                    <Row>
+                        <div className='d-flex justify-content-center mt-5'>
+                            <Paginate
+                                activePage={currentPage}
+                                total={Math.ceil(totalItems / perPage)}
+                                onPageChange={(page) => dispatch(setPage(page))}
+                                coba={tags}
+                            />
+                        </div>
+                    </Row>
 
-                        {/* Pagination */}
-                        <Row>
-                            <div className='d-flex justify-content-center mt-5'>
+                    {/* {
+                        totalItems > 0
+                            ?
+                            <>
+                                <Row >
+                                    <CardProduct products={product} />
+                                </Row>
 
-                                <Paginate
-                                    activePage={currentPage}
-                                    total={Math.ceil(totalItems / perPage)}
-                                    onPageChange={(page) => dispatch(setPage(page))}
-                                    coba={tags}
-                                />
+                                <Row>
+                                    <div className='d-flex justify-content-center mt-5'>
+                                        <Paginate
+                                            activePage={currentPage}
+                                            total={Math.ceil(totalItems / perPage)}
+                                            onPageChange={(page) => dispatch(setPage(page))}
+                                            coba={tags}
+                                        />
+                                    </div>
+                                </Row>
+                            </>
+                            :
+                            <Alert paragraph={"Produk ditemukan"} />
+                    } */}
 
-                            </div>
-                        </Row>
-                    </Col>
-                </Row>
-            </Container>
-
-        </div>
+                </Col>
+            </Row>
+        </Container >
     )
 }
 

@@ -1,0 +1,11 @@
+.input-wrapper {
+    .form-control {
+        border-radius: 12px !important;
+
+        &:focus {
+            border-color: #e8b988c9 !important;
+            box-shadow: 0 0 0 0.1rem #e9ab68c9 !important;
+            border-radius: 12px;
+        }
+    }
+}

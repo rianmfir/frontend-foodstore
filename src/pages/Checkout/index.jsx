@@ -1,26 +1,37 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Card, Col, Container, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '../../app/api/order';
 import { getAddresses } from '../../app/features/Address/actions';
 import { clearItem } from '../../app/features/Cart/actions';
+import AddAddress from '../../components/AddAddress';
+import { Gap } from '../../components/atoms';
+import { formatRupiah, sumPrice } from '../../utils';
+import { dummyImage } from '../../assets/images'
+import { owner } from '../../assets/owner';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+// import { createOrder } from '../../app/api/order';
+import { createOrder } from '../../app/features/Order/actions';
 
 const Checkout = () => {
     const dispatch = useDispatch();
 
+    const baseURL = axios.defaults.baseURL;
+    const navigate = useNavigate();
+
     const address = useSelector(state => state.address.data);
     const cart = useSelector(state => state.cart);
-    const [fee, setFee] = useState(15000);
+    const order = useSelector(state => state.order);
 
     const [selectedAddress, setSelectedAddress] = useState("");
     const [notSelect, setNotSelect] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
 
-    function sumPrice(items) {
-        return items.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
-    }
+    const [select, setSelect] = useState(false);
+
+    const fee = owner.data.ongkir;
+
 
     useEffect(() => {
         dispatch(getAddresses())
@@ -28,165 +39,217 @@ const Checkout = () => {
     }, [dispatch])
 
     const handleAddress = row => {
-        // console.log('Selected Address :', selectedAddress._id);
-
         if (row.selectedCount > 0) {
             setSelectedAddress(row.selectedRows[0]);
-            setNotSelect(false);
+            setNotSelect(!notSelect);
+            setSelect(!select);
         } else {
             setNotSelect(true);
         }
+    }
 
+    const addressMenu = () => {
+        setSelect(!select);
     }
 
     const handleSubmit = () => {
         let payload = {
             delivery_address: selectedAddress._id,
-            delivery_fee: fee,
+            delivery_fee: owner.data.ongkir
         }
-        createOrder(payload);
-        dispatch(clearItem());
-        console.log("Sukses");
+        if (!order.data?.error) {
+            dispatch(createOrder(payload));
+            navigate(`/invoices`)
+            dispatch(clearItem());
+        }
+
     }
 
-    function sumPrice(items) {
-        return items.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
-    }
+    let a = sumPrice(cart);
+    let b = owner.data.ongkir;
+    console.log("Total : ", (parseInt(a) + parseInt(b)));
+    console.log(b);
+    // console.log('Address : ', selectedAddress);
+    // console.log('Select : ', select);
+
+    // console.log("Data Owner : ", owner)
+    // console.log("Order : ", order)
 
     return (
-        <section className="">
-            <div className="container">
-                <div className="row">
+
+        <Container>
+            <Row>
+                <Col lg="8">
+                    <Row className="shadow-lg p-3 mb-4 bg-body rounded">
+                        <Col style={{ cursor: "pointer" }} onClick={addressMenu}>
+                            {
+                                selectedAddress
+                                    ?
+                                    <span>{`${selectedAddress.nama}, ${selectedAddress.detail}, ${selectedAddress.kelurahan}, ${selectedAddress.kecamatan}, ${selectedAddress.kabupaten}, ${selectedAddress.provinsi}`}</span>
+                                    :
+                                    <span >Pilih Alamat Pengiriman</span>
+                            }
+
+                        </Col>
+                    </Row>
                     {
-                        isLoading ? 'Loading . . . .'
+                        select
+                            ?
+                            <Row as={Card} style={{ zIndex: "1", position: "absolute" }}>
+                                <Col lg="12">
+                                    <>
+                                        <DataTable
+                                            columns={[
+                                                {
+                                                    name: 'Nama',
+                                                    selector: row => row.nama
+                                                },
+                                                {
+                                                    name: 'Detail',
+                                                    cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi}`
+                                                }
+                                            ]}
+                                            data={address}
+                                            onSelectedRowsChange={handleAddress}
+                                            selectableRows
+                                            selectableRowsSingle={true}
+                                            selectableRowsHighlight={true}
+                                        />
+                                    </>
+                                </Col>
+                            </Row>
                             :
-                            <div className="col-lg-8">
-                                <div className="row">
-                                    <div className="col-lg-12">
-                                        <>
-
-                                            <DataTable
-                                                columns={[
-                                                    {
-                                                        name: 'Nama',
-                                                        selector: row => row.nama
-                                                    },
-                                                    {
-                                                        name: 'Detail',
-                                                        cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi}`
-                                                    }
-                                                ]}
-                                                data={address}
-                                                onSelectedRowsChange={handleAddress}
-                                                selectableRows
-                                                selectableRowsSingle={true}
-                                                selectableRowsHighlight={true}
-                                                title="Pilih Alamat Pengiriman"
-                                            />
-
-
-
-
-                                            {/* <Form>
-                                                {address.map((data, index) => (
-                                                    <div key={index} className="mb-3">
-                                                        <Form.Check
-                                                            inline
-                                                            label={data.nama}
-                                                            name="group1"
-                                                            type={'radio'}
-                                                            // id={`inline-radio-1`}
-                                                            value={data}
-                                                        />
-                                                    </div>
-                                                ))}
-                                            </Form> */}
-                                        </>
-                                    </div>
-                                </div>
-                            </div>
+                            ""
                     }
 
-                    <div className="col-lg-4">
-                        <div className="row">
-                            <div className="col-lg-12">
-                                <div
-                                    className="card rounded-2"
-                                    style={{ background: '#f3f3f3' }}
-                                >
+                    <Gap height={20} />
+                    <Row>
+                        <Container>
+                            <Card >
+                                <Card.Header className="bg-warning fw-bolder ">Keranjang Belanja</Card.Header>
+                                <Card.Body >
+                                    <DataTable
+                                        columns={[
+                                            {
+                                                name: <span className='mx-auto fw-bolder'>Produk</span>,
+                                                cell: row =>
+                                                    <div className="d-flex flex-wrap py-3 mx-auto">
+                                                        <Image
+                                                            src={`${baseURL}images/products/${row.image_url}`} rounded
+                                                            width="90"
+                                                            height="90"
+                                                            roundedCircle
+                                                        />
+                                                        <Gap width={10} />
+                                                        <div className='d-flex flex-column align-item-center justify-content-center '>
+                                                            <span className=''>{row.name}</span>
+                                                            <span className=''>{formatRupiah(row.price)}</span>
+                                                        </div>
 
-                                    <div>
-                                        <ul type="none" className='container'>
+                                                    </div>
+                                            },
+                                            {
+                                                name: <span className='mx-auto fw-bolder'>Quantity</span>,
+                                                cell: row =>
+                                                    <div className='mx-auto'>
+                                                        {row.qty}
+                                                    </div>
+                                            },
+                                            {
+                                                name: <span className='mx-auto fw-bolder'>Subtotal</span>,
+                                                cell: row =>
+                                                    <div className='mx-auto'>
+                                                        {formatRupiah(row.qty * row.price)}
+                                                    </div>
+                                            },
 
-                                            <li className="d-flex mt-3">
-                                                <p>ID Transaction </p>
-                                                <p className='ms-auto'>SH12000%</p>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                                        ]}
+                                        data={cart}
+                                        center='true'
+                                    />
 
-                                            <li className="d-flex">
-                                                <p>Subtotal</p>
-                                                <p className='ms-auto fw-bolder'>Rp.{sumPrice(cart)}</p>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                                </Card.Body>
+                            </Card>
+                        </Container>
+                    </Row>
 
-                                            <li className="d-flex">
-                                                <p>Ongkos Kirim</p>
-                                                <span className='ms-auto fw-bolder'>
-                                                    {
-                                                        notSelect ? "-" : "Rp.15.000,00"
-                                                    }
+                </Col>
 
-                                                </span>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                <Col lg="4">
+                    <Row>
+                        <Col lg="12">
+                            <Card
+                                className='rounded'
+                                style={{ background: '#f3f3f3' }} >
+                                <div>
+                                    <ul type="none" className='container'>
+                                        <li className="d-flex pt-3">
+                                            <p>Subtotal</p>
+                                            <p className='ms-auto fw-bolder'>{formatRupiah(sumPrice(cart))}</p>
+                                        </li>
+                                        <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <li className="d-flex">
-                                                <p>Bank Transfer</p>
-                                                <p className='ms-auto fw-bolder'>BRI</p>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                                        <li className="d-flex">
+                                            <p>Ongkos Kirim</p>
+                                            <span className='ms-auto fw-bolder'>
+                                                {
+                                                    selectedAddress ? formatRupiah(fee) : "-"
+                                                }
+                                            </span>
+                                        </li>
+                                        <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <li className="d-flex">
-                                                <p>No. Rekening</p>
-                                                <p className='ms-auto fw-bolder'>1122333445342</p>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                                        <li className="d-flex">
+                                            <p>Bank Transfer</p>
+                                            <p className='ms-auto fw-bolder'>{owner.data.bank}</p>
+                                        </li>
+                                        <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <li className="d-flex">
-                                                <p>Nama Penerima</p>
-                                                <p className='ms-auto fw-bolder'>Wahyudi</p>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                                        <li className="d-flex">
+                                            <p>No. Rekening</p>
+                                            <p className='ms-auto fw-bolder'>{owner.data.noRekening}</p>
+                                        </li>
+                                        <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <li className="d-flex">
-                                                <p>Total</p>
-                                                <p className='ms-auto fw-bolder'>
-                                                    sum
-                                                </p>
-                                            </li>
-                                            <hr style={{ color: 'green' }} className='mt-0' />
+                                        <li className="d-flex">
+                                            <p>Nama Penerima</p>
+                                            <p className='ms-auto fw-bolder'>{owner.data.nama}</p>
+                                        </li>
+                                        <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <Button
-                                                className="btn text-light"
-                                                variant="warning"
-                                                style={{ background: 'orange', width: '100%' }}
-                                                disabled={notSelect}
-                                                onClick={handleSubmit}
-                                            >
-                                                <span style={{ color: 'white' }}>
-                                                    PAY
-                                                </span>
-                                            </Button>
-                                        </ul>
-                                    </div>
+                                        <li className="d-flex">
+                                            <p>Total</p>
+                                            <p className='ms-auto fw-bolder'>
+                                                {
+                                                    selectedAddress
+                                                        // ? formatRupiah(sumPrice(cart) + parseInt(owner.data.ongkir))
+                                                        ? formatRupiah(parseInt(sumPrice(cart) + (owner.data.ongkir)))
+                                                        : "-"
+                                                }
+                                            </p>
+
+                                        </li>
+                                        <hr style={{ color: 'green' }} className='mt-0' />
+
+                                        <Button
+                                            className="btn text-light rounded-pill"
+                                            variant="warning"
+                                            style={{ background: 'orange', width: '100%' }}
+                                            disabled={!selectedAddress}
+                                            onClick={handleSubmit}
+                                        >
+                                            <span style={{ color: 'white' }}>
+                                                Bayar Sekarang
+                                            </span>
+                                        </Button>
+                                    </ul>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section >
+                            </Card>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row >
+        </Container >
     )
 }
 

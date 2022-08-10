@@ -20,13 +20,19 @@ import { IoMdLogOut } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet } from 'react-router-dom';
 import { userLogout } from '../../app/features/Auth/actions';
+import { setKeyword } from '../../app/features/Product/actions';
 
 const Navigation = () => {
 
-    const [navLinks, setNavLinks] = useState([]);
-    let cart = useSelector((state) => state.cart);
-    const [Qty, setQty] = useState();
     const dispatch = useDispatch();
+
+    let cart = useSelector((state) => state.cart);
+    const { keyword } = useSelector(state => state.products)
+
+    const [navLinks, setNavLinks] = useState([]);
+    const [Qty, setQty] = useState();
+    const [key, setKey] = useState('');
+
     const auth = JSON.parse(localStorage.getItem('auth'));
 
     const totalItemCart = items => {
@@ -37,25 +43,32 @@ const Navigation = () => {
         const navs = [
             {
                 name: "My Account",
-                path: "/account/dashboard",
+                path: "/user/account",
                 icon: <BsPersonCircle strokeWidth='0.5' size="1em" color='#f9a825' className="me-1 " />
 
             }
         ];
         setNavLinks(navs);
         setQty(totalItemCart(cart));
-    }, [cart])
+    }, [cart, keyword])
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        // console.log("Test : ", key.keywords);
+        dispatch(setKeyword(key.keywords));
+    }
 
     const handleLogout = (e) => {
         e.preventDefault();
         dispatch(userLogout());
     }
 
+    console.log("Keyword : ", key.keywords);
 
     return (
         <>
             {/* {console.log("ini Isi Auth : ", tes)} */}
-            <Navbar sticky="top" className="p-3 shadow-sm mb-5 rounded opacity-100 bg-Navbar" >
+            <Navbar sticky="top" className="p-3 shadow-sm rounded opacity-100 bg-Navbar" >
                 <Container>
 
                     <Navbar.Brand as={Link} to={"/"} className="d-flex">
@@ -63,49 +76,28 @@ const Navigation = () => {
                         <strong><span style={{ color: '#f9a825' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong>
                     </Navbar.Brand>
 
-                    <Nav className="w-50 ms-auto">
-                        <InputGroup>
+                    <Nav className="w-50 ms-auto border">
+                        <InputGroup >
                             <Form.Control
                                 type="search"
-                                placeholder='ex. Pizza, Martbak, Lemon Tea, etc...'
+                                placeholder='ex. Pizza, Martabak, Lemon Tea, etc...'
                                 aria-label="Search"
-                                variant='red'
-                            />
-                            <Button variant="outline-success" className="">
-                                <FaSearch size="1rem" />
-                            </Button>
-                            {/* <InputGroup.Text>$</InputGroup.Text>
-                            <InputGroup.Text>0.00</InputGroup.Text> */}
-                        </InputGroup>
+                                onChange={(e) => {
+                                    const keywords = e.target.value;
+                                    setKey({ ...key, keywords });
+                                }}
+                                onKeyPress={e => {
+                                    if (e.key === "Enter") {
+                                        handleSearch(e);
+                                    }
+                                }}
 
-                        {/* <Form className="w-50 ms-auto">
-                            <Form.Control
-                                type="search"
-                                placeholder="Search"
-                                className="rounded-pill"
-                                aria-label="Search"
                             />
-                            <Button variant="outline-success" className="">
+                            <Button variant="outline-success" onClick={(e) => handleSearch(e)}>
                                 <FaSearch size="1rem" />
                             </Button>
-                        </Form> */}
+                        </InputGroup>
                     </Nav>
-
-                    {/* <Nav className="w-50 ms-auto">
-                        <InputGroup>
-                            <FormControl 
-                            className="rounded-pill 
-                            position-relative" 
-                            type="text" 
-                            placeholder="Cari Apa..." />
-                            
-                            <Button 
-                            variant="none" 
-                            className="position-absolute top-0 end-0 me-2 rounded-circle">
-                            <FaSearch size="1rem" />
-                            </Button>
-                        </InputGroup>
-                    </Nav> */}
 
                     {/* Basket */}
                     <>
@@ -133,7 +125,10 @@ const Navigation = () => {
                             auth && auth.user?.full_name ?
                                 // auth ?
                                 <Dropdown className="ms-auto">
-                                    <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: '#f9a825' }}>
+                                    <Dropdown.Toggle id="dropdown-basic"
+                                        style={{
+                                            backgroundColor: '#f9a825'
+                                        }}>
                                         <span style={{ fontSize: '16px' }}> Hi, {auth.user.full_name}  </span>
                                     </Dropdown.Toggle>
 

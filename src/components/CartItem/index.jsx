@@ -1,111 +1,100 @@
 import axios from 'axios';
 import React from 'react'
+import { Button, Container, Image } from 'react-bootstrap';
+import DataTable from 'react-data-table-component';
 import { BsArrowRight } from 'react-icons/bs';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { addToCart, removeItem } from '../../app/features/Cart/actions';
+import { formatRupiah, sumPrice } from '../../utils';
+import { BackPage } from '../atoms';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
-    const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const data = JSON.parse(localStorage.getItem('cart'));
-
     const handlePlus = (item) => {
-        console.log("Ditambah");
-        console.log("Cart From Basket", item);
+        // console.log("Ditambah");
+        // console.log("Cart From Basket", item);
         dispatch(addToCart(item))
     };
 
     const handleMinus = (item) => {
-        console.log("Dikurang");
+        // console.log("Dikurang");
         dispatch(removeItem(item));
     };
 
-
-    function sumPrice(items) {
-        return items.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
-    }
+    const columns = [
+        {
+            name: 'Gambar',
+            selector: row => <Image style={{ height: '5rem', width: '5rem' }} src={`${baseURL}images/products/${row.image_url}`} roundedCircle className='my-2' />
+        },
+        {
+            name: 'Produk',
+            selector: row => row.name
+        },
+        {
+            name: 'Harga',
+            selector: row => formatRupiah(row.price)
+        },
+        {
+            name: 'Quantity',
+            cell: row => (<div>
+                <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleMinus(row)}
+                    className="rounded-circle">
+                    <FaMinus />
+                </Button>
+                <span className="mx-4">{row.qty}</span>
+                <Button
+                    variant="dark"
+                    size="sm"
+                    onClick={() => handlePlus(row)}
+                    className="rounded-circle">
+                    <FaPlus />
+                </Button>
+            </div>),
+            center: true
+        },
+        {
+            name: 'Jumlah',
+            selector: row => formatRupiah(row.price * row.qty)
+        },
+    ]
 
     return (
-        <div className='container'>
 
+        <Container>
             {
                 cart.length === 0
                     ? <div>
-                        Your Cart Is Empty <Link to="/">Go Back</Link>
+
+                        <BackPage paragraph={"Keranjang Anda kosong"} title={"Kembali"} to={"/"} />
                     </div>
                     :
                     <>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Image</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quality</th>
-                                    <th scope="col">Total</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {
-                                    cart.map((item, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td>
-                                                    <div className="card" style={{ width: "5rem" }}>
-                                                        {/* <img src={`${baseURL}images/products/${item.image}`} className="card-img-top" alt="..." /> */}
-                                                        <img src={`${baseURL}images/products/${item.image_url}`} className="card-img-top" alt="..." />
-                                                    </div>
-                                                </td>
-                                                <td>{item.name}</td>
-                                                <td>{item.price}</td>
-                                                <td>
-                                                    <button onClick={() => handleMinus(item)}>
-                                                        -
-                                                    </button>
-                                                    {/* {' '} <span>{item.quantity}</span> {' '} */}
-                                                    {' '} <span>{item.qty}</span> {' '}
-                                                    <button onClick={() => handlePlus(item)}>
-                                                        +
-                                                    </button>
-                                                </td>
-                                                {/* <td>{item.price * item.quantity}</td> */}
-                                                <td>{item.price * item.qty}</td>
-                                            </tr>
-
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </table>
-                        <div>
-                            <div className='d-flex col-md-6 ms-auto'>
-                                <div className='ms-auto'>
-                                    <h3>Sub Total : Rp {sumPrice(data)}</h3>
-                                </div>
-                            </div>
-                            <div className='d-flex'>
-                                <div className='ms-auto'>
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary"
-                                        onClick={() => navigate('/cart/checkout')}>
-                                        Checkout <BsArrowRight size={'1.5em'} />
-                                    </button>
-                                </div>
-                            </div>
+                        <DataTable
+                            title={`Subtotal: ${formatRupiah(sumPrice(cart))}`}
+                            columns={columns}
+                            data={cart}
+                        // grow={100}
+                        />
+                        <div className="mt-5 float-end">
+                            <Button
+                                variant="primary" size="md"
+                                onClick={() => navigate('/cart/checkout')}
+                            >
+                                Checkout <BsArrowRight size={'1.5em'} />
+                            </Button>
                         </div>
-
                     </>
-
-
             }
-
-        </div >
+        </Container>
     )
 }
 

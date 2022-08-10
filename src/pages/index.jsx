@@ -6,6 +6,7 @@ import Register from './Register';
 import Cart from './Cart';
 import Error from './Error';
 import Checkout from './Checkout';
+import Invoices from './Invoices';
 
 
 export {
@@ -16,5 +17,6 @@ export {
     Dashboard,
     Cart,
     Error,
-    Checkout
+    Checkout,
+    Invoices
 };

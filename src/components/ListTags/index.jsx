@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import { Col, Form } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setTag } from '../../app/features/Product/actions';
 
@@ -8,6 +9,7 @@ const ListTags = ({ tags }) => {
 
     const dispatch = useDispatch();
     const [checked, setChecked] = useState([]);
+    const cekTags = useSelector(state => state.products)
 
     const handleCheck = event => {
         let updatedList = [...checked];
@@ -26,10 +28,12 @@ const ListTags = ({ tags }) => {
         : "";
     console.log("Chek Items : ", checkedItems);
 
+    console.log("Check Tags : ", checked);
+
 
     useEffect(() => {
-        dispatch(setTag(checkedItems))
-    }, [dispatch, checkedItems])
+        dispatch(setTag(checked))
+    }, [dispatch, checked])
 
     return (
         <Col className=''>

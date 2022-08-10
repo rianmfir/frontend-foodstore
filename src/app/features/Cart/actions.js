@@ -1,8 +1,5 @@
-import axios from "axios"
-import { useSelector } from "react-redux";
 import {
     ADD_TO_CART,
-    GET_ITEM,
     REMOVE_ITEM,
     GET_CART,
     CLEAR_ITEM
@@ -18,7 +15,6 @@ export const addToCart = (item) => {
         }
     }
 }
-
 
 export const getCart = (item) => {
     return {

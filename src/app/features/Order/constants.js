@@ -1,1 +1,3 @@
-export const SET_ORDER = "SET_ORDER";
+export const CREATE_ORDER = "CREATE_ORDER";
+
+export const GET_INVOICES = "GET_INVOICES";

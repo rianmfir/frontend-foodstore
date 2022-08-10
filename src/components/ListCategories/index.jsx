@@ -18,7 +18,6 @@ const ListCategories = ({ categories, category, onFilterCategory }) => {
     }
 
 
-
     return (
         <Col>
             <Form>
@@ -36,44 +35,13 @@ const ListCategories = ({ categories, category, onFilterCategory }) => {
                             onClick={() => handleChange(state.name)}
                             // onClick={() => onFilterCategory(state.name)}
                             disabled={category !== state.name && category !== ''}
+                            variant={'warning'}
                         />
                     ))
                 }
                 <hr />
             </Form>
-
-
-            {/* <ListGroup >
-                    <ListGroup.Item
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => onFilterCategory('')}
-                        active={category === ''}
-                        disabled={category === ''}
-                    >
-
-                        <spam>
-                            Semua
-                        </spam>
-
-                    </ListGroup.Item>
-                    {categories &&
-                        categories.map((value, index) => (
-                            <ListGroup.Item
-                                key={index}
-                                // className="category-aktif"
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => onFilterCategory(value.name)}
-                                active={category === value.name}
-                                disabled={category === value.name}
-                            >
-                                <span>
-                                    {value.name}
-                                </span>
-                            </ListGroup.Item>
-                        ))}
-                </ListGroup> */}
         </Col >
-
 
     )
 }

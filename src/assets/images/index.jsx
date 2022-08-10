@@ -1,3 +1,7 @@
-import dummyImage from './minuman.jpg';
+import dummyImage from './login-bg.jpg';
+import RegisterBg from './register-bg.jpg';
 
-export { dummyImage };
+export {
+    dummyImage,
+    RegisterBg,
+};

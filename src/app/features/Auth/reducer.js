@@ -46,22 +46,4 @@ const authReducer = (state = initState, { type, payload }) => {
     }
 }
 
-
-// const authReducer = (state = authState, action) => {
-
-//     switch (action.type) {
-//         case AuthActionType.REGISTER_SUCCESS:
-//             return {
-//                 isLoggedIn: true,
-//                 user: action.payload,
-//                 token: action.token
-//             }
-//         case AuthActionType.REGISTER_FAIL:
-//             return state
-//         default:
-//             return state;
-//     }
-// }
-
-
 export default authReducer;

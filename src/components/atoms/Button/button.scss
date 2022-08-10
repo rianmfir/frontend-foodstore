@@ -1,0 +1,35 @@
+.button {
+    padding: 12px;
+    font-size: 16px;
+    background-color: rgb(225, 173, 43);
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+}
+
+.food-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    /* identical to box height */
+    text-align: center;
+    color: #000000;
+    padding: 11px 23px;
+    height: 40px;
+    width: 100%;
+    white-space: nowrap;
+    background: #fbd560;
+    border-radius: 40px;
+
+    &:hover {
+        text-decoration: none;
+        background: #fdd55e;
+        color: #fdd55ebd;
+    }
+}

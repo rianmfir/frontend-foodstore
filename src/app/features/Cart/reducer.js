@@ -1,11 +1,7 @@
 import {
     ADD_TO_CART,
     GET_CART,
-    ADD_CART_EXAMPLE,
-    GET_ITEM,
-    GET_CART_DB,
     REMOVE_ITEM,
-    ADD_ITEM,
     CLEAR_ITEM,
 } from "./constants";
 

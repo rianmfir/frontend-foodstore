@@ -1,6 +1,25 @@
+import { CREATE_ORDER, GET_INVOICES } from "./constants";
 
+const productState = {
+    order: [],
+    invoices: ''
+}
 
-const initialState = localStorage.getItem('cart')
-    ? JSON.parse(localStorage.getItem('cart'), { delivery_fee: 15000 })
-    : [];
+const orderReducer = (state = productState, { type, payload }) => {
+    switch (type) {
+        case CREATE_ORDER:
+            return {
+                ...state,
+                data: payload
+            };
+        case GET_INVOICES:
+            return {
+                ...state,
+                invoices: payload
+            };
+        default:
+            return state;
+    }
+}
 
+export default orderReducer;
