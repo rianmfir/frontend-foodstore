@@ -5,43 +5,35 @@
 $secondary: #FF5F00;
 $res: #f7f7f7;
 
-.bg-Navbar {
-    background-color: $res;
-}
-
-.dropdown-toggle {
-    // content: "";
-}
-
-.profile-dropdown {
-    box-shadow: 0px 0px 5px 5px red;
-}
-
 body {
-    background-color: #EAEAEA;
+    background-color: var(--dark-blue);
     font-family: 'Poppins', sans-serif;
     color: #2D2D2D;
     font-size: 15px;
 }
 
-.form-control {
-    width: 600px;
-}
-
-.cursor {
-    cursor: pointer;
-}
-
-.btn-get {
-    font: 600 1rem/1.5rem Poppins, sans-serif;
-    padding: 1rem 2rem;
-    border-radius: 999px;
-    border: 1px solid #ff7468;
-    background-color: #ff7468;
-    transition: 0.3s;
+.bg-Navbar {
+    background-color: $res;
 }
 
 .btn-get:hover {
     background-color: #ff8378;
     border: 1px solid #ff8378;
+}
+
+.nav-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #fdfdfd;
+    border: 1px solid #e8e8e8;
+    position: relative;
+}
+
+.nav-btn.cart {
+    margin-left: 16px;
+}
+
+.nav-btn:hover {
+    cursor: pointer;
 }

@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddresses } from '../../app/features/Address/actions';
 import { clearItem } from '../../app/features/Cart/actions';
-import AddAddress from '../../components/AddAddress';
+import AddAddress from '../../components/User/AddAddress';
 import { Gap } from '../../components/atoms';
 import { formatRupiah, sumPrice } from '../../utils';
 import { dummyImage } from '../../assets/images'
@@ -64,20 +64,13 @@ const Checkout = () => {
         }
 
     }
+    console.log("ORDER ID : ", order)
 
-    let a = sumPrice(cart);
-    let b = owner.data.ongkir;
-    console.log("Total : ", (parseInt(a) + parseInt(b)));
-    console.log(b);
-    // console.log('Address : ', selectedAddress);
-    // console.log('Select : ', select);
-
-    // console.log("Data Owner : ", owner)
-    // console.log("Order : ", order)
 
     return (
 
         <Container>
+            <Gap height={50} />
             <Row>
                 <Col lg="8">
                     <Row className="shadow-lg p-3 mb-4 bg-body rounded">

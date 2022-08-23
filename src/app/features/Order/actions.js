@@ -1,5 +1,12 @@
 import axios from "axios"
-import { CREATE_ORDER, GET_INVOICES } from "./constants";
+import {
+    CLEAR_ORDER,
+    CREATE_ORDER,
+    GET_INVOICES,
+    GET_ORDERS,
+    SET_ORDER_ID,
+    LOADING
+} from "./constants";
 
 export const createOrder = (payload) => {
     return async (dispatch) => {
@@ -26,14 +33,35 @@ export const createOrder = (payload) => {
     }
 }
 
-
-export const getInvoices = (id) => async (dispatch) => {
+export const getOrders = (id) => async (dispatch) => {
     let { token } = localStorage.getItem("auth")
         ? JSON.parse(localStorage.getItem("auth"))
         : {};
 
     await axios
-        .get(`api/invoices/${id}`, {
+        .get(`api/orders`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        })
+        .then((res) => {
+            dispatch({
+                type: GET_ORDERS,
+                payload: res.data,
+            });
+        })
+        .catch(err => {
+            console.log(err.response);
+        })
+};
+
+export const getInvoices = (order_id) => async (dispatch) => {
+    let { token } = localStorage.getItem("auth")
+        ? JSON.parse(localStorage.getItem("auth"))
+        : {};
+    dispatch({ type: LOADING })
+    await axios
+        .get(`api/invoices/${order_id}`, {
             headers: {
                 authorization: `Bearer ${token}`,
             },
@@ -48,3 +76,16 @@ export const getInvoices = (id) => async (dispatch) => {
             console.log(err.response);
         })
 };
+
+export const setOrderId = (id) => {
+    return {
+        type: SET_ORDER_ID,
+        payload: id
+    }
+}
+
+export function clearOrder() {
+    return {
+        type: CLEAR_ORDER
+    }
+}

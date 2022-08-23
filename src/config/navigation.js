@@ -1,42 +1,60 @@
 import React from 'react'
 import { AiOutlineDashboard, AiOutlineUser } from 'react-icons/ai'
 import { CgNotes } from 'react-icons/cg'
-import { FaFileInvoice } from 'react-icons/fa'
+import { RiFileList2Line } from "react-icons/ri";
+import { IoMdLogOut } from 'react-icons/io';
+import { MdOutlineDashboard } from 'react-icons/md';
+import './navMenu.scss';
 
 export const SideBarMenu = {
     user: [
         {
-            label: "Account",
-            icon: <AiOutlineUser strokeWidth='3' size="2em" color='#f9a825' className="me-2" />,
-            pages: '/user/account'
+            label: "Dashboard",
+            icon: <MdOutlineDashboard className='icon' />,
+            pages: "/user/account"
         },
         {
-            label: "Order",
-            icon: <CgNotes strokeWidth='1' size="2em" color='#f9a825' className="me-2" />,
+            label: "Account",
+            icon: <AiOutlineUser className='icon' />,
+            pages: "/user/account"
+        },
+        {
+            label: "Orders",
+            icon: <CgNotes className='icon' />,
             pages: '/user/order'
         },
-        {
-            label: "Invoice",
-            icon: <FaFileInvoice strokeWidth='1' size="2em" color='#f9a825' className="me-2" />,
-            pages: '/user/invoice'
-        }
+
     ],
 
     admin: [
         {
             label: "Dashboard",
-            icon: <AiOutlineDashboard
-                strokeWidth='3'
-                size="2em"
-                color='#f9a825'
-                className="me-2" />,
-            pages: "/user"
+            icon: <MdOutlineDashboard className='icon' />,
+            pages: "/user/account"
         },
         {
-            label: "User",
-            icon: <AiOutlineUser strokeWidth='3' size="2em" color='#f9a825' className="me-2" />,
-            pages: "/register"
-        }
+            label: "Products",
+            icon: <AiOutlineUser className='icon' />,
+            pages: "/admin/products"
+        },
+        {
+            label: "Users",
+            icon: <AiOutlineUser className='icon' />,
+            pages: "/user/cart"
+        },
+        {
+            label: "Transactions",
+            icon: <AiOutlineUser className='icon' />,
+            pages: "/user/cart"
+        },
+    ],
+
+    logout: [
+        {
+            label: "Logout",
+            icon: <IoMdLogOut className='icon' />,
+            pages: "/user/cart"
+        },
     ]
 }
 

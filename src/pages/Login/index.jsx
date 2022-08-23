@@ -24,11 +24,6 @@ const Login = () => {
         ? auth.user?.message
         : ""
 
-    const [err, setErr] = useState(message);
-
-    const tes = auth.user?.message;
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(userLogin(userState));
@@ -47,7 +42,7 @@ const Login = () => {
                 />
             </div>
             <div className="right d-flex flex-column justify-content-center">
-                <Logo />
+                <Logo type="md" />
                 {/* <Gap height={10} /> */}
                 <Form onSubmit={handleSubmit}>
                     <p className='message'>{message}</p>
@@ -57,6 +52,7 @@ const Login = () => {
 
                     <Input
                         label="E-mail"
+                        customType='input'
                         type="teks"
                         placeholder="jhon@example.com"
                         required
@@ -68,6 +64,7 @@ const Login = () => {
                     <Gap height={18} />
                     <Input
                         label="Password"
+                        customType='input'
                         type="password"
                         placeholder="********"
                         required

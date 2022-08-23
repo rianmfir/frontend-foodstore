@@ -1,4 +1,3 @@
-import AddAddress from './AddAddress';
 import Address from './Address';
 import CardProduct from './CardProduct';
 import CartItem from './CartItem';
@@ -8,6 +7,7 @@ import Navigation from './Navigation';
 import SideBar from './SideBar';
 import Tag from './Tag';
 
+
 export {
     CardProduct,
     Navigation,
@@ -16,8 +16,7 @@ export {
     CartItem,
     ListCategories,
     ListTags,
-    Address,
-    AddAddress,
+    Address
 
 };
 export * from './atoms';

@@ -1,4 +1,3 @@
-import './dashboard.css'
 import { useEffect, useState } from "react";
 import { AiOutlineDashboard, AiOutlineUser } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
@@ -12,34 +11,33 @@ import { useDispatch } from 'react-redux';
 import { SideBarMenu } from '../../config/navigation';
 import { SideBar } from '../../components';
 import { Nav } from 'react-bootstrap';
-import { ListProduct } from '../../components/Admin/ListProduct';
 
-import './dashboard.css';
+import './dashboard.scss';
 
 const Dashboard = () => {
 
-    // const auth = JSON.parse(localStorage.getItem('auth'));
-    // const [menu, setMenu] = useState([]);
-    // const [pages, setPages] = useState("");
-    // const dispatch = useDispatch();
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    const [menu, setMenu] = useState([]);
+    const [pages, setPages] = useState("");
+    const dispatch = useDispatch();
 
-    // const role = "user";
+    const role = "user";
 
-    // const sideBar = () => {
-    //     if (role === "admin") {
-    //         return (setMenu(SideBarMenu.admin))
-    //     } else if (role === "user") {
-    //         return (setMenu(SideBarMenu.user)
+    const sideBar = () => {
+        if (role === "admin") {
+            return (setMenu(SideBarMenu.admin))
+        } else if (role === "user") {
+            return (setMenu(SideBarMenu.user)
 
-    //         )
-    //     }
-    // }
+            )
+        }
+    }
 
-    // useEffect(() => {
-    //     sideBar();
-    // }, [])
+    useEffect(() => {
+        sideBar();
+    }, [])
 
-    // console.log(auth)
+    console.log(auth)
 
     return (
         <>
@@ -47,7 +45,7 @@ const Dashboard = () => {
                 <SideBar />
             </Nav>
             <Nav id="main-content" className="content p-5">
-                <ListProduct />
+                <Outlet />
             </Nav>
         </>
 

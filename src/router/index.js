@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Navigation } from "../components";
+import { AdminProducts } from "../components/Admin";
+import { UserOrder } from "../components/User";
 import {
-    Account,
+
     Cart,
     Checkout,
     Dashboard,
@@ -10,7 +12,8 @@ import {
     Home,
     Login,
     Register,
-    Invoices
+    Invoices,
+    Account
 } from "../pages";
 
 const Routing = () => {
@@ -35,20 +38,29 @@ const Routing = () => {
 
                 }
                 <Route
-                    path="/Login"
+                    path="/login"
                     element={
                         user?.role
                             ? <Navigate to="/" replace />
                             : <Login />
                     } />
 
-                <Route path="/Register" element={<Register />} />
+                <Route path="/register" element={<Register />} />
+
                 <Route path="user" element={<Dashboard />}>
                     <Route index element={<Account />} />
                     <Route path="account" element={<Account />} />
-                    <Route path="order" element={<Login />} />
-                    <Route path="invoice" element={<Register />} />
+                    <Route path="order" element={<UserOrder />} />
+                    <Route path="checkout" element={<Checkout />} />
                 </Route>
+
+                <Route path="admin" element={<Dashboard />}>
+                    <Route index element={<AdminProducts />} />
+                    <Route path="products" element={<AdminProducts />} />
+                    {/* <Route path="cart" element={<Home />} />
+                    <Route path="checkout" element={<Checkout />} /> */}
+                </Route>
+
                 <Route path='*' element={<Error />} />
             </Routes>
 

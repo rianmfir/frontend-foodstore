@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { addToCart, removeItem } from '../../app/features/Cart/actions';
 import { formatRupiah, sumPrice } from '../../utils';
-import { BackPage } from '../atoms';
+import { BackPage, Gap } from '../atoms';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
@@ -70,6 +70,7 @@ const CartItem = () => {
     return (
 
         <Container>
+            <Gap height={50} />
             {
                 cart.length === 0
                     ? <div>

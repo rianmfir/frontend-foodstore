@@ -5,7 +5,8 @@ import {
     SET_PAGE,
     SET_CATEGORY,
     SET_TAG,
-    SET_KEYWORD
+    SET_KEYWORD,
+    CREATE_PRODUCT,
 } from "./constants";
 
 
@@ -23,6 +24,11 @@ const productState = {
 
 const productReducer = (state = productState, { type, payload }) => {
     switch (type) {
+        case CREATE_PRODUCT:
+            return {
+                ...state,
+                data: payload
+            };
         case GET_PRODUCT:
             return {
                 ...state,

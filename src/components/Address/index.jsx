@@ -7,11 +7,12 @@ import { getAddresses } from '../../app/features/Address/actions';
 
 const Address = () => {
     const dispatch = useDispatch();
-    const [address, setAddress] = useState([]);
+    // const [address, setAddress] = useState([]);
 
-    const data = useSelector(state => state.address);
+    const { address } = useSelector(state => state.address);
 
-    console.log("Address : ", data)
+    // console.log("Address : ", data)
+
 
     useEffect(() => {
         dispatch(getAddresses())

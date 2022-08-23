@@ -18,120 +18,158 @@ import DataTable from "react-data-table-component";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link, Route, Routes, useRouteMatch } from "react-router-dom"
-import { getAddresses } from "../../app/features/Address/actions";
-import { AddAddress, Address } from "../../components";
-import Home from "../Home";
-import Login from "../Login";
-import { FaTrash } from "react-icons/fa";
+
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { GrEdit } from "react-icons/gr";
 
 
-import './account.css';
+import './account.scss';
+import { AddAddress, UpdateAddress } from "../../components/User";
+import { clearItem, deleteAddress, getAddresses } from "../../app/features/Address/actions";
+import Swal from 'sweetalert2';
+
 
 
 const Account = () => {
-    // const match = useRouteMatch();
+
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth.user);
-    const address = useSelector(state => state.address.data);
+    const { address, data, loading } = useSelector(state => state.address);
 
+    const [formAddress, setFormAddress] = useState("");
+    const [dataAddress, setDataAddress] = useState("");
+
+    const [show, setShow] = useState(false);
+
+    const toggleShow = () => {
+        setShow(false);
+        dispatch(clearItem());
+    }
+
+    const handleShowAdd = () => {
+        setFormAddress("add");
+        setShow(true);
+    }
+
+    const handleShowUpdate = (data) => {
+        setFormAddress("update")
+        setShow(true);
+        setDataAddress(data);
+    }
+
+    const handleDelete = (id) => {
+
+        // Handle If Error Belum ??????
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your data has been deleted.',
+                    'success'
+                )
+                dispatch(deleteAddress(id));
+            }
+        })
+    };
 
     useEffect(() => {
         dispatch(getAddresses())
 
-    }, [dispatch])
+    }, [dispatch, data])
 
-    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => {
-        setShow(true);
-    }
 
     return (
+        // <Container className="py-4">
+        <>
+            <h3 className="color-primary fw-bold mb-5">Account</h3>
+            <Card>
+                <Card.Body>
+                    <Row className="justify-content-center">
+                        <Tabs justify variant="tabs" defaultActiveKey="profile" className="mb-1 p-0">
+                            <Tab eventKey="profile" title="Profile">
 
-        <Container className="py-4">
-            <Row className="justify-content-center">
-                <Tabs justify variant="tabs" defaultActiviteKey="profile" className="mb-1 p-0">
-                    <Tab eventKey="profile" title="Profile">
+                                <DataTable
+                                    columns={[
+                                        { selector: row => row.label },
+                                        { selector: row => row.value },
+                                    ]}
+                                    data={[
+                                        { label: 'Nama', value: auth.user.full_name },
+                                        { label: 'Email', value: auth.user.email },
+                                    ]}
+                                />
 
-                        <DataTable
-                            columns={[
-                                { selector: row => row.label },
-                                { selector: row => row.value },
-                            ]}
-                            data={[
-                                { label: 'Nama', value: auth.user.full_name },
-                                { label: 'Email', value: auth.user.email },
-                            ]}
-                        />
+                            </Tab>
 
-                    </Tab>
-                    <Tab eventKey="address" title="Address">
-                        <div>
-                            <Link to="#">
-                                <Button onClick={handleShow} variant="success" size="sm">
-                                    Tambah Alamat
-                                </Button>
-                            </Link>
-                            <DataTable
-                                columns={[
-                                    {
-                                        name: 'Name',
-                                        selector: row => row.nama
-                                    },
-                                    {
-                                        name: 'Detail',
-                                        cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi} `
-                                    },
-                                    {
-                                        name: 'Action',
-                                        button: true,
-                                        ignoreRowClick: true,
-                                        allowOverflow: true,
-                                        cell: () => (
-                                            <div className="justify-content-between">
+                            <Tab eventKey="address" title="Address">
+                                <div>
+                                    <Link to="#">
+                                        <Button onClick={handleShowAdd} variant="success" size="sm">
+                                            Tambah Alamat
+                                        </Button>
+                                    </Link>
+                                    <DataTable
+                                        columns={[
+                                            {
+                                                name: 'Nama',
+                                                selector: row => row.nama
+                                            },
+                                            {
+                                                name: 'Detail',
+                                                cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi} `
+                                            },
+                                            {
+                                                name: 'Aksi',
+                                                button: true,
+                                                ignoreRowClick: true,
+                                                allowOverflow: true,
+                                                cell: row => (
+                                                    <div className="justify-content-between">
 
-                                                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
-                                                    <Button onClick={handleShow} variant='warning' className='me-2'>
-                                                        <span><GrEdit /></span>
-                                                    </Button>
-                                                </OverlayTrigger>
+                                                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
+                                                            <Button onClick={() => handleShowUpdate(row)} variant='warning' className='me-2'>
+                                                                <span><FaEdit color="white" size={22} /></span>
+                                                            </Button>
+                                                        </OverlayTrigger>
 
-                                                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Hapus</Tooltip>}>
-                                                    <Button onClick={''} variant='danger'>
-                                                        <span><FaTrash /></span>
-                                                    </Button>
-                                                </OverlayTrigger>
-                                            </div>
-                                        )
-                                    }
-                                ]}
-                                data={address}
-                            />
-                        </div>
-                    </Tab>
-                </Tabs>
-            </Row>
+                                                        <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Hapus</Tooltip>}>
+                                                            <Button onClick={() => handleDelete(row._id)} variant='danger'>
+                                                                <span><FaTrash /></span>
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                )
+                                            }
+                                        ]}
+                                        data={address}
+                                    />
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </Row>
+                </Card.Body>
+            </Card>
 
-            <Modal show={show} fullscreen={'xl-down'} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Tambah Alamat</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <AddAddress />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-        </Container >
+            <>{
+                formAddress === "add"
+                    ?
+                    <AddAddress show={show} toggleShow={toggleShow} />
+                    :
+                    <UpdateAddress show={show} toggleShow={toggleShow} dataAddress={dataAddress} />
+            }
+            </>
+        </>
+        // </Container >
     )
 }
 

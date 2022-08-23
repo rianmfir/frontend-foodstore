@@ -6,8 +6,42 @@ import {
     SET_PAGE,
     SET_CATEGORY,
     SET_TAG,
-    SET_KEYWORD
+    SET_KEYWORD,
+    CREATE_PRODUCT
 } from "./constants";
+
+export const createProduct = (data) => {
+
+    let payload = new FormData();
+    payload.append("name", data.name);
+    payload.append("price", data.price);
+    payload.append("category", data.category);
+    payload.append("tags", data.tags);
+    payload.append("image", data.image);
+    // for (let i = 0; i < form.tags.length; i++) {
+    //   data.append("tags", form.tags[i]);
+    // }
+
+    return async (dispatch) => {
+        const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
+        await axios
+            .post('/api/products', payload, {
+                headers: {
+                    "content-type": "multipart/form-data",
+                    authorization: `Bearer ${token}`,
+                },
+            })
+            .then(res => {
+                dispatch({
+                    type: CREATE_PRODUCT,
+                    payload: res.data
+                })
+            })
+            .catch(err => {
+                console.log(err.message);
+            })
+    }
+}
 
 export const getProducts = () => {
 
@@ -34,6 +68,7 @@ export const getProducts = () => {
                 dispatch({
                     type: GET_PRODUCT,
                     payload: data
+                    // payload: data.sort((a, b) => a.name.localeCompare(b.name))
                 })
             })
             .catch(err => {
@@ -102,3 +137,4 @@ export const setKeyword = (keyword) => ({
         keyword: keyword
     }
 })
+

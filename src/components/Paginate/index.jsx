@@ -21,7 +21,7 @@ const Paginate = ({ activePage, total, onPageChange }) => {
 
     return (
 
-        <Pagination>
+        <Pagination >
             <Pagination.First disabled={activePage === 1} onClick={() => handleClick(1)} />
             <Pagination.Prev
                 disabled={activePage === 1}

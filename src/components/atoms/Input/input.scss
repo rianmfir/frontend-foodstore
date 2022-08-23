@@ -1,5 +1,7 @@
 .input-wrapper {
-    .form-control {
+
+    .form-control,
+    .form-select {
         border-radius: 12px !important;
 
         &:focus {

@@ -7,7 +7,9 @@ import {
     Nav, Navbar,
     Button,
     Dropdown,
-    Form
+    Form,
+    NavDropdown,
+    Offcanvas
 } from 'react-bootstrap';
 
 import { useEffect, useState } from "react";
@@ -15,12 +17,13 @@ import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdShoppingBasket, MdShoppingCart } from 'react-icons/md'
-import { CgNotes } from 'react-icons/cg'
+import { CgNotes, CgShoppingCart } from 'react-icons/cg'
 import { IoMdLogOut } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import { userLogout } from '../../app/features/Auth/actions';
 import { setKeyword } from '../../app/features/Product/actions';
+import Logo from '../atoms/Logo';
 
 const Navigation = () => {
 
@@ -34,6 +37,9 @@ const Navigation = () => {
     const [key, setKey] = useState('');
 
     const auth = JSON.parse(localStorage.getItem('auth'));
+
+    const windowResolution = window.innerWidth;
+    console.log("Resolution : ", windowResolution)
 
     const totalItemCart = items => {
         return items.reduce((acc, curr) => acc + curr.qty, 0);
@@ -50,7 +56,7 @@ const Navigation = () => {
         ];
         setNavLinks(navs);
         setQty(totalItemCart(cart));
-    }, [cart, keyword])
+    }, [cart, keyword, windowResolution])
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -67,17 +73,20 @@ const Navigation = () => {
 
     return (
         <>
-            {/* {console.log("ini Isi Auth : ", tes)} */}
-            <Navbar sticky="top" className="p-3 shadow-sm rounded opacity-100 bg-Navbar" >
+            <Navbar
+                collapseOnSelect expand="sm"
+                sticky="top"
+                className="p-3 shadow-sm rounded opacity-100 bg-Navbar" >
                 <Container>
 
                     <Navbar.Brand as={Link} to={"/"} className="d-flex">
-                        <MdShoppingBasket size={30} className="me-1 text-success" />
-                        <strong><span style={{ color: '#f9a825' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong>
+                        {/* <MdShoppingBasket size={30} className="me-1 text-success" />
+                        <strong><span style={{ color: '#f9a825' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong> */}
+                        <Logo type={windowResolution < 768 ? "md" : ""} />
                     </Navbar.Brand>
 
-                    <Nav className="w-50 ms-auto border">
-                        <InputGroup >
+                    <Nav className="w-50 ms-auto">
+                        <InputGroup className=''>
                             <Form.Control
                                 type="search"
                                 placeholder='ex. Pizza, Martabak, Lemon Tea, etc...'
@@ -93,34 +102,63 @@ const Navigation = () => {
                                 }}
 
                             />
-                            <Button variant="outline-success" onClick={(e) => handleSearch(e)}>
+                            <Button
+                                className="position-absolute end-0"
+                                variant="outline-success"
+                                onClick={(e) => handleSearch(e)}
+                                style={{ zIndex: 4 }}
+                            >
                                 <FaSearch size="1rem" />
                             </Button>
                         </InputGroup>
                     </Nav>
 
-                    {/* Basket */}
-                    <>
-                        <Nav className='ms-auto'>
-                            <Link to="/cart" >
-                                <MdShoppingCart size="2em" color='black' />
-                                {
 
-                                    Qty ?
-                                        <span className="position-absolute translate-middle badge rounded-pill bg-danger">
-                                            {Qty}
-                                        </span>
-                                        :
-                                        ""
-                                }
-                            </Link>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        {/* Basket */}
+                        <Nav className='ms-auto '>
+                            <NavLink to="/cart" className="">
+                                <div class="d-flex justify-content-start align-items-center">
+
+                                    <button class="nav-btn cart" onclick="toggleRightSidebar()">
+                                        <CgShoppingCart size="2em" />
+                                        {
+
+                                            Qty ?
+                                                <span
+                                                    className="position-absolute translate-middle badge rounded-pill"
+                                                    style={{ backgroundColor: "#fbd560" }}>
+                                                    {Qty}
+                                                </span>
+                                                :
+                                                ""
+                                        }
+                                    </button>
+                                </div>
+
+                                {/* <div className="nav-btn cart">
+                                    <CgShoppingCart size="2em" color='black' />
+                                    {
+
+                                        Qty ?
+                                            <span
+                                                className="position-absolute translate-middle badge rounded-pill"
+                                                style={{ backgroundColor: "#fbd560" }}>
+                                                {Qty}
+                                            </span>
+                                            :
+                                            ""
+                                    }
+                                </div> */}
+                            </NavLink>
 
                         </Nav>
                         {/* Akhir Basket */}
-                    </>
 
-                    {/* Profile/Account */}
-                    <>
+
+                        {/* Profile/Account */}
+
                         {
                             auth && auth.user?.full_name ?
                                 // auth ?
@@ -162,15 +200,15 @@ const Navigation = () => {
                                     <Link to='/login' style={{ color: 'dark', fontSize: '1.5em' }} className="link-dark text-decoration-none">
                                         Login
                                     </Link>
-                                    {/* <span style={{ border: '1px #d1caca solid', height: '2rem' }} className="my-auto"></span> */}
+                                    <span style={{ border: '1px #d1caca solid', height: '2rem' }} className="my-auto"></span>
                                     <Button as={Link} to="/register" className="px-3 ms-2 btn-outline-success" style={{ backgroundColor: "#9eeb47f7" }}>
                                         <span className="fw-bold " style={{ color: "white", fontSize: '1.3em' }}>Sign Up</span>
                                     </Button>
                                 </Nav>
                         }
-                    </>
-                    {/* Akhir Profile/Account */}
 
+                        {/* Akhir Profile/Account */}
+                    </Navbar.Collapse>
                 </Container>
             </Navbar>
             <div>

@@ -1,12 +1,13 @@
 import { Container, Col, Row } from 'react-bootstrap'
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Alert, CardProduct, ListCategories, ListTags, Tag } from "../../components";
+import { Alert, CardProduct, Gap, ListCategories, ListTags, Tag } from "../../components";
 import { getCategories, getProducts, getTags, setCategory, setPage } from '../../app/features/Product/actions';
 import { getCartItem } from '../../app/api/cart';
 import Paginate from '../../components/Paginate';
 import { useCallback } from 'react';
 import { BsFilter } from 'react-icons/bs';
+import { clearOrder, setOrderId } from '../../app/features/Order/actions';
 
 const Home = () => {
 
@@ -33,32 +34,22 @@ const Home = () => {
 
     // console.log("Reduce Product : ", test)
 
-    const getProduct = useCallback(() => {
+    // const getProduct = useCallback(() => {
+
+    // }, [dispatch]);
+
+    useEffect(() => {
         dispatch(getProducts());
         dispatch(getCategories());
         dispatch(getTags());
         dispatch(getCartItem(token, userID));
-    }, [dispatch]);
-
-    useEffect(() => {
-        getProduct();
-        // dispatch(getProducts());
-        // dispatch(getTags());
-        // dispatch(getCartItem(token, userID));
-        // dispatch(getAddresses(token));
-        // }, [dispatch]);
-    }, [currentPage, category, tag, keyword]);
-
-    let tanggalWaktu = "2022-03-24T10:01:18.716Z";
-    let date = new Date(tanggalWaktu);
-
-    console.log("Tanggal : ", date.getDate());
-    console.log("Bulan : ", date.getMonth());
-    console.log("Tahun : ", date.getFullYear());
+        dispatch(clearOrder());
+    }, [dispatch, currentPage, category, tag, keyword]);
 
     return (
         <Container fluid style={{ backgroundColor: "#f9f9f9" }}>
-            <Row className="justify-content-center pt-5" >
+            <Gap height={50} />
+            <Row className="justify-content-center" >
                 <Col md={2} >
                     <div>
 
