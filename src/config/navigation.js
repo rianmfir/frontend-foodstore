@@ -11,7 +11,7 @@ export const SideBarMenu = {
         {
             label: "Dashboard",
             icon: <MdOutlineDashboard className='icon' />,
-            pages: "/user/account"
+            pages: "/user/dashboard"
         },
         {
             label: "Account",
@@ -30,7 +30,7 @@ export const SideBarMenu = {
         {
             label: "Dashboard",
             icon: <MdOutlineDashboard className='icon' />,
-            pages: "/user/account"
+            pages: "/admin/dashboard"
         },
         {
             label: "Products",
@@ -40,13 +40,13 @@ export const SideBarMenu = {
         {
             label: "Users",
             icon: <AiOutlineUser className='icon' />,
-            pages: "/user/cart"
+            pages: "/admin/users"
         },
-        {
-            label: "Transactions",
-            icon: <AiOutlineUser className='icon' />,
-            pages: "/user/cart"
-        },
+        // {
+        //     label: "Transactions",
+        //     icon: <AiOutlineUser className='icon' />,
+        //     pages: "/user/cart"
+        // },
     ],
 
     logout: [

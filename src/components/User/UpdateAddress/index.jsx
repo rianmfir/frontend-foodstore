@@ -179,7 +179,7 @@ const UpdateAddress = ({ dataAddress, show, toggleShow }) => {
         <>
             <Modal show={show} fullscreen={'xl-down'} onHide={toggleShow} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Tambah Alamat</Modal.Title>
+                    <Modal.Title>Update Alamat</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 

@@ -18,26 +18,17 @@ import {
 
 export const createAddress = (data) => {
 
-    let payload = new FormData();
-    payload.append("detail", data.detail);
-    payload.append("provinsi", data.provinsi.name);
-    payload.append("kabupaten", data.kabupaten.name);
-    payload.append("kecamatan", data.kecamatan.name);
-    payload.append("kelurahan", data.kelurahan.name);
-    payload.append("nama", data.name);
-
-
     return async (dispatch) => {
         const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
 
         await axios
             .post('/api/delivery-addresses', new URLSearchParams({
-                nama: data.name,
+                nama: data.nama,
                 detail: data.detail,
-                provinsi: data.provinsi.name,
-                kabupaten: data.kabupaten.name,
-                kecamatan: data.kecamatan.name,
-                kelurahan: data.kelurahan.name
+                provinsi: data.provinsi,
+                kabupaten: data.kabupaten,
+                kecamatan: data.kecamatan,
+                kelurahan: data.kelurahan
             }),
                 {
                     headers: {
@@ -46,8 +37,6 @@ export const createAddress = (data) => {
                     },
                 })
             .then(res => {
-                console.log("Ini Isi Payload ", payload.get('provinsi'))
-                console.log("Ini Isi Data ", data)
                 dispatch({
                     type: SUCCESS
                 })

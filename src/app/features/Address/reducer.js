@@ -107,15 +107,15 @@ const addressReducer = (state = productState, { type, payload, formValue, formDa
                 kabupaten: [],
                 kecamatan: [],
                 kelurahan: [],
-                // form:
-                // {
-                //     nama: "",
-                //     provinsi: "",
-                //     kabupaten: "",
-                //     kecamatan: "",
-                //     kelurahan: "",
-                //     detail: ""
-                // },
+                form:
+                {
+                    nama: "",
+                    provinsi: "",
+                    kabupaten: "",
+                    kecamatan: "",
+                    kelurahan: "",
+                    detail: ""
+                },
                 loading: false,
                 error: false
             }

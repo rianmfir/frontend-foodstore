@@ -5,18 +5,19 @@ import {
     FormControl,
     InputGroup,
     Nav, Navbar,
-    Button,
     Dropdown,
     Form,
+    Button,
     NavDropdown,
     Offcanvas
 } from 'react-bootstrap';
+// import { Button } from '../atoms'
 
 import { useEffect, useState } from "react";
 
 import { FaSearch } from "react-icons/fa";
 import { BsPersonCircle } from "react-icons/bs";
-import { MdShoppingBasket, MdShoppingCart } from 'react-icons/md'
+import { MdClose, MdOutlineDashboard, MdShoppingBasket, MdShoppingCart } from 'react-icons/md'
 import { CgNotes, CgShoppingCart } from 'react-icons/cg'
 import { IoMdLogOut } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,16 +25,19 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import { userLogout } from '../../app/features/Auth/actions';
 import { setKeyword } from '../../app/features/Product/actions';
 import Logo from '../atoms/Logo';
+import { AiOutlineUser } from 'react-icons/ai';
+import { totalItemCart } from '../../utils';
+import { MenuBar, ShoppingCart } from '../atoms';
 
 const Navigation = () => {
 
     const dispatch = useDispatch();
 
-    let cart = useSelector((state) => state.cart);
+    // let cart = useSelector((state) => state.cart);
     const { keyword } = useSelector(state => state.products)
 
-    const [navLinks, setNavLinks] = useState([]);
-    const [Qty, setQty] = useState();
+    // const [navLinks, setNavLinks] = useState([]);
+    // const [Qty, setQty] = useState();
     const [key, setKey] = useState('');
 
     const auth = JSON.parse(localStorage.getItem('auth'));
@@ -41,22 +45,32 @@ const Navigation = () => {
     const windowResolution = window.innerWidth;
     console.log("Resolution : ", windowResolution)
 
-    const totalItemCart = items => {
-        return items.reduce((acc, curr) => acc + curr.qty, 0);
-    }
 
-    useEffect(() => {
-        const navs = [
-            {
-                name: "My Account",
-                path: "/user/account",
-                icon: <BsPersonCircle strokeWidth='0.5' size="1em" color='#f9a825' className="me-1 " />
+    // useEffect(() => {
+    //     const navs = [
+    //         {
+    //             name: "Dashboard",
+    //             path: "/user/dashboard",
+    //             icon: <MdOutlineDashboard strokeWidth='0.5' size="1em" color='#fbd560' className="me-1 " />
 
-            }
-        ];
-        setNavLinks(navs);
-        setQty(totalItemCart(cart));
-    }, [cart, keyword, windowResolution])
+    //         },
+    //         {
+    //             name: "Account",
+    //             path: "/user/account",
+    //             icon: <AiOutlineUser strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
+
+    //         },
+    //         {
+    //             name: "Orders",
+    //             path: "/user/order",
+    //             icon: <CgNotes strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
+
+    //         }
+    //     ];
+    //     setNavLinks(navs);
+    //     setQty(totalItemCart(cart));
+    //     }, [cart, keyword, windowResolution])
+    // }, [cart])
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -85,12 +99,13 @@ const Navigation = () => {
                         <Logo type={windowResolution < 768 ? "md" : ""} />
                     </Navbar.Brand>
 
-                    <Nav className="w-50 ms-auto">
-                        <InputGroup className=''>
+
+                    <Form className="search-bar">
+                        <InputGroup>
                             <Form.Control
+                                className='me-3'
                                 type="search"
-                                placeholder='ex. Pizza, Martabak, Lemon Tea, etc...'
-                                aria-label="Search"
+                                placeholder='ex. pizza, martabak, lemon tea'
                                 onChange={(e) => {
                                     const keywords = e.target.value;
                                     setKey({ ...key, keywords });
@@ -100,28 +115,24 @@ const Navigation = () => {
                                         handleSearch(e);
                                     }
                                 }}
-
                             />
                             <Button
-                                className="position-absolute end-0"
-                                variant="outline-success"
                                 onClick={(e) => handleSearch(e)}
-                                style={{ zIndex: 4 }}
                             >
-                                <FaSearch size="1rem" />
+                                <FaSearch size="24px" color='white' />
                             </Button>
                         </InputGroup>
-                    </Nav>
-
+                    </Form>
 
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         {/* Basket */}
-                        <Nav className='ms-auto '>
+                        <ShoppingCart />
+                        {/* <Nav className='ms-auto '>
                             <NavLink to="/cart" className="">
-                                <div class="d-flex justify-content-start align-items-center">
+                                <div className="d-flex justify-content-start align-items-center">
 
-                                    <button class="nav-btn cart" onclick="toggleRightSidebar()">
+                                    <button className="nav-btn cart">
                                         <CgShoppingCart size="2em" />
                                         {
 
@@ -136,64 +147,55 @@ const Navigation = () => {
                                         }
                                     </button>
                                 </div>
-
-                                {/* <div className="nav-btn cart">
-                                    <CgShoppingCart size="2em" color='black' />
-                                    {
-
-                                        Qty ?
-                                            <span
-                                                className="position-absolute translate-middle badge rounded-pill"
-                                                style={{ backgroundColor: "#fbd560" }}>
-                                                {Qty}
-                                            </span>
-                                            :
-                                            ""
-                                    }
-                                </div> */}
                             </NavLink>
 
-                        </Nav>
+                        </Nav> */}
                         {/* Akhir Basket */}
 
 
                         {/* Profile/Account */}
 
+
                         {
                             auth && auth.user?.full_name ?
+                                <MenuBar />
                                 // auth ?
-                                <Dropdown className="ms-auto">
-                                    <Dropdown.Toggle id="dropdown-basic"
-                                        style={{
-                                            backgroundColor: '#f9a825'
-                                        }}>
-                                        <span style={{ fontSize: '16px' }}> Hi, {auth.user.full_name}  </span>
-                                    </Dropdown.Toggle>
+                                // <Dropdown
+                                //     className="ms-auto"
+                                //     show={show}
+                                //     onMouseEnter={showDropdown}
+                                //     onMouseLeave={hideDropdown}
+                                // >
+                                //     <Dropdown.Toggle id="dropdown-basic" variant="none"
+                                //         style={{
+                                //             boxShadow: 'none',
+                                //             outline: 'none',
+                                //         }}>
+                                //         <span style={{ fontSize: '16px' }} className="mx-auto">
+                                //             <span className='fw-bolder'>Hi, {auth.user.full_name}</span>
+                                //             <BsPersonCircle size="2rem" color='fbd560' className='ms-2' />
+                                //         </span>
+                                //     </Dropdown.Toggle>
 
-                                    <Dropdown.Menu align={"end"} className="shadow mt-2 rounded">
-                                        {
-                                            navLinks.map((nav, i) => {
-                                                return (
-                                                    <Dropdown.Item as={Link} to={nav.path} key={i}>
-                                                        {nav.icon}
-                                                        <span style={{ fontSize: '14px' }}> {nav.name} </span>
-                                                    </Dropdown.Item>
-                                                )
-                                            })
+                                //     <Dropdown.Menu align={"end"} className="shadow rounded-3">
+                                //         {
+                                //             navLinks.map((nav, i) => {
+                                //                 return (
+                                //                     <Dropdown.Item as={Link} to={nav.path} key={i}>
+                                //                         {nav.icon}
+                                //                         <span style={{ fontSize: '14px' }}> {nav.name} </span>
+                                //                     </Dropdown.Item>
+                                //                 )
+                                //             })
+                                //         }
 
-                                        }
-                                        <Dropdown.Item href="#">
-                                            <CgNotes strokeWidth='1' size="1em" color='#f9a825' className="me-1 " />
-                                            <span style={{ fontSize: '14px' }}> My Orders </span>
-                                        </Dropdown.Item>
-
-                                        <Dropdown.Divider />
-                                        <Dropdown.Item href="#" onClick={handleLogout}>
-                                            <IoMdLogOut strokeWidth='5' size="1em" color='#f9a825' className="me-1 " />
-                                            <span style={{ fontSize: '14px' }}> Logout </span>
-                                        </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                //         < hr />
+                                //         <Dropdown.Item as={Link} to={"/logout"}>
+                                //             <IoMdLogOut strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1" />
+                                //             <span style={{ fontSize: '14px' }}> logout </span>
+                                //         </Dropdown.Item>
+                                //     </Dropdown.Menu>
+                                // </Dropdown>
 
                                 :
                                 <Nav className='ms-auto'>

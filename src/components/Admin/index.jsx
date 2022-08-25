@@ -1,7 +1,13 @@
-import AdminProducts from "./Products";
-import AddProduct from "./AddProduct";
+import AdminProducts from "./AdminProducts";
+import FormCategory from "./FormCategory";
+import FormProduct from "./FormProduct";
+import ListCategories from "./ListCategories";
+import ListProduct from "./ListProduct";
 
 export {
     AdminProducts,
-    AddProduct
+    FormProduct,
+    FormCategory,
+    ListProduct,
+    ListCategories
 };

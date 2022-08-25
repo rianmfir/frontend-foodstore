@@ -4,7 +4,7 @@ import { Form, Col, Container, Row, Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { createAddress, getKabupaten, getKecamatan, getKelurahan, getProvinsi } from '../../../app/features/Address/actions';
+import { createAddress, getKabupaten, getKecamatan, getKelurahan, getProvinsi, setFormAddress } from '../../../app/features/Address/actions';
 import { Button, Input } from '../../atoms';
 
 const AddAddress = ({ show, toggleShow }) => {
@@ -20,7 +20,14 @@ const AddAddress = ({ show, toggleShow }) => {
 
     const [wilayah, setWilayah] = useState({})
 
-    const { data, provinsi, kabupaten, kecamatan, kelurahan, error } = useSelector(state => state.address)
+    const {
+        data,
+        provinsi,
+        kabupaten,
+        kecamatan,
+        kelurahan,
+        error,
+        form } = useSelector(state => state.address)
 
     const handleWilayah = () => {
         dispatch(getProvinsi());
@@ -53,7 +60,8 @@ const AddAddress = ({ show, toggleShow }) => {
             console.log("Data : ", data)
 
             if (!error) {
-                dispatch(createAddress(wilayah));
+                dispatch(createAddress(form));
+                // console.log("FORM : ", form)
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -64,7 +72,7 @@ const AddAddress = ({ show, toggleShow }) => {
                 toggleShow();
             }
 
-            setWilayah({});
+            // setWilayah({});
 
             // console.log("Isi Payload : ", formData)
         } catch (err) {
@@ -79,14 +87,68 @@ const AddAddress = ({ show, toggleShow }) => {
 
     }
 
-    useEffect(() => {
-        handleWilayah()
-    }, [dispatch, wilayah.provinsi?.id, wilayah.kabupaten?.id, wilayah.kecamatan?.id, error])
+    // useEffect(() => {
 
-    console.log("Provinsi ", provinsi);
-    console.log("Kota/Kabupaten ", kabupaten);
-    console.log("Kecamatan ", kecamatan);
-    console.log("Kelurahan ", kelurahan);
+    //     dispatch(setFormAddress("nama", dataAddress.nama))
+    //     dispatch(setFormAddress("provinsi", dataAddress.provinsi))
+    //     dispatch(setFormAddress("kabupaten", dataAddress.kabupaten))
+    //     dispatch(setFormAddress("kecamatan", dataAddress.kecamatan))
+    //     dispatch(setFormAddress("kelurahan", dataAddress.kelurahan))
+    //     dispatch(setFormAddress("detail", dataAddress.detail))
+    //     console.log("DI HIT")
+    //     // dispatch(setForm(dataAddress))
+    // }, [dispatch, dataAddress, dataAddress._id, error])
+
+    useEffect(() => {
+        dispatch(getProvinsi());
+    }, [dispatch, form])
+
+    useEffect(() => {
+        if (provinsi.length) {
+            provinsi.filter(val => {
+                return val.name === form.provinsi && dispatch(getKabupaten(val.id))
+            }
+            )
+        } else {
+            console.log("Data Provinsi Belum Ada")
+        }
+
+    }, [dispatch, provinsi, form, form.provinsi])
+
+    useEffect(() => {
+        if (kabupaten.length) {
+            kabupaten.filter(val => {
+                return val.name === form.kabupaten && dispatch(getKecamatan(val.id))
+            }
+            )
+        } else {
+            console.log("Data Kabupaten Belum Ada")
+        }
+
+    }, [dispatch, form.kabupaten, form, kabupaten])
+
+    useEffect(() => {
+        if (kecamatan.length) {
+            kecamatan.filter(val => {
+                return val.name === form.kecamatan && dispatch(getKelurahan(val.id))
+            }
+            )
+        } else {
+            console.log("Data Kecamatan Belum Ada")
+        }
+
+    }, [dispatch, kecamatan, form, form.kecamatan])
+
+    console.table(form);
+
+    // useEffect(() => {
+    //     handleWilayah()
+    // }, [dispatch, wilayah.provinsi?.id, wilayah.kabupaten?.id, wilayah.kecamatan?.id, error])
+
+    // console.log("Provinsi ", provinsi);
+    // console.log("Kota/Kabupaten ", kabupaten);
+    // console.log("Kecamatan ", kecamatan);
+    // console.log("Kelurahan ", kelurahan);
 
     return (
         <>
@@ -97,7 +159,7 @@ const AddAddress = ({ show, toggleShow }) => {
                 <Modal.Body>
 
                     <Row className="mb-3">
-                        <Col md={6} className="d-flex flex-column gap-3">
+                        {/* <Col md={6} className="d-flex flex-column gap-3">
                             <Input
                                 label={"Nama"}
                                 customType='input'
@@ -125,10 +187,81 @@ const AddAddress = ({ show, toggleShow }) => {
                                     // setDetail(detail)
                                 }}
                             />
+                        </Col> */}
+                        <Col md={6} className="d-flex flex-column gap-3">
+
+                            <Input
+                                label={"Nama"}
+                                customType='input'
+                                type="teks"
+                                placeholder="ex. Rumah"
+                                required
+                                value={form.nama}
+                                // onChange={(e) => ()}
+
+                                onChange={(e) => {
+                                    // const nama = e.target.value;
+                                    // setWilayah({ ...wilayah, ...{ nama } });
+                                    dispatch(setFormAddress("nama", e.target.value));
+                                    // setNama(name)
+                                }}
+                            />
+                            <Input
+                                label={"Masukan Detail Alamat"}
+                                customType='input'
+                                placeholder="ex. Jl.Negara No. 2"
+                                type="text"
+                                as="textarea"
+                                required
+                                value={form.detail}
+                                onChange={(e) => {
+                                    // const detail = e.target.value;
+                                    // setWilayah({ ...wilayah, ...{ detail } });
+                                    // setDetail(detail)
+                                    dispatch(setFormAddress("detail", e.target.value));
+                                }}
+                            />
                         </Col>
                         <Col md={6} className="d-flex flex-column gap-3">
 
                             <Input
+                                customType='optionInput'
+                                label={'Provinsi'}
+                                options={provinsi}
+                                value={form.provinsi}
+                                onChange={(e) => {
+                                    dispatch(setFormAddress("provinsi", e.target.value))
+                                }}
+                            />
+                            <Input
+                                customType='optionInput'
+                                label={'Kabupaten'}
+                                options={kabupaten}
+                                value={form.kabupaten}
+                                onChange={(e) => {
+                                    dispatch(setFormAddress("kabupaten", e.target.value))
+                                }}
+                            />
+                            <Input
+                                customType='optionInput'
+                                label={'Kecamatan'}
+                                options={kecamatan}
+                                value={form.kecamatan}
+                                onChange={(e) => {
+                                    dispatch(setFormAddress("kecamatan", e.target.value))
+                                }}
+                            />
+                            <Input
+                                customType='optionInput'
+                                label={'Kelurahan'}
+                                options={kelurahan}
+                                value={form.kelurahan}
+                                onChange={(e) => {
+                                    dispatch(setFormAddress("kelurahan", e.target.value))
+                                }}
+                            />
+
+                            {/* <Input
                                 label={"Provinsi"}
                                 customType='optionInput'
                                 options={provinsi}
@@ -174,7 +307,7 @@ const AddAddress = ({ show, toggleShow }) => {
                                     setWilayah({ ...wilayah, ...{ kelurahan } });
                                     // setKelurahan(kelurahan);
                                 }}
-                            />
+                            /> */}
 
                         </Col>
                     </Row>

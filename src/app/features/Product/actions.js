@@ -7,7 +7,15 @@ import {
     SET_CATEGORY,
     SET_TAG,
     SET_KEYWORD,
-    CREATE_PRODUCT
+    CREATE_PRODUCT,
+    LOADING,
+    SUCCESS,
+    CLEAR_ITEM,
+    SET_FORM_PRODUCT,
+    SET_IMAGE_PREVIEW,
+    CREATE_CATEGORY,
+    ERROR,
+    SET_FORM_DEFAULT
 } from "./constants";
 
 export const createProduct = (data) => {
@@ -32,12 +40,24 @@ export const createProduct = (data) => {
                 },
             })
             .then(res => {
+                const { data } = res;
+
+                dispatch({
+                    type: SUCCESS
+                })
                 dispatch({
                     type: CREATE_PRODUCT,
-                    payload: res.data
+                    payload: data
                 })
+                dispatch({
+                    type: SET_FORM_DEFAULT
+                })
+
             })
             .catch(err => {
+                dispatch({
+                    type: ERROR
+                })
                 console.log(err.message);
             })
     }
@@ -61,14 +81,18 @@ export const getProducts = () => {
             q: keyword
         }
 
+        dispatch({ type: LOADING })
+
         await axios.get('/api/products', { params })
             .then(res => {
                 let { data } = res
                 // console.log(data);
                 dispatch({
+                    type: SUCCESS
+                })
+                dispatch({
                     type: GET_PRODUCT,
                     payload: data
-                    // payload: data.sort((a, b) => a.name.localeCompare(b.name))
                 })
             })
             .catch(err => {
@@ -76,19 +100,32 @@ export const getProducts = () => {
             })
     }
 }
-export const getTags = () => {
+
+export const createCategory = (data) => {
+
     return async (dispatch) => {
-        await axios.get('/api/tags')
+        const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
+        await axios
+            .post('/api/categories', data, {
+                headers: {
+                    "content-type": "multipart/form-data",
+                    authorization: `Bearer ${token}`,
+                },
+            })
             .then(res => {
-                let { data } = res
-                // console.log(data);
                 dispatch({
-                    type: GET_TAGS,
-                    payload: data
+                    type: SUCCESS
+                })
+                dispatch({
+                    type: CREATE_CATEGORY,
+                    payload: res.data
                 })
             })
             .catch(err => {
-                console.log(err.response);
+                dispatch({
+                    type: ERROR
+                })
+                console.log(err.message);
             })
     }
 }
@@ -101,6 +138,23 @@ export const getCategories = () => {
                 // console.log(data);
                 dispatch({
                     type: GET_CATEGORIES,
+                    payload: data
+                })
+            })
+            .catch(err => {
+                console.log(err.response);
+            })
+    }
+}
+
+export const getTags = () => {
+    return async (dispatch) => {
+        await axios.get('/api/tags')
+            .then(res => {
+                let { data } = res
+                // console.log(data);
+                dispatch({
+                    type: GET_TAGS,
                     payload: data
                 })
             })
@@ -138,3 +192,33 @@ export const setKeyword = (keyword) => ({
     }
 })
 
+export const loading = () => ({
+    type: LOADING
+})
+
+export const success = () => ({
+    type: SUCCESS
+})
+
+export const setFormDefault = () => {
+    return {
+        type: SET_FORM_PRODUCT
+    };
+};
+
+export const setForm = (formValue, formData) => {
+    return {
+        type: SET_FORM_PRODUCT,
+        formValue,
+        formData
+    };
+};
+
+export const setImagePreview = (image) => ({
+    type: SET_IMAGE_PREVIEW,
+    payload: image
+})
+
+export const clearItem = () => ({
+    type: CLEAR_ITEM
+})

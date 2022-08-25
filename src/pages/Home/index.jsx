@@ -32,12 +32,6 @@ const Home = () => {
 
     let userID = auth !== null ? auth.user._id : auth;
 
-    // console.log("Reduce Product : ", test)
-
-    // const getProduct = useCallback(() => {
-
-    // }, [dispatch]);
-
     useEffect(() => {
         dispatch(getProducts());
         dispatch(getCategories());

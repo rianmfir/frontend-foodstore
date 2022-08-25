@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { addToCart, removeItem } from '../../app/features/Cart/actions';
 import { formatRupiah, sumPrice } from '../../utils';
-import { BackPage, Gap } from '../atoms';
+import { BackPage, Gap, Button as CheckOutButton } from '../atoms';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
@@ -86,12 +86,11 @@ const CartItem = () => {
                         // grow={100}
                         />
                         <div className="mt-5 float-end">
-                            <Button
-                                variant="primary" size="md"
+                            <CheckOutButton
                                 onClick={() => navigate('/cart/checkout')}
-                            >
-                                Checkout <BsArrowRight size={'1.5em'} />
-                            </Button>
+                                title={"Checkout"}
+                                icon={<BsArrowRight size={'1.5em'} />}
+                            />
                         </div>
                     </>
             }

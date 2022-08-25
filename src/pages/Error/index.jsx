@@ -24,7 +24,7 @@ const Error = () => {
                 <div className="d-flex justify-content-center">
                     <Button
                         as={Link}
-                        to={role === 'admin' ? '/account/dashboard' : '/'}
+                        to={role === 'admin' ? '/admin/dashboard' : '/'}
                         variant=''
                         className="btn btn-back d-inline-flex text-white">
                         Back to {backToName}

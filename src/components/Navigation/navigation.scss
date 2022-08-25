@@ -6,7 +6,7 @@ $secondary: #FF5F00;
 $res: #f7f7f7;
 
 body {
-    background-color: var(--dark-blue);
+    // background-color: var(--dark-blue);
     font-family: 'Poppins', sans-serif;
     color: #2D2D2D;
     font-size: 15px;
@@ -16,24 +16,106 @@ body {
     background-color: $res;
 }
 
-.btn-get:hover {
-    background-color: #ff8378;
-    border: 1px solid #ff8378;
+// .nav-btn {
+//     width: 50px;
+//     height: 50px;
+//     border-radius: 50%;
+//     background: #fdfdfd;
+//     border: 1px solid #e8e8e8;
+//     position: relative;
+// }
+
+// .nav-btn.cart {
+//     margin-left: 16px;
+// }
+
+// .nav-btn:hover {
+//     cursor: pointer;
+// }
+
+// .dropdown-toggle::after {
+//     color: #fbd560;
+// }
+
+.search-bar {
+    width: 100%;
+    max-width: 700px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 5px 5px;
+
+    // backdrop-filter: blur(4px) saturate(180%);
+    // border: 1px solid black;
+    &:hover {
+        border-color: #e8b988c9 !important;
+        box-shadow: 0 0 0 0.1rem #fbd560 !important;
+    }
+
+    .form-control {
+        background: transparent;
+        flex: 1;
+        border: 0;
+        outline: none;
+        // padding: 10px 6px;
+        font-size: 16px;
+        color: #e3ac52;
+
+        &:focus {
+
+            border-color: none !important;
+            box-shadow: none !important;
+        }
+
+    }
+
+    button {
+        border: none;
+        border-radius: 0;
+        width: 50px;
+        height: 50px;
+        background: #fbd560;
+        border-radius: 5px;
+
+        &:hover {
+            cursor: pointer;
+            background: #fbd460e1;
+        }
+
+        // &:focus {
+        //     // border-color: #e8b988c9 !important;
+        //     // box-shadow: 0 0 0 0.1rem #fbd560 !important;
+        //     border-color: none !important;
+        //     box-shadow: none !important;
+        // }
+    }
 }
 
-.nav-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #fdfdfd;
-    border: 1px solid #e8e8e8;
-    position: relative;
+::placeholder {
+    color: #e8e8e8;
+    font-weight: 500;
 }
 
-.nav-btn.cart {
-    margin-left: 16px;
-}
 
-.nav-btn:hover {
-    cursor: pointer;
-}
+
+
+
+
+
+// button:focus {}
+
+// .btn-search {
+//     background: rgba(255, 255, 255, 0.5) !important;
+//     outline: none !important;
+//     border: none !important;
+//     position: absolute;
+
+//     &:hover {
+//         cursor: pointer;
+//     }
+
+//     &:focus {
+//         box-shadow: none !important;
+//     }
+// }

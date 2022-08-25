@@ -19,23 +19,14 @@ const SideBar = () => {
     const { user, admin } = SideBarMenu;
     const [menu, setMenu] = useState(role === admin ? admin : user);
 
-    // const sideBar = () => {
-    //     if (role === "admin") {
-    //         return (setMenu(admin))
-    //     } else if (role === "user") {
-    //         return (setMenu(admin)
-    //         )
-    //     }
-    // }
-    // const tes = () => {
-    //     return (
-    //         menu.map(e => console.log("Label : ", e.label))
-    //     )
-    // }
-    // useEffect(() => {
-    //     sideBar();
-    //     tes();
-    // }, [menu, sideBar()])
+    useEffect(() => {
+        if (role === "admin") {
+            setMenu(admin)
+        }
+        if (role === "user") {
+            setMenu(user)
+        }
+    }, [menu])
 
     // console.log("Admin : ", menu);
     return (

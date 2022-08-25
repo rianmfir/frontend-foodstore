@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import { useEffect } from 'react';
-import { Col, Button, Image, OverlayTrigger, Row, Tooltip, Modal } from 'react-bootstrap';
+import { Col, Button, Image, OverlayTrigger, Row, Tooltip, Modal, Card } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import { FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { GrEdit } from 'react-icons/gr';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ import { Gap } from '../../atoms';
 import CustomButton from '../../atoms/Button';
 import Paginate from '../../Paginate';
 import './adminProduct.scss';
-import AddProduct from '../AddProduct';
 
 const AdminProducts = () => {
 
@@ -35,24 +34,36 @@ const AdminProducts = () => {
     } = useSelector(state => state.products);
 
 
-
-    const [show, setShow] = useState(false);
-    const toggleShow = () => setShow(show => !show);
-
     const [modalForm, setModalForm] = useState('');
+    const [show, setShow] = useState(false);
+
     const handleClose = () => setShow(false);
 
     const handleShow = (children) => {
         setShow(true);
         setModalForm(children)
     }
-
-    const handleTambah = () => {
-        handleShow(<AddProduct />)
+    const toggleShow = () => {
+        setShow(false);
+        // dispatch(clearItem());
     }
 
-    const handleEdit = () => {
-        handleShow(<AddProduct />)
+    const handleShowAdd = () => {
+        // setFormAddress("add");
+        setShow(true);
+    }
+
+
+    const handleAdd = () => {
+        // handleShow(<AddProduct />)
+    }
+
+    const handleShowUpdate = () => {
+        // handleShow(<AddProduct />)
+    }
+
+    const handleDelete = () => {
+        // handleShow(<AddProduct />)
     }
 
     const showModal = (children) => {
@@ -66,13 +77,6 @@ const AdminProducts = () => {
                     {children}
                 </Modal.Body>
 
-                {/* <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <CustomButton onClick={handleClose} title={'Simpan'} />
-
-                </Modal.Footer> */}
             </Modal>
         )
     }
@@ -83,16 +87,9 @@ const AdminProducts = () => {
 
     }, [dispatch, currentPage, modalForm])
 
-    let no = 1;
     const columns = [
         {
-            name: <span className='fw-bolder'>No</span>,
-            selector: row => no
-
-        },
-        {
             name: <span className='ms-5 fw-bolder'>Gambar</span>,
-
             selector: row =>
 
                 <Image
@@ -101,7 +98,6 @@ const AdminProducts = () => {
                     className="my-2 ms-4"
                     roundedCircle
                 />
-
         },
         {
             name: <span className='fw-bolder'>Produk</span>,
@@ -121,67 +117,91 @@ const AdminProducts = () => {
                 {
                     row.tags.map((e, i) => {
                         return (
-                            <div >
-                                <span key={i}>{e.name}</span>
+                            <div key={i}>
+                                <span >{e.name}</span>
                                 <br />
                             </div>
                         )
                     })
                 }
-
             </div>),
         },
         {
             name: <span className='ms-4 fw-bolder'>Aksi</span>,
-            // button: true,
-            // allowOverflow: true,
-            cell: () => (
-                <div className="">
+            cell: row => (
+                <div className="justify-content-between">
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
-                        <Button onClick={handleEdit} variant='warning' className='me-2'>
-                            <span><GrEdit /></span>
+                        <Button onClick={() => handleShowUpdate(row)} variant='warning' className='me-2'>
+                            <span><FaEdit color="white" size={22} /></span>
                         </Button>
                     </OverlayTrigger>
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Hapus</Tooltip>}>
-                        <Button onClick={handleEdit} variant='danger' >
+                        <Button onClick={() => handleDelete(row._id)} variant='danger'>
                             <span><FaTrash /></span>
                         </Button>
                     </OverlayTrigger>
                 </div>
             )
         }
-
     ]
 
-
     return (
-        <div id="body" >
-            <h3 className="color-primary fw-bold mb-5">Products</h3>
-            <Col md={2}>
-                <CustomButton title={'Tambah Produk'} width="50" onClick={handleTambah} />
-            </Col>
-            <Gap height={30} />
-            <DataTable
-                data={product}
-                columns={columns}
-            />
-            <Gap height={15} />
-            <div className='d-flex justify-content-center'>
-                <Paginate
-                    activePage={currentPage}
-                    total={Math.ceil(totalItems / perPage)}
-                    onPageChange={(page) => dispatch(setPage(page))}
-                    coba={tags}
-                />
-            </div>
+        <>
+            <Card>
+                <Card.Header>
+                    <div className="d-flex flex-row justify-content-between">
+                        <h3 className="color-primary fw-bold mb-5">Products</h3>
+                        <Col md={2}>
+                            <CustomButton title={'Tambah Produk'} width="50" onClick={handleAdd} />
+                        </Col>
+                    </div>
+                </Card.Header>
+                <Card.Body>
+                    <DataTable
+                        data={product}
+                        columns={columns}
+                    />
+                    {/* <Gap height={15} /> */}
+                    <div className='d-flex justify-content-center'>
+                        <Paginate
+                            activePage={currentPage}
+                            total={Math.ceil(totalItems / perPage)}
+                            onPageChange={(page) => dispatch(setPage(page))}
+                            coba={tags}
+                        />
+                    </div>
+                </Card.Body>
 
-            <>
-                {/* {showModal(modalForm)} */}
-                <AddProduct show={show} toggleShow={toggleShow} />
-            </>
-        </div>
+            </Card>
+
+            {/* {showModal(modalForm)} */}
+            {/* <AddProduct show={show} toggleShow={toggleShow} /> */}
+        </>
+        // <div id="body" >
+        //     <h3 className="color-primary fw-bold mb-5">Products</h3>
+        //     <Col md={2}>
+        //         <CustomButton title={'Tambah Produk'} width="50" onClick={handleTambah} />
+        //     </Col>
+        //     <Gap height={30} />
+        //     <DataTable
+        //         data={product}
+        //         columns={columns}
+        //     />
+        //     <Gap height={15} />
+        //     <div className='d-flex justify-content-center'>
+        //         <Paginate
+        //             activePage={currentPage}
+        //             total={Math.ceil(totalItems / perPage)}
+        //             onPageChange={(page) => dispatch(setPage(page))}
+        //             coba={tags}
+        //         />
+        //     </div>
+
+
+        //     </>
+        // </div>
     )
 }
 

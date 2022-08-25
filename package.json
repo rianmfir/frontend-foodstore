@@ -23,6 +23,7 @@
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.26",
     "usehooks-ts": "^2.4.2",
+    "validatorjs": "^3.22.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

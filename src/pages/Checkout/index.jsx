@@ -21,7 +21,7 @@ const Checkout = () => {
     const baseURL = axios.defaults.baseURL;
     const navigate = useNavigate();
 
-    const address = useSelector(state => state.address.data);
+    const { address } = useSelector(state => state.address);
     const cart = useSelector(state => state.cart);
     const order = useSelector(state => state.order);
 
