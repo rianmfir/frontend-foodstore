@@ -1,5 +1,5 @@
 import {
-    CLEAR_ITEM,
+    CLEAR_ADDRESS,
     CREATE_ADDRESS,
     DELETE_ADDRESS,
     ERROR,
@@ -10,7 +10,8 @@ import {
     GET_PROVINSI,
     LOADING, SUCCESS,
     UPDATE_ADDRESS,
-    SET_FORM_ADDRESS
+    SET_FORM_ADDRESS,
+    SET_FORM_DEFAULT
 } from "./constants";
 
 const productState = {
@@ -42,6 +43,24 @@ const addressReducer = (state = productState, { type, payload, formValue, formDa
                     ...state.form,
                     [formValue]: formData,
                 },
+            };
+        case SET_FORM_DEFAULT:
+            return {
+                ...state,
+                kabupaten: [],
+                kecamatan: [],
+                kelurahan: [],
+                form:
+                {
+                    nama: "",
+                    provinsi: "",
+                    kabupaten: "",
+                    kecamatan: "",
+                    kelurahan: "",
+                    detail: ""
+                },
+                loading: false,
+                error: false
             };
         case CREATE_ADDRESS:
             return {
@@ -100,7 +119,7 @@ const addressReducer = (state = productState, { type, payload, formValue, formDa
                 error: true,
                 data: payload
             };
-        case CLEAR_ITEM:
+        case CLEAR_ADDRESS:
             return {
                 ...state,
                 data: "",

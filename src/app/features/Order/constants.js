@@ -1,5 +1,6 @@
 export const CREATE_ORDER = "CREATE_ORDER";
 export const GET_ORDERS = "GET_ORDERS";
+export const GET_TOTAL_SELL = "GET_TOTAL_SELL";
 
 export const GET_INVOICES = "GET_INVOICES";
 

@@ -12,6 +12,7 @@ export const GET_KELURAHAN = "GGET_KELURAHAN ";
 export const SUCCESS = "SUCCESS";
 export const LOADING = "LOADING";
 export const ERROR = "ERROR";
-export const CLEAR_ITEM = "CLEAR_ITEM";
+export const CLEAR_ADDRESS = "CLEAR_ADDRESS";
 
 export const SET_FORM_ADDRESS = "SET_FORM_ADDRESS";
+export const SET_FORM_DEFAULT = "SET_FORM_DEFAULT";

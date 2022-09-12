@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pagination } from 'react-bootstrap';
 import './paginate.scss';
 
@@ -8,18 +8,18 @@ const Paginate = ({ activePage, total, onPageChange }) => {
         onPageChange(page);
     }
 
-    console.log('Current Page : ', activePage);
-
     let items = [];
     for (let i = 1; i <= total; i++) {
-        items = [
-            ...items,
-            <Pagination.Item
-                className="mx-1"
-                onClick={() => handleClick(i)} key={i}
-                active={i === activePage}>
-                {i}
-            </Pagination.Item>]
+        items =
+            [
+                ...items,
+                <Pagination.Item
+                    className='mx-1 paginationStyle link-danger'
+                    onClick={() => handleClick(i)} key={i}
+                    active={i === activePage}>
+                    {i}
+                </Pagination.Item>
+            ]
     }
 
     return (

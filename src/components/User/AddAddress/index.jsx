@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { Form, Col, Container, Row, Modal } from 'react-bootstrap';
+import { Form, Col, Container, Row, Modal, FloatingLabel } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -87,18 +87,6 @@ const AddAddress = ({ show, toggleShow }) => {
 
     }
 
-    // useEffect(() => {
-
-    //     dispatch(setFormAddress("nama", dataAddress.nama))
-    //     dispatch(setFormAddress("provinsi", dataAddress.provinsi))
-    //     dispatch(setFormAddress("kabupaten", dataAddress.kabupaten))
-    //     dispatch(setFormAddress("kecamatan", dataAddress.kecamatan))
-    //     dispatch(setFormAddress("kelurahan", dataAddress.kelurahan))
-    //     dispatch(setFormAddress("detail", dataAddress.detail))
-    //     console.log("DI HIT")
-    //     // dispatch(setForm(dataAddress))
-    // }, [dispatch, dataAddress, dataAddress._id, error])
-
     useEffect(() => {
         dispatch(getProvinsi());
     }, [dispatch, form])
@@ -141,15 +129,6 @@ const AddAddress = ({ show, toggleShow }) => {
 
     console.table(form);
 
-    // useEffect(() => {
-    //     handleWilayah()
-    // }, [dispatch, wilayah.provinsi?.id, wilayah.kabupaten?.id, wilayah.kecamatan?.id, error])
-
-    // console.log("Provinsi ", provinsi);
-    // console.log("Kota/Kabupaten ", kabupaten);
-    // console.log("Kecamatan ", kecamatan);
-    // console.log("Kelurahan ", kelurahan);
-
     return (
         <>
             <Modal show={show} fullscreen={'xl-down'} onHide={toggleShow} size="lg">
@@ -159,37 +138,7 @@ const AddAddress = ({ show, toggleShow }) => {
                 <Modal.Body>
 
                     <Row className="mb-3">
-                        {/* <Col md={6} className="d-flex flex-column gap-3">
-                            <Input
-                                label={"Nama"}
-                                customType='input'
-                                type="teks"
-                                placeholder="ex. Rumah"
-                                required
-                                isInvalid={data.fields?.nama}
-
-                                onChange={(e) => {
-                                    const name = e.target.value;
-                                    setWilayah({ ...wilayah, ...{ name } });
-                                    // setNama(name)
-                                }}
-                            />
-                            <Input
-                                label={"Masukan Detail Alamat"}
-                                customType='input'
-                                placeholder="ex. Jl.Negara No. 2"
-                                type="text"
-                                as="textarea"
-                                required
-                                onChange={(e) => {
-                                    const detail = e.target.value;
-                                    setWilayah({ ...wilayah, ...{ detail } });
-                                    // setDetail(detail)
-                                }}
-                            />
-                        </Col> */}
-                        <Col md={6} className="d-flex flex-column gap-3">
-
+                        <Col md={6} className="d-flex flex-column gap-3 mb-3">
                             <Input
                                 label={"Nama"}
                                 customType='input'
@@ -197,13 +146,8 @@ const AddAddress = ({ show, toggleShow }) => {
                                 placeholder="ex. Rumah"
                                 required
                                 value={form.nama}
-                                // onChange={(e) => ()}
-
                                 onChange={(e) => {
-                                    // const nama = e.target.value;
-                                    // setWilayah({ ...wilayah, ...{ nama } });
                                     dispatch(setFormAddress("nama", e.target.value));
-                                    // setNama(name)
                                 }}
                             />
                             <Input
@@ -212,15 +156,11 @@ const AddAddress = ({ show, toggleShow }) => {
                                 placeholder="ex. Jl.Negara No. 2"
                                 type="text"
                                 as="textarea"
-                                required
+                                style={{ height: '13rem' }}
                                 value={form.detail}
                                 onChange={(e) => {
-                                    // const detail = e.target.value;
-                                    // setWilayah({ ...wilayah, ...{ detail } });
-                                    // setDetail(detail)
                                     dispatch(setFormAddress("detail", e.target.value));
-                                }}
-                            />
+                                }} />
                         </Col>
                         <Col md={6} className="d-flex flex-column gap-3">
 
@@ -228,7 +168,7 @@ const AddAddress = ({ show, toggleShow }) => {
                                 customType='optionInput'
                                 label={'Provinsi'}
                                 options={provinsi}
-                                value={form.provinsi}
+                                value={form?.provinsi}
                                 onChange={(e) => {
                                     dispatch(setFormAddress("provinsi", e.target.value))
                                 }}
@@ -237,7 +177,7 @@ const AddAddress = ({ show, toggleShow }) => {
                                 customType='optionInput'
                                 label={'Kabupaten'}
                                 options={kabupaten}
-                                value={form.kabupaten}
+                                value={form?.kabupaten}
                                 onChange={(e) => {
                                     dispatch(setFormAddress("kabupaten", e.target.value))
                                 }}
@@ -246,7 +186,7 @@ const AddAddress = ({ show, toggleShow }) => {
                                 customType='optionInput'
                                 label={'Kecamatan'}
                                 options={kecamatan}
-                                value={form.kecamatan}
+                                value={form?.kecamatan}
                                 onChange={(e) => {
                                     dispatch(setFormAddress("kecamatan", e.target.value))
                                 }}
@@ -255,7 +195,7 @@ const AddAddress = ({ show, toggleShow }) => {
                                 customType='optionInput'
                                 label={'Kelurahan'}
                                 options={kelurahan}
-                                value={form.kelurahan}
+                                value={form?.kelurahan}
                                 onChange={(e) => {
                                     dispatch(setFormAddress("kelurahan", e.target.value))
                                 }}

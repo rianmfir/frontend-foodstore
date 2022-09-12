@@ -5,6 +5,7 @@ import BackPage from "./BackPage";
 import Logo from "./Logo";
 import MenuBar from "./MenuBar";
 import ShoppingCart from "./ShoppingCart";
+import DashboardCard from "./DashboardCard";
 
 export {
     Input,
@@ -13,5 +14,6 @@ export {
     BackPage,
     Logo,
     MenuBar,
-    ShoppingCart
+    ShoppingCart,
+    DashboardCard
 };

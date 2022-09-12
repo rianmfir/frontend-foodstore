@@ -1,41 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-// $primary:#f9a825;
-// $primary:#B20600;
-$secondary: #FF5F00;
-$res: #f7f7f7;
-
 body {
-    // background-color: var(--dark-blue);
     font-family: 'Poppins', sans-serif;
     color: #2D2D2D;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .bg-Navbar {
-    background-color: $res;
+    background-color: #f7f7f7;
 }
-
-// .nav-btn {
-//     width: 50px;
-//     height: 50px;
-//     border-radius: 50%;
-//     background: #fdfdfd;
-//     border: 1px solid #e8e8e8;
-//     position: relative;
-// }
-
-// .nav-btn.cart {
-//     margin-left: 16px;
-// }
-
-// .nav-btn:hover {
-//     cursor: pointer;
-// }
-
-// .dropdown-toggle::after {
-//     color: #fbd560;
-// }
 
 .search-bar {
     width: 100%;
@@ -46,8 +19,6 @@ body {
     border-radius: 5px;
     padding: 5px 5px;
 
-    // backdrop-filter: blur(4px) saturate(180%);
-    // border: 1px solid black;
     &:hover {
         border-color: #e8b988c9 !important;
         box-shadow: 0 0 0 0.1rem #fbd560 !important;
@@ -58,12 +29,10 @@ body {
         flex: 1;
         border: 0;
         outline: none;
-        // padding: 10px 6px;
         font-size: 16px;
         color: #e3ac52;
 
         &:focus {
-
             border-color: none !important;
             box-shadow: none !important;
         }
@@ -83,12 +52,12 @@ body {
             background: #fbd460e1;
         }
 
-        // &:focus {
-        //     // border-color: #e8b988c9 !important;
-        //     // box-shadow: 0 0 0 0.1rem #fbd560 !important;
-        //     border-color: none !important;
-        //     box-shadow: none !important;
-        // }
+        &:active,
+        &:focus {
+            background: #fbd460e1;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2) !important;
+            ;
+        }
     }
 }
 
@@ -97,25 +66,8 @@ body {
     font-weight: 500;
 }
 
-
-
-
-
-
-
-// button:focus {}
-
-// .btn-search {
-//     background: rgba(255, 255, 255, 0.5) !important;
-//     outline: none !important;
-//     border: none !important;
-//     position: absolute;
-
-//     &:hover {
-//         cursor: pointer;
-//     }
-
-//     &:focus {
-//         box-shadow: none !important;
-//     }
-// }
+@media (max-width: 767px) {
+    .search-bar {
+        width: 70%;
+    }
+}

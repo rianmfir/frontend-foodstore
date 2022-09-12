@@ -1,0 +1,12 @@
+.breadcrumb {
+
+    .breadcrumb-item,
+    a {
+        color: var(--dark-grey) !important;
+
+        &.active {
+            color: var(--dark-orange) !important;
+            font-weight: 600;
+        }
+    }
+}

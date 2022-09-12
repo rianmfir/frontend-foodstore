@@ -1,6 +1,6 @@
 import axios from "axios";
 import {
-    CLEAR_ITEM,
+    CLEAR_ADDRESS,
     CREATE_ADDRESS,
     DELETE_ADDRESS,
     ERROR,
@@ -13,7 +13,8 @@ import {
     SUCCESS,
     UPDATE_ADDRESS,
     SET_FORM,
-    SET_FORM_ADDRESS
+    SET_FORM_ADDRESS,
+    SET_FORM_DEFAULT
 } from "./constants"
 
 export const createAddress = (data) => {
@@ -45,7 +46,7 @@ export const createAddress = (data) => {
                     payload: res.data
                 })
                 dispatch({
-                    type: CLEAR_ITEM
+                    type: SET_FORM_DEFAULT
                 })
             })
             .catch(err => {
@@ -114,7 +115,7 @@ export const updateAddress = (id, data) => {
                     payload: res.data
                 })
                 dispatch({
-                    type: CLEAR_ITEM
+                    type: CLEAR_ADDRESS
                 })
             })
             .catch(err => {
@@ -134,7 +135,7 @@ export const getProvinsi = () => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
         .then(res => {
-            console.log("Daftar Provinsi : ", res.data)
+            // console.log("Daftar Provinsi : ", res.data)
             dispatch({
                 type: GET_PROVINSI,
                 payload: res.data
@@ -150,7 +151,7 @@ export const getKabupaten = (id) => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
         .then(res => {
-            console.log("Daftar Kota/Kabupaten : ", res.data)
+            // console.log("Daftar Kota/Kabupaten : ", res.data)
             dispatch({
                 type: GET_KABUPATEN,
                 payload: res.data
@@ -164,7 +165,7 @@ export const getKecamatan = (id) => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
         .then(res => {
-            console.log("Daftar Kecamatan : ", res.data)
+            // console.log("Daftar Kecamatan : ", res.data)
             dispatch({
                 type: GET_KECAMATAN,
                 payload: res.data
@@ -216,7 +217,7 @@ export const deleteAddress = (id) => async (dispatch) => {
 
 export const clearItem = () => {
     return {
-        type: CLEAR_ITEM
+        type: CLEAR_ADDRESS
     }
 }
 
@@ -226,5 +227,11 @@ export const setFormAddress = (formValue, formData) => {
         type: SET_FORM_ADDRESS,
         formValue,
         formData
+    };
+};
+
+export const setFormDefault = () => {
+    return {
+        type: SET_FORM_DEFAULT
     };
 };

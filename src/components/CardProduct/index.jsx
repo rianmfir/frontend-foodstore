@@ -1,6 +1,4 @@
 // import { dummyImmage } from '../../assets/images';
-import Tag from '../Tag';
-import './cardProduct.scss';
 import { Col, Image, Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -9,20 +7,32 @@ import { addToCart } from '../../app/features/Cart/actions';
 import './cardProduct.scss';
 import { Button } from '../atoms';
 import { formatRupiah } from '../../utils';
+import { useNavigate } from 'react-router-dom';
+import './cardProduct.scss';
 
 
 const CardProduct = ({ products }) => {
 
     const baseURL = axios.defaults.baseURL;
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleAddToCart = (event) => {
+        if (localStorage.getItem('auth')) {
+            dispatch(addToCart(event))
+        } else {
+            navigate('/login')
+        }
+    }
     return (
         <>
-            <Row>
+            <Row >
                 {
-                    products.map((item, index) => {
+                    products?.map((item, index) => {
                         return (
-                            <Col xs="6" md="4" lg="3" key={index}>
-                                <div className="food-card d-flex justify-content-center align-items-center flex-column">
+                            <Col lg="3" md="4" sm="6" xs="12" key={index}>
+                                <div className="food-card d-flex justify-content-center align-items-center flex-column mx-auto ">
                                     <div className="food-img">
                                         <Image src={`${baseURL}images/products/${item.image_url}`} alt="" roundedCircle />
                                     </div>
@@ -32,7 +42,7 @@ const CardProduct = ({ products }) => {
 
                                     <Button
                                         title={"Add to Cart"}
-                                        onClick={() => dispatch(addToCart(item))}
+                                        onClick={() => handleAddToCart(item)}
                                     />
                                 </div>
                             </Col>

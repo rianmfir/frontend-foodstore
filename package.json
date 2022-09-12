@@ -18,12 +18,11 @@
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
+    "react-select": "^5.4.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.26",
-    "usehooks-ts": "^2.4.2",
-    "validatorjs": "^3.22.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

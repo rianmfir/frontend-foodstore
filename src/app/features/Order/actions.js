@@ -5,7 +5,8 @@ import {
     GET_INVOICES,
     GET_ORDERS,
     SET_ORDER_ID,
-    LOADING
+    LOADING,
+    GET_TOTAL_SELL
 } from "./constants";
 
 export const createOrder = (payload) => {
@@ -33,7 +34,7 @@ export const createOrder = (payload) => {
     }
 }
 
-export const getOrders = (id) => async (dispatch) => {
+export const getOrders = () => async (dispatch) => {
     let { token } = localStorage.getItem("auth")
         ? JSON.parse(localStorage.getItem("auth"))
         : {};
@@ -55,6 +56,26 @@ export const getOrders = (id) => async (dispatch) => {
         })
 };
 
+export const getTotalSell = () => async (dispatch) => {
+    let { token } = localStorage.getItem("auth")
+        ? JSON.parse(localStorage.getItem("auth"))
+        : {};
+    await axios
+        .get(`/api/sells`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        })
+        .then((res) => {
+            dispatch({
+                type: GET_TOTAL_SELL,
+                payload: res.data,
+            });
+        })
+        .catch(err => {
+            console.log(err.response);
+        })
+};
 export const getInvoices = (order_id) => async (dispatch) => {
     let { token } = localStorage.getItem("auth")
         ? JSON.parse(localStorage.getItem("auth"))

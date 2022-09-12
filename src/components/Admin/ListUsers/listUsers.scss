@@ -1,0 +1,31 @@
+.Online {
+    margin-left: 16px;
+
+    &::before {
+        position: absolute;
+        content: ".";
+        top: 19px;
+        left: 16px;
+        color: transparent;
+        background: rgb(0, 255, 0);
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+    }
+}
+
+.Offline {
+    margin-left: 16px;
+
+    &::before {
+        position: absolute;
+        content: ".";
+        top: 19px;
+        left: 16px;
+        color: transparent;
+        background: rgb(255, 38, 0);
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+    }
+}

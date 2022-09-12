@@ -1,20 +1,36 @@
 import axios from 'axios';
-import React from 'react'
-import { Button, Container, Image } from 'react-bootstrap';
+import React, { useEffect } from 'react'
+import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { BsArrowRight } from 'react-icons/bs';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { addToCart, removeItem } from '../../app/features/Cart/actions';
-import { formatRupiah, sumPrice } from '../../utils';
+import { addToCart, getCartItems, removeItem, saveCarts } from '../../app/features/Cart/actions';
+import { formatRupiah, sumPrice, totalItemCart } from '../../utils';
 import { BackPage, Gap, Button as CheckOutButton } from '../atoms';
+import BreadCrumb from '../BreadCrumb';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
     const cart = useSelector(state => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(getCartItems())
+        console.log('GET CART DIPERBAHARUI');
+
+    }, [dispatch])
+
+    useEffect(() => {
+        saveCarts(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        console.log('CART BERUBAH');
+
+    }, [totalItemCart(cart)])
+
+
 
     const handlePlus = (item) => {
         // console.log("Ditambah");
@@ -67,34 +83,44 @@ const CartItem = () => {
         },
     ]
 
+    const breadcrumb = [
+        { label: 'Home', path: '/' },
+        { label: 'Cart', path: 'cart' },
+    ];
+
     return (
 
-        <Container>
-            <Gap height={50} />
-            {
-                cart.length === 0
-                    ? <div>
+        <div style={{ minHeight: '85vh', backgroundColor: "#f9f9f9" }} >
+            <Container >
+                <Gap height={30} />
+                <Col md={9}>
+                    <BreadCrumb items={breadcrumb} />
+                </Col>
+                {
+                    cart.length === 0
+                        ? <div>
 
-                        <BackPage paragraph={"Keranjang Anda kosong"} title={"Kembali"} to={"/"} />
-                    </div>
-                    :
-                    <>
-                        <DataTable
-                            title={`Subtotal: ${formatRupiah(sumPrice(cart))}`}
-                            columns={columns}
-                            data={cart}
-                        // grow={100}
-                        />
-                        <div className="mt-5 float-end">
-                            <CheckOutButton
-                                onClick={() => navigate('/cart/checkout')}
-                                title={"Checkout"}
-                                icon={<BsArrowRight size={'1.5em'} />}
-                            />
+                            <BackPage paragraph={"Keranjang Anda kosong"} title={"Kembali"} to={"/"} />
                         </div>
-                    </>
-            }
-        </Container>
+                        :
+                        <>
+                            <DataTable
+                                title={`Subtotal: ${formatRupiah(sumPrice(cart))}`}
+                                columns={columns}
+                                data={cart}
+                            // grow={100}
+                            />
+                            <div className="mt-5 float-end">
+                                <CheckOutButton
+                                    onClick={() => navigate('/checkout')}
+                                    title={"Checkout"}
+                                    icon={<BsArrowRight size={'1.5em'} />}
+                                />
+                            </div>
+                        </>
+                }
+            </Container>
+        </div>
     )
 }
 

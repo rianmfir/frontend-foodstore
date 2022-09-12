@@ -3,6 +3,7 @@ import {
     GET_CART,
     REMOVE_ITEM,
     CLEAR_ITEM,
+    SAVE_CART,
 } from "./constants";
 
 
@@ -26,7 +27,11 @@ const cartReducer = (state = initialState, { type, payload }) => {
             } else {
                 return [...state, { ...payload, qty: 1 }]
             }
-
+        case SAVE_CART:
+            return {
+                ...state,
+                data: payload
+            };
         case GET_CART:
             return (
                 payload

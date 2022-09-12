@@ -1,8 +1,19 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Category, Dashboards, ListTags, Navigation, Products } from "../components";
-import { AdminProducts, FormProduct, ListCategories, ListProduct } from "../components/Admin";
-import { UserOrder } from "../components/User";
+import { Account, Category, Dashboards, Navigation, Products, TopBar } from "../components";
+import {
+    AdminDashboard,
+    AdminProducts,
+    FormProduct,
+    ListCategories,
+    ListProduct,
+    ListTags,
+    ListUsers
+} from "../components/Admin";
+import {
+    UserDashboard,
+    UserOrder
+} from "../components/User";
 import Profile from "../components/User/Profile";
 import {
     Cart,
@@ -13,15 +24,12 @@ import {
     Login,
     Register,
     Invoices,
-    Account,
-
 } from "../pages";
 
 const Routing = () => {
 
     const user = useSelector((state) => state.auth?.user?.user);
-
-    // console.log('Role = ', user)
+    const cart = useSelector((state) => state.cart);
 
     return (
         // Ditaro dinavigation
@@ -32,7 +40,12 @@ const Routing = () => {
                     <Route index element={<Home />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/cart" element={<Cart />} />
-                    <Route path="/cart/checkout" element={<Checkout />} />
+                    {
+                        cart?.length > 0
+                            ? <Route path="/checkout" element={<Checkout />} />
+                            : null
+                    }
+
                     <Route path="/invoices/" element={<Invoices />} />
                 </Route>
                 {
@@ -43,28 +56,44 @@ const Routing = () => {
                         ? <Navigate to="/" replace />
                         : <Login />
                 } />
-                <Route path="/register" element={<Register />} />
+                <Route path="/register" element={
+                    user?.role
+                        ? <Navigate to="/" replace />
+                        : <Register />
+                } />
 
-                <Route path="user" element={<Dashboard />}>
-                    <Route index element={<Dashboards />} />
-                    <Route path="dashboard" element={<Dashboards />} />
-                    <Route path="account" element={<Account />} />
-                    <Route path="order" element={<UserOrder />} />
-                    <Route path="checkout" element={<Checkout />} />
-                </Route>
-
-
-                <Route path="admin" element={<Dashboard />}>
-                    <Route index element={<Dashboards />} />
-                    <Route path="dashboard" element={<Dashboards />} />
-                    <Route path="products" element={<Products />}>
-                        <Route exact index element={<ListProduct />} />
-                        <Route path="product" element={<ListProduct />} />
-                        <Route path="category" element={<ListCategories />} />
-                        <Route path="tag" element={<ListTags />} />
-                    </Route>
-                </Route>
-
+                {
+                    user?.role === 'user'
+                        ?
+                        <Route path="user" element={<Dashboard />}>
+                            <Route index element={<UserDashboard />} />
+                            <Route path="dashboard" element={<UserDashboard />} />
+                            <Route path="account" element={<Account />} />
+                            <Route path="order" element={<UserOrder />} />
+                            <Route path="checkout" element={<Checkout />} />
+                        </Route>
+                        : null
+                }
+                {
+                    user?.role === 'admin'
+                        ?
+                        <Route path="admin" element={<Dashboard />}>
+                            <Route index element={<AdminDashboard />} />
+                            <Route path="dashboard" element={<AdminDashboard />} />
+                            <Route path="products" element={<Products />}>
+                                <Route exact index element={<ListProduct />} />
+                                <Route path="product" element={<ListProduct />} />
+                                <Route path="category" element={<ListCategories />}>
+                                    <Route path=":id" element={<ListCategories />} />
+                                </Route>
+                                <Route path="tag" element={<ListTags />}>
+                                    <Route path=":id" element={<ListTags />} />
+                                </Route>
+                            </Route>
+                            <Route path="users" element={<ListUsers />} />
+                        </Route>
+                        : null
+                }
                 <Route path='*' element={<Error />} />
             </Routes>
 

@@ -4,6 +4,7 @@ import { Card, Col, Modal, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { setTitleDashboard } from '../../../app/features/Auth/actions';
 import { clearOrder, getOrders, setOrderId } from '../../../app/features/Order/actions';
 import Invoices from '../../../pages/Invoices';
 import { formatRupiah, sumPrice, totalItemCart } from '../../../utils';
@@ -32,7 +33,7 @@ const UserOrder = () => {
 
     useEffect(() => {
         dispatch(getOrders())
-
+        dispatch(setTitleDashboard('Orders'));
     }, [dispatch, id])
 
 
@@ -66,7 +67,7 @@ const UserOrder = () => {
         },
 
     ]
-    console.log("Fee : ", orders.data)
+
     const ExpandedComponent = ({ data }) =>
         <Row className='justify-content-center gap-1 mt-2'>
             {
@@ -83,10 +84,7 @@ const UserOrder = () => {
 
     return (
         <>
-            <h3 className="color-primary fw-bold mb-5">My Order</h3>
             <Card>
-                <Card.Header>
-                </Card.Header>
                 <Card.Body>
 
                     <DataTable

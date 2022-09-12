@@ -1,26 +1,32 @@
-import Address from './Address';
+import Account from './Account';
+import BreadCrumb from './BreadCrumb';
 import CardProduct from './CardProduct';
+import CardProductPlaceholder from './CardProductPlaceholder';
 import CartItem from './CartItem';
 import Dashboards from './Dashboards';
-import ListCategories from './ListCategories';
-import ListTags from './ListTags';
+import FilterCategories from './FilterCategories';
+import FilterTags from './FilterTags';
+import Footer from './Footer';
 import Navigation from './Navigation';
+import Orders from './Order';
 import Products from './Products';
 import SideBar from './SideBar';
-import Tag from './Tag';
 import TopBar from './TopBar';
 
 export {
+    Account,
+    BreadCrumb,
     CardProduct,
+    CartItem,
+    FilterCategories,
+    FilterTags,
     Navigation,
     SideBar,
-    Tag,
-    CartItem,
-    ListCategories,
-    ListTags,
-    Address,
     Dashboards,
     TopBar,
-    Products
+    Products,
+    Orders,
+    CardProductPlaceholder,
+    Footer
 };
 export * from './atoms';

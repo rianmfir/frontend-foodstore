@@ -1,56 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,600;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-:root {
-    --dark-blue: #0C145A;
-    --dark-grey: #7E8CAC;
-    --light-grey: #e7eaf5;
-    --yellow: #FEBD57;
-    --red: #fe5762;
-    --purple: #4d17e2;
-    --blue: #00baff;
-    --background: #fbfcfd;
-}
-
-* {
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 0;
-}
-
-.color-primary {
-    color: var(--dark-blue);
-}
-
-.color-secondary {
-    color: var(--dark-grey);
-}
-
-.fw-500 {
-    font-weight: 500;
-}
-
-.fs-12 {
-    font-size: 12px;
-}
 
 
-// .sidebar {
-//     display: flex;
-//     position: fixed;
-//     flex-direction: column;
-//     min-width: 280px;
-//     transition: all 0.5 ease;
-// }
-
-// .content {
-//     display: flex;
-//     flex-direction: column;
-//     min-height: 100vh;
-//     background-color: var(--background);
-//     gap: 30px;
-//     padding: 50px;
-//     transition: all 0.5 ease;
-//     margin-left: 200px;
-// }
 
 .menus {
     display: flex;
@@ -70,13 +21,13 @@
 
 .item-menu.active span,
 .item-menu:hover span {
-    color: var(--dark-blue);
+    color: var(--dark-orange);
     font-weight: 500;
 }
 
 .item-menu.active .icon-menu,
 .item-menu:hover .icon-menu {
-    color: var(--purple);
+    color: var(--yellow);
 }
 
 .item-menu.active::after {
@@ -87,6 +38,6 @@
     bottom: 0;
     width: 3px;
     border-radius: 4px;
-    background-color: var(--blue);
+    background-color: var(--yellow);
 
 }

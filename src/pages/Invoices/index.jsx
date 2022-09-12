@@ -32,7 +32,6 @@ const Invoices = () => {
         let date = new Date(invoices?.createdAt);
         return (`${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`)
     }
-    // console.log("InvoiceDate", invoiceDate());
 
     const invoiceAddress = () => {
         return (
@@ -125,12 +124,12 @@ const Invoices = () => {
 
     return (
 
-        <Container className="d-flex justify-content-center">
+        <Container className="d-flex justify-content-center" style={{ minHeight: '100vh' }}>
 
             {
                 loading
                     ?
-                    <p>Loading ...</p>
+                    <p>Loading . . . . .</p>
                     :
                     <Col sm={12} md={8} className="pt-5 ">
                         <Card>

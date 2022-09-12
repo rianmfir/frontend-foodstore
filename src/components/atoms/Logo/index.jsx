@@ -8,22 +8,22 @@ const Logo = ({ type }) => {
         <div>
             {
                 type === "md" ?
-                    <Link to='/' className='pt-3 text-decoration-none'>
+                    <div as={Link} to='/' className='pt-3 text-decoration-none'>
                         <div className='d-flex justify-content-center'>
                             <MdShoppingBasket size={70} className="me-1 text-success" />
                         </div>
-                        <div className='d-flex justify-content-center fs-1'>
-                            <strong><span style={{ color: '#f9a825' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong>
+                        <div className='d-flex justify-content-center fs-2'>
+                            <strong><span style={{ color: '#FF7C57' }}>Food</span> <span style={{ color: '#9eeb47f7' }}>Store</span></strong>
                         </div>
-                    </Link>
+                    </div>
                     :
-                    <>
+                    <div as={Link} to='/' className='pt-3 text-decoration-none'>
                         <MdShoppingBasket size={30} className="me-1 text-success" />
                         <strong>
-                            <span style={{ color: '#f9a825' }}>Food</span>
+                            <span style={{ color: '#FF7C57' }}>Food</span>
                             <span style={{ color: '#9eeb47f7' }}>Store</span>
                         </strong>
-                    </>
+                    </div>
             }
         </div>
 

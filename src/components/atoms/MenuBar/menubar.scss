@@ -1,0 +1,14 @@
+.dropdown-menu {
+    .dropdown-item {
+        &:focus {
+            background-color: #FF7C57;
+            color: white;
+        }
+
+        &:hover,
+        .icon-menu-bar:hover {
+            color: #FF7C57;
+        }
+
+    }
+}

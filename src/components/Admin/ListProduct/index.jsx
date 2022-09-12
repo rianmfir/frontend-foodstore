@@ -1,14 +1,17 @@
 import axios from 'axios';
-import React, { useEffect } from 'react'
-import { Button, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react'
+import { Button, Card, Col, Image, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getProducts, setPage } from '../../../app/features/Product/actions';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { deleteProduct, getProducts, setFormDefault, setPage } from '../../../app/features/Product/actions';
 import { formatRupiah } from '../../../utils';
+import { Button as CustomButton } from '../../atoms';
 import Paginate from '../../Paginate';
+import FormProduct from '../FormProduct';
 
 const ListProduct = () => {
 
@@ -30,6 +33,8 @@ const ListProduct = () => {
         tag,
         loading
     } = useSelector(state => state.products);
+
+    const [updateData, setUpdateData] = useState();
 
     const columns = [
         {
@@ -79,13 +84,15 @@ const ListProduct = () => {
                 <div className="justify-content-between">
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
-                        <Button onClick={handleEdit} variant='warning' className='me-2'>
+                        {/* <Link to={`${row._id}`}> */}
+                        <Button onClick={() => handleEdit(row)} variant='warning' className='me-2'>
                             <span><FaEdit color="white" size={22} /></span>
                         </Button>
+                        {/* </Link> */}
                     </OverlayTrigger>
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Hapus</Tooltip>}>
-                        <Button onClick={handleDelete} variant='danger'>
+                        <Button onClick={() => handleDelete(row._id)} variant='danger'>
                             <span><FaTrash /></span>
                         </Button>
                     </OverlayTrigger>
@@ -94,12 +101,53 @@ const ListProduct = () => {
         }
     ]
 
-    const handleEdit = (e) => {
-        e.preventDefault();
+    const [show, setShow] = useState(false);
+
+    const toggleShow = () => {
+        setShow(false);
+        dispatch(setFormDefault());
+        setUpdateData("");
+    }
+    const handleShow = () => {
+        setShow(true);
+        setUpdateData("");
     }
 
-    const handleDelete = (e) => {
-        e.preventDefault();
+    const handleEdit = (e) => {
+        handleShow();
+        setUpdateData(e)
+    }
+
+    const handleDelete = (id) => {
+        try {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    dispatch(deleteProduct(id))
+                    // console.log(id)
+                }
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                // text: 'Something went wrong!',
+                text: error.message,
+            })
+        }
+
     }
 
     useEffect(() => {
@@ -113,21 +161,29 @@ const ListProduct = () => {
                 loading
                     ? <p className="text-center">L O A D I N G . . . . .</p>
                     :
-                    <>
-                        <DataTable
-                            columns={columns}
-                            data={product}
-                        />
-                        <div className='d-flex justify-content-center'>
-                            <Paginate
-                                activePage={currentPage}
-                                total={Math.ceil(totalItems / perPage)}
-                                onPageChange={(page) => dispatch(setPage(page))}
-                                coba={tags}
+                    <Card className="border-0">
+                        <Card.Header className='bg-white'>
+                            <Col md={3} className="ms-auto py-3">
+                                <CustomButton title={'Tambah Produk'} width="50" value={"product"} onClick={(e) => handleShow(e.target.value)} />
+                            </Col>
+                        </Card.Header>
+                        <Card.Body>
+                            <DataTable
+                                columns={columns}
+                                data={product}
                             />
-                        </div>
-                    </>
+                            <div className='d-flex justify-content-center'>
+                                <Paginate
+                                    activePage={currentPage}
+                                    total={Math.ceil(totalItems / perPage)}
+                                    onPageChange={(page) => dispatch(setPage(page))}
+                                // coba={tags}
+                                />
+                            </div>
+                        </Card.Body>
+                    </Card>
             }
+            {<FormProduct show={show} toggleShow={toggleShow} updateData={updateData} />}
         </>
     )
 }

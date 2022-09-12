@@ -1,5 +1,5 @@
 import axios from "axios"
-import { getCart } from "../features/Cart/actions"
+import { getCarts } from "../features/Cart/actions"
 
 
 export const saveCart = async (token, cart) => {
@@ -29,7 +29,7 @@ export const getCartItem = (token, userID) => {
                 let { data } = res
 
                 if (userID) {
-                    dispatch(getCart(data))
+                    dispatch(getCarts(data))
                 }
             })
             .catch(err => {

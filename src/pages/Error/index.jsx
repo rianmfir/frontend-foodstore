@@ -4,12 +4,9 @@ import { Link } from 'react-router-dom';
 import './error.css';
 
 const Error = () => {
-    const role = useSelector(state => state.auth.user?.user?.role)
 
-    console.log(role)
-
-    const backToName = role === 'admin' ? 'Dashboard' : 'Homepage'
-
+    const role = useSelector(state => state.auth.user?.user?.role);
+    const backToName = role === 'admin' ? 'Dashboard' : 'Homepage';
 
     return (
         <div className="empty-2-1 container mx-auto d-flex align-items-center justify-content-center flex-column" style={{ fontFamily: 'Poppins' }}>

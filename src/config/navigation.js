@@ -1,8 +1,9 @@
 import React from 'react'
-import { AiOutlineDashboard, AiOutlineUser } from 'react-icons/ai'
+import { AiOutlineUser } from 'react-icons/ai'
 import { CgNotes } from 'react-icons/cg'
-import { RiFileList2Line } from "react-icons/ri";
+import { GrTransaction } from "react-icons/gr";
 import { IoMdLogOut } from 'react-icons/io';
+import { IoFastFoodOutline } from "react-icons/io5";
 import { MdOutlineDashboard } from 'react-icons/md';
 import './navMenu.scss';
 
@@ -34,7 +35,7 @@ export const SideBarMenu = {
         },
         {
             label: "Products",
-            icon: <AiOutlineUser className='icon' />,
+            icon: <IoFastFoodOutline className='icon' />,
             pages: "/admin/products"
         },
         {
@@ -42,11 +43,6 @@ export const SideBarMenu = {
             icon: <AiOutlineUser className='icon' />,
             pages: "/admin/users"
         },
-        // {
-        //     label: "Transactions",
-        //     icon: <AiOutlineUser className='icon' />,
-        //     pages: "/user/cart"
-        // },
     ],
 
     logout: [

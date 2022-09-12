@@ -12,7 +12,7 @@ const ShoppingCart = () => {
 
   const dispatch = useDispatch();
 
-  let cart = useSelector((state) => state.cart);
+  let cart = useSelector(state => state.cart);
 
   const [Qty, setQty] = useState();
 

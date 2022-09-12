@@ -9,12 +9,20 @@ import {
     CREATE_PRODUCT,
     SUCCESS,
     LOADING,
-    CLEAR_ITEM,
     SET_IMAGE_PREVIEW,
     SET_FORM_PRODUCT,
     CREATE_CATEGORY,
     ERROR,
     SET_FORM_DEFAULT,
+    GET_TAGS_BY_CATEGORY,
+    DELETE_CATEGORY,
+    UPDATE_CATEGORY,
+    CREATE_TAG,
+    UPDATE_TAG,
+    DELETE_TAG,
+    DELETE_PRODUCT,
+    SET_TITLE,
+    UPDATE_PRODUCT,
 } from "./constants";
 
 
@@ -27,7 +35,8 @@ const productState = {
         name: '',
         price: '',
         category: '',
-        tags: ''
+        tags: [],
+        image: '',
     },
     imagePreview: '',
     perPage: 8,
@@ -37,11 +46,17 @@ const productState = {
     tag: '',
     keyword: '',
     loading: false,
-    error: false
+    error: false,
+    title: '',
 }
 
 const productReducer = (state = productState, { type, payload, formValue, formData }) => {
     switch (type) {
+        case SET_TITLE:
+            return {
+                ...state,
+                title: payload,
+            };
         case SET_FORM_PRODUCT:
             return {
                 ...state,
@@ -62,7 +77,8 @@ const productReducer = (state = productState, { type, payload, formValue, formDa
                     name: '',
                     price: '',
                     category: '',
-                    tags: []
+                    tags: [],
+                    image: '',
                 },
                 imagePreview: '',
             };
@@ -77,24 +93,63 @@ const productReducer = (state = productState, { type, payload, formValue, formDa
                 ...state,
                 product: payload.data,
                 totalItems: payload.count
-
             };
+        case UPDATE_PRODUCT:
+            return {
+                ...state,
+                data: payload
+            };
+        case DELETE_PRODUCT:
+            return {
+                ...state,
+                data: payload
+            };
+
         case CREATE_CATEGORY:
             return {
                 ...state,
                 data: payload,
-                error: false
             };
         case GET_CATEGORIES:
             return {
                 ...state,
                 categories: payload
             };
+        case UPDATE_CATEGORY:
+            return {
+                ...state,
+                data: payload
+            };
+        case DELETE_CATEGORY:
+            return {
+                ...state,
+                data: payload
+            };
 
+        case CREATE_TAG:
+            return {
+                ...state,
+                data: payload,
+            };
         case GET_TAGS:
             return {
                 ...state,
                 tags: payload
+            };
+        case GET_TAGS_BY_CATEGORY:
+            return {
+                ...state,
+                tags: payload
+            };
+        case UPDATE_TAG:
+            return {
+                ...state,
+                data: payload
+            };
+        case DELETE_TAG:
+            return {
+                ...state,
+                data: payload
             };
 
         case SET_PAGE:
@@ -105,13 +160,13 @@ const productReducer = (state = productState, { type, payload, formValue, formDa
         case SET_CATEGORY:
             return {
                 ...state,
-                category: payload.category,
+                category: payload,
                 currentPage: 1,
             };
         case SET_TAG:
             return {
                 ...state,
-                tag: payload.tag,
+                tag: payload,
                 currentPage: 1,
             };
         case SET_KEYWORD:
@@ -123,12 +178,14 @@ const productReducer = (state = productState, { type, payload, formValue, formDa
         case SUCCESS:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                error: false
             };
         case LOADING:
             return {
                 ...state,
-                loading: true
+                // data: '',
+                loading: true,
             };
         case ERROR:
             return {
@@ -137,8 +194,6 @@ const productReducer = (state = productState, { type, payload, formValue, formDa
                 data: payload
             };
 
-        case CLEAR_ITEM:
-            return []
         default:
             return state;
     }

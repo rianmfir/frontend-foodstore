@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS } from "./constants";
+import { GET_USERS, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS, SET_TITLE_DASHBOARD } from "./constants";
 
 const userRegister = (user) => {
 
@@ -72,8 +72,6 @@ const userLogout = () => {
                 }
                 console.log(data);
                 window.location.href = "/";
-
-
             })
             .catch(err => {
                 console.log(err);
@@ -81,4 +79,36 @@ const userLogout = () => {
     }
 }
 
-export { userRegister, userLogin, userLogout };
+const getUsers = () => {
+    return async (dispatch) => {
+        const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
+
+        await axios.get(`/auth/users`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+            },
+        })
+            .then(res => {
+                const { data } = res;
+                dispatch({
+                    type: GET_USERS,
+                    payload: data
+                });
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    }
+}
+
+export const setTitleDashboard = (title) => ({
+    type: SET_TITLE_DASHBOARD,
+    payload: title
+})
+
+export {
+    userRegister,
+    userLogin,
+    userLogout,
+    getUsers
+};

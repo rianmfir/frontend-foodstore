@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { SideBarMenu } from '../../config/navigation';
-import { SideBar, TopBar } from '../../components';
+import { Footer, SideBar, TopBar } from '../../components';
 import { Nav } from 'react-bootstrap';
 
 import './dashboard.scss';
@@ -32,16 +32,22 @@ const Dashboard = () => {
 
     return (
         <>
+            <Nav id="nav-topbar" className="topbar">
+                <TopBar />
+            </Nav>
+
             <Nav id="nav-sidebar" className="sidebar">
                 <SideBar />
             </Nav>
 
-            <Nav id="main-content" className="content p-5">
-                {/* <TopBar /> */}
-                <Outlet />
-            </Nav>
-        </>
 
+            <div id="main-content" className="content" >
+                <Outlet />
+            </div >
+            {/* </div> */}
+
+            <Footer />
+        </>
     )
 }
 

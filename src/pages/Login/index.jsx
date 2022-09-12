@@ -19,7 +19,6 @@ const Login = () => {
     const auth = useSelector(state => state.auth);
     const navigate = useNavigate();
 
-    // const user = useSelector(state => state.auth.user);
     const message = auth
         ? auth.user?.message
         : ""
@@ -77,7 +76,7 @@ const Login = () => {
                     <Button title="Login" type="submit" />
                 </Form>
                 <Gap height={100} />
-                <BackPage paragraph={"Belum punya akun ? "} title={"Register"} to={"/"} />
+                <BackPage paragraph={"Belum punya akun ? "} title={"Register"} to={"/register"} />
             </div>
 
         </div >

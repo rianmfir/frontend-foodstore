@@ -19,8 +19,8 @@ const listener = () => {
     // }
 
     if (currentCart !== previousCart) {
-        localStorage.setItem('cart', JSON.stringify(currentCart));
-        saveCart(token, currentCart);
+        // localStorage.setItem('cart', JSON.stringify(currentCart));
+        // saveCart(token, currentCart);
     }
 }
 

@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Button, Card, Col, Container, FloatingLabel, Form, Image, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAddresses } from '../../app/features/Address/actions';
 import { clearItem } from '../../app/features/Cart/actions';
-import AddAddress from '../../components/User/AddAddress';
 import { Gap } from '../../components/atoms';
 import { formatRupiah, sumPrice } from '../../utils';
-import { dummyImage } from '../../assets/images'
 import { owner } from '../../assets/owner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// import { createOrder } from '../../app/api/order';
 import { createOrder } from '../../app/features/Order/actions';
+import { BreadCrumb } from '../../components';
 
 const Checkout = () => {
     const dispatch = useDispatch();
@@ -31,7 +29,6 @@ const Checkout = () => {
     const [select, setSelect] = useState(false);
 
     const fee = owner.data.ongkir;
-
 
     useEffect(() => {
         dispatch(getAddresses())
@@ -57,192 +54,201 @@ const Checkout = () => {
             delivery_address: selectedAddress._id,
             delivery_fee: owner.data.ongkir
         }
+        dispatch(createOrder(payload));
         if (!order.data?.error) {
-            dispatch(createOrder(payload));
             navigate(`/invoices`)
             dispatch(clearItem());
         }
 
     }
-    console.log("ORDER ID : ", order)
 
+    console.log("ID Address Dipilih : ", selectedAddress._id)
 
+    const breadcrumb = [
+        { label: 'Home', path: '/' },
+        { label: 'Checkout', path: 'checkout' },
+    ];
     return (
+        <div style={{ minHeight: '100vh', backgroundColor: "#f9f9f9" }} >
 
-        <Container>
-            <Gap height={50} />
-            <Row>
-                <Col lg="8">
-                    <Row className="shadow-lg p-3 mb-4 bg-body rounded">
-                        <Col style={{ cursor: "pointer" }} onClick={addressMenu}>
-                            {
-                                selectedAddress
-                                    ?
-                                    <span>{`${selectedAddress.nama}, ${selectedAddress.detail}, ${selectedAddress.kelurahan}, ${selectedAddress.kecamatan}, ${selectedAddress.kabupaten}, ${selectedAddress.provinsi}`}</span>
-                                    :
-                                    <span >Pilih Alamat Pengiriman</span>
-                            }
+            <Container >
+                <Gap height={30} />
+                <Col md={9}>
+                    <BreadCrumb items={breadcrumb} />
+                </Col>
+                <Row>
+                    <Col lg="8">
+                        <Row className="shadow-lg p-3 mb-4 bg-body rounded">
+                            <Col style={{ cursor: "pointer" }} onClick={addressMenu}>
+                                {
+                                    selectedAddress
+                                        ?
+                                        <span>{`${selectedAddress.nama}, ${selectedAddress.detail}, ${selectedAddress.kelurahan}, ${selectedAddress.kecamatan}, ${selectedAddress.kabupaten}, ${selectedAddress.provinsi}`}</span>
+                                        :
+                                        <span >Pilih Alamat Pengiriman</span>
+                                }
 
-                        </Col>
-                    </Row>
-                    {
-                        select
-                            ?
-                            <Row as={Card} style={{ zIndex: "1", position: "absolute" }}>
-                                <Col lg="12">
-                                    <>
+                            </Col>
+                        </Row>
+                        {
+                            select
+                                ?
+                                <Row as={Card} style={{ zIndex: "1", position: "absolute" }}>
+                                    <Col lg="12">
+                                        <>
+                                            <DataTable
+                                                columns={[
+                                                    {
+                                                        name: 'Nama',
+                                                        selector: row => row.nama
+                                                    },
+                                                    {
+                                                        name: 'Detail',
+                                                        cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi}`
+                                                    }
+                                                ]}
+                                                data={address}
+                                                onSelectedRowsChange={handleAddress}
+                                                selectableRows
+                                                selectableRowsSingle={true}
+                                                selectableRowsHighlight={true}
+                                            />
+                                        </>
+                                    </Col>
+                                </Row>
+                                :
+                                ""
+                        }
+
+                        <Gap height={20} />
+                        <Row>
+                            <Container>
+                                <Card className='mb-5'>
+                                    <Card.Header className="bg-warning fw-bolder ">Keranjang Belanja</Card.Header>
+                                    <Card.Body >
                                         <DataTable
                                             columns={[
                                                 {
-                                                    name: 'Nama',
-                                                    selector: row => row.nama
+                                                    name: <span className='mx-auto fw-bolder'>Produk</span>,
+                                                    cell: row =>
+                                                        <div className="d-flex flex-wrap py-3 mx-auto">
+                                                            <Image
+                                                                src={`${baseURL}images/products/${row.image_url}`} rounded
+                                                                width="90"
+                                                                height="90"
+                                                                roundedCircle
+                                                            />
+                                                            <Gap width={10} />
+                                                            <div className='d-flex flex-column align-item-center justify-content-center '>
+                                                                <span className=''>{row.name}</span>
+                                                                <span className=''>{formatRupiah(row.price)}</span>
+                                                            </div>
+
+                                                        </div>
                                                 },
                                                 {
-                                                    name: 'Detail',
-                                                    cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi}`
-                                                }
-                                            ]}
-                                            data={address}
-                                            onSelectedRowsChange={handleAddress}
-                                            selectableRows
-                                            selectableRowsSingle={true}
-                                            selectableRowsHighlight={true}
-                                        />
-                                    </>
-                                </Col>
-                            </Row>
-                            :
-                            ""
-                    }
-
-                    <Gap height={20} />
-                    <Row>
-                        <Container>
-                            <Card >
-                                <Card.Header className="bg-warning fw-bolder ">Keranjang Belanja</Card.Header>
-                                <Card.Body >
-                                    <DataTable
-                                        columns={[
-                                            {
-                                                name: <span className='mx-auto fw-bolder'>Produk</span>,
-                                                cell: row =>
-                                                    <div className="d-flex flex-wrap py-3 mx-auto">
-                                                        <Image
-                                                            src={`${baseURL}images/products/${row.image_url}`} rounded
-                                                            width="90"
-                                                            height="90"
-                                                            roundedCircle
-                                                        />
-                                                        <Gap width={10} />
-                                                        <div className='d-flex flex-column align-item-center justify-content-center '>
-                                                            <span className=''>{row.name}</span>
-                                                            <span className=''>{formatRupiah(row.price)}</span>
+                                                    name: <span className='mx-auto fw-bolder'>Quantity</span>,
+                                                    cell: row =>
+                                                        <div className='mx-auto'>
+                                                            {row.qty}
                                                         </div>
-
-                                                    </div>
-                                            },
-                                            {
-                                                name: <span className='mx-auto fw-bolder'>Quantity</span>,
-                                                cell: row =>
-                                                    <div className='mx-auto'>
-                                                        {row.qty}
-                                                    </div>
-                                            },
-                                            {
-                                                name: <span className='mx-auto fw-bolder'>Subtotal</span>,
-                                                cell: row =>
-                                                    <div className='mx-auto'>
-                                                        {formatRupiah(row.qty * row.price)}
-                                                    </div>
-                                            },
-
-                                        ]}
-                                        data={cart}
-                                        center='true'
-                                    />
-
-                                </Card.Body>
-                            </Card>
-                        </Container>
-                    </Row>
-
-                </Col>
-
-                <Col lg="4">
-                    <Row>
-                        <Col lg="12">
-                            <Card
-                                className='rounded'
-                                style={{ background: '#f3f3f3' }} >
-                                <div>
-                                    <ul type="none" className='container'>
-                                        <li className="d-flex pt-3">
-                                            <p>Subtotal</p>
-                                            <p className='ms-auto fw-bolder'>{formatRupiah(sumPrice(cart))}</p>
-                                        </li>
-                                        <hr style={{ color: 'green' }} className='mt-0' />
-
-                                        <li className="d-flex">
-                                            <p>Ongkos Kirim</p>
-                                            <span className='ms-auto fw-bolder'>
+                                                },
                                                 {
-                                                    selectedAddress ? formatRupiah(fee) : "-"
-                                                }
-                                            </span>
-                                        </li>
-                                        <hr style={{ color: 'green' }} className='mt-0' />
+                                                    name: <span className='mx-auto fw-bolder'>Subtotal</span>,
+                                                    cell: row =>
+                                                        <div className='mx-auto'>
+                                                            {formatRupiah(row.qty * row.price)}
+                                                        </div>
+                                                },
 
-                                        <li className="d-flex">
-                                            <p>Bank Transfer</p>
-                                            <p className='ms-auto fw-bolder'>{owner.data.bank}</p>
-                                        </li>
-                                        <hr style={{ color: 'green' }} className='mt-0' />
+                                            ]}
+                                            data={cart}
+                                            center='true'
+                                        />
 
-                                        <li className="d-flex">
-                                            <p>No. Rekening</p>
-                                            <p className='ms-auto fw-bolder'>{owner.data.noRekening}</p>
-                                        </li>
-                                        <hr style={{ color: 'green' }} className='mt-0' />
+                                    </Card.Body>
+                                </Card>
+                            </Container>
+                        </Row>
 
-                                        <li className="d-flex">
-                                            <p>Nama Penerima</p>
-                                            <p className='ms-auto fw-bolder'>{owner.data.nama}</p>
-                                        </li>
-                                        <hr style={{ color: 'green' }} className='mt-0' />
+                    </Col>
 
-                                        <li className="d-flex">
-                                            <p>Total</p>
-                                            <p className='ms-auto fw-bolder'>
-                                                {
-                                                    selectedAddress
-                                                        // ? formatRupiah(sumPrice(cart) + parseInt(owner.data.ongkir))
-                                                        ? formatRupiah(parseInt(sumPrice(cart) + (owner.data.ongkir)))
-                                                        : "-"
-                                                }
-                                            </p>
+                    <Col lg="4">
+                        <Row>
+                            <Col lg="12">
+                                <Card
+                                    className='rounded'
+                                    style={{ background: '#f3f3f3' }} >
+                                    <div>
+                                        <ul type="none" className='container'>
+                                            <li className="d-flex pt-3">
+                                                <p>Subtotal</p>
+                                                <p className='ms-auto fw-bolder'>{formatRupiah(sumPrice(cart))}</p>
+                                            </li>
+                                            <hr style={{ color: 'green' }} className='mt-0' />
 
-                                        </li>
-                                        <hr style={{ color: 'green' }} className='mt-0' />
+                                            <li className="d-flex">
+                                                <p>Ongkos Kirim</p>
+                                                <span className='ms-auto fw-bolder'>
+                                                    {
+                                                        selectedAddress ? formatRupiah(fee) : "-"
+                                                    }
+                                                </span>
+                                            </li>
+                                            <hr style={{ color: 'green' }} className='mt-0' />
 
-                                        <Button
-                                            className="btn text-light rounded-pill"
-                                            variant="warning"
-                                            style={{ background: 'orange', width: '100%' }}
-                                            disabled={!selectedAddress}
-                                            onClick={handleSubmit}
-                                        >
-                                            <span style={{ color: 'white' }}>
-                                                Bayar Sekarang
-                                            </span>
-                                        </Button>
-                                    </ul>
-                                </div>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row >
-        </Container >
+                                            <li className="d-flex">
+                                                <p>Bank Transfer</p>
+                                                <p className='ms-auto fw-bolder'>{owner.data.bank}</p>
+                                            </li>
+                                            <hr style={{ color: 'green' }} className='mt-0' />
+
+                                            <li className="d-flex">
+                                                <p>No. Rekening</p>
+                                                <p className='ms-auto fw-bolder'>{owner.data.noRekening}</p>
+                                            </li>
+                                            <hr style={{ color: 'green' }} className='mt-0' />
+
+                                            <li className="d-flex">
+                                                <p>Nama Penerima</p>
+                                                <p className='ms-auto fw-bolder'>{owner.data.nama}</p>
+                                            </li>
+                                            <hr style={{ color: 'green' }} className='mt-0' />
+
+                                            <li className="d-flex">
+                                                <p>Total</p>
+                                                <p className='ms-auto fw-bolder'>
+                                                    {
+                                                        selectedAddress
+                                                            // ? formatRupiah(sumPrice(cart) + parseInt(owner.data.ongkir))
+                                                            ? formatRupiah(parseInt(sumPrice(cart) + (owner.data.ongkir)))
+                                                            : "-"
+                                                    }
+                                                </p>
+
+                                            </li>
+                                            <hr style={{ color: 'green' }} className='mt-0' />
+
+                                            <Button
+                                                className="btn text-light rounded-pill"
+                                                variant="warning"
+                                                style={{ background: 'orange', width: '100%' }}
+                                                disabled={!selectedAddress}
+                                                onClick={handleSubmit}
+                                            >
+                                                <span style={{ color: 'white' }}>
+                                                    Bayar Sekarang
+                                                </span>
+                                            </Button>
+                                        </ul>
+                                    </div>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row >
+            </Container >
+        </div>
     )
 }
 

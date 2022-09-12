@@ -2,31 +2,25 @@ import { useEffect, useState } from "react";
 import {
     Button,
     Card,
-    Col,
-    Container,
-    Form,
-    ListGroup,
-    Modal,
-    Nav,
     OverlayTrigger,
     Tooltip,
     Row,
     Tab,
-    Tabs
+    Tabs,
+    Col
 } from "react-bootstrap"
 import DataTable from "react-data-table-component";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link, Route, Routes, useRouteMatch } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { GrEdit } from "react-icons/gr";
 
-
-import './account.scss';
-import { AddAddress, UpdateAddress } from "../../components/User";
-import { clearItem, deleteAddress, getAddresses } from "../../app/features/Address/actions";
+import { AddAddress, FormAddress, UpdateAddress } from "../User";
+import { clearItem, deleteAddress, getAddresses, setFormDefault } from "../../app/features/Address/actions";
 import Swal from 'sweetalert2';
+import { Button as CustomButton } from "../atoms";
+import { setTitleDashboard } from "../../app/features/Auth/actions";
 
 
 
@@ -40,22 +34,27 @@ const Account = () => {
     const [dataAddress, setDataAddress] = useState("");
 
     const [show, setShow] = useState(false);
+    const [updateData, setUpdateData] = useState();
+
 
     const toggleShow = () => {
         setShow(false);
-        dispatch(clearItem());
+        dispatch(setFormDefault());
+        setUpdateData("");
+        console.log("Toggle");
     }
 
-    const handleShowAdd = () => {
-        setFormAddress("add");
+    const handleShow = () => {
         setShow(true);
+        setUpdateData("");
+        console.log("Show");
     }
 
-    const handleShowUpdate = (data) => {
-        setFormAddress("update")
-        setShow(true);
-        setDataAddress(data);
+    const handleEdit = (e) => {
+        handleShow();
+        setUpdateData(e)
     }
+
 
     const handleDelete = (id) => {
 
@@ -81,17 +80,16 @@ const Account = () => {
         })
     };
 
+
     useEffect(() => {
         dispatch(getAddresses())
-
+        dispatch(setTitleDashboard('Account'));
     }, [dispatch, data])
 
 
 
     return (
-        // <Container className="py-4">
         <>
-            <h3 className="color-primary fw-bold mb-5">Account</h3>
             <Card>
                 <Card.Body>
                     <Row className="justify-content-center">
@@ -107,17 +105,17 @@ const Account = () => {
                                         { label: 'Nama', value: auth.user.full_name },
                                         { label: 'Email', value: auth.user.email },
                                     ]}
+
                                 />
 
                             </Tab>
 
                             <Tab eventKey="address" title="Address">
                                 <div>
-                                    <Link to="#">
-                                        <Button onClick={handleShowAdd} variant="success" size="sm">
-                                            Tambah Alamat
-                                        </Button>
-                                    </Link>
+                                    <Col md={3} className="ms-auto my-3">
+                                        {/* <CustomButton onClick={handleShowAdd} title={'Tambah Alamat'} /> */}
+                                        <CustomButton onClick={handleShow} title={'Tambah Alamat'} />
+                                    </Col>
                                     <DataTable
                                         columns={[
                                             {
@@ -137,7 +135,7 @@ const Account = () => {
                                                     <div className="justify-content-between">
 
                                                         <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
-                                                            <Button onClick={() => handleShowUpdate(row)} variant='warning' className='me-2'>
+                                                            <Button onClick={() => handleEdit(row)} variant='warning' className='me-2'>
                                                                 <span><FaEdit color="white" size={22} /></span>
                                                             </Button>
                                                         </OverlayTrigger>
@@ -160,13 +158,17 @@ const Account = () => {
                 </Card.Body>
             </Card>
 
-            <>{
+            <>
+                <FormAddress show={show} toggleShow={toggleShow} updateData={updateData} />
+
+                {/* {
                 formAddress === "add"
                     ?
-                    <AddAddress show={show} toggleShow={toggleShow} />
+                    // <AddAddress show={show} toggleShow={toggleShow} />
+                    <FormAddress show={show} toggleShow={toggleShow} />
                     :
                     <UpdateAddress show={show} toggleShow={toggleShow} dataAddress={dataAddress} />
-            }
+            } */}
             </>
         </>
         // </Container >

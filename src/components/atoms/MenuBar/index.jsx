@@ -4,26 +4,22 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { BsPersonCircle } from 'react-icons/bs';
 import { CgNotes } from 'react-icons/cg';
 import { IoMdLogOut } from 'react-icons/io';
+import { IoFastFoodOutline } from "react-icons/io5"
 import { MdOutlineDashboard } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userLogout } from '../../../app/features/Auth/actions';
 import { totalItemCart } from '../../../utils';
+import './menubar.scss';
 
 const MenuBar = () => {
 
     const dispatch = useDispatch();
 
-    let cart = useSelector((state) => state.cart);
     let { role } = useSelector(state => state.auth.user?.user)
     const [navLinks, setNavLinks] = useState([]);
-    const [Qty, setQty] = useState();
-    const [key, setKey] = useState('');
 
     const auth = JSON.parse(localStorage.getItem('auth'));
-
-    const windowResolution = window.innerWidth;
-    console.log("Resolution : ", windowResolution)
 
     const [show, setShow] = useState(false);
     const showDropdown = (e) => {
@@ -71,7 +67,7 @@ const MenuBar = () => {
                 {
                     name: "Product",
                     path: "/admin/products",
-                    icon: <AiOutlineUser strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
+                    icon: <IoFastFoodOutline strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
 
                 },
                 {
@@ -80,12 +76,6 @@ const MenuBar = () => {
                     icon: <AiOutlineUser strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
 
                 },
-                {
-                    name: "Transaction",
-                    path: "/admin/orders",
-                    icon: <CgNotes strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
-
-                }
             ],
     }
 
@@ -96,7 +86,6 @@ const MenuBar = () => {
         if (role === 'user') {
             setNavLinks(navs.user);
         }
-        // setQty(totalItemCart(cart));
     }, [])
 
 
@@ -107,6 +96,7 @@ const MenuBar = () => {
                 show={show}
                 onMouseEnter={showDropdown}
                 onMouseLeave={hideDropdown}
+
             >
                 <Dropdown.Toggle id="dropdown-basic" variant="none"
                     style={{
@@ -124,7 +114,9 @@ const MenuBar = () => {
                         navLinks.map((nav, i) => {
                             return (
                                 <Dropdown.Item as={Link} to={nav.path} key={i}>
-                                    {nav.icon}
+                                    <span className='icon-menu-bar'>
+                                        {nav.icon}
+                                    </span>
                                     <span style={{ fontSize: '14px' }}> {nav.name} </span>
                                 </Dropdown.Item>
                             )

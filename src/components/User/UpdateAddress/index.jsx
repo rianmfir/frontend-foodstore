@@ -16,8 +16,6 @@ const UpdateAddress = ({ dataAddress, show, toggleShow }) => {
     const [getDataKecamatan, setKecamatan] = useState('');
     const [getDataKelurahan, setKelurahan] = useState('');
 
-    const [myValue, setMyValue] = useState("");
-
     const [wilayah, setWilayah] = useState({})
 
     console.log("TES DATA : ", dataAddress);
@@ -139,42 +137,6 @@ const UpdateAddress = ({ dataAddress, show, toggleShow }) => {
 
     }, [dispatch, kecamatan, form, form.kecamatan])
 
-    console.table(form);
-
-    // useEffect(() => {
-    //     if (form.provinsi) {
-    //         provinsi.filter(
-    //             (val) =>
-    //                 val.nama === form.provinsi
-    //                 &&
-    //                 dispatch(getKabupaten(val.id))
-
-    //         );
-    //     }
-    // }, [dispatch, form.provinsi]);
-
-
-    // useEffect(() => {
-    //     dispatch(getProvinsi());
-    // }, [dispatch]);
-
-    // useEffect(() => {
-    //     if (provinsi.length) {
-    //         provinsi.filter(
-    //             (val) =>
-    //                 val.nama === dataAddress.provinsi &&
-    //                 dispatch(getKabupaten(val.id))
-    //         );
-    //     }
-    // }, [dispatch, provinsi]);
-
-    //   useEffect(() => {
-    //     dispatch(getProvinsi());
-    //   }, [dispatch]);
-
-    // if (loading) {
-    //     <p>Loading . . . . .</p>
-    // }
     return (
         <>
             <Modal show={show} fullscreen={'xl-down'} onHide={toggleShow} size="lg">
@@ -193,13 +155,8 @@ const UpdateAddress = ({ dataAddress, show, toggleShow }) => {
                                 placeholder="ex. Rumah"
                                 required
                                 value={form.nama}
-                                // onChange={(e) => ()}
-
                                 onChange={(e) => {
-                                    // const nama = e.target.value;
-                                    // setWilayah({ ...wilayah, ...{ nama } });
                                     dispatch(setFormAddress("nama", e.target.value));
-                                    // setNama(name)
                                 }}
                             />
                             <Input

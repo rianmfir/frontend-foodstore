@@ -1,9 +1,28 @@
+import axios from "axios";
 import {
     ADD_TO_CART,
     REMOVE_ITEM,
     GET_CART,
-    CLEAR_ITEM
+    CLEAR_ITEM,
+    SAVE_CART
 } from "./constants";
+
+// test
+export const saveCarts = async (cart) => {
+    let { token } = localStorage.getItem("auth")
+        ? JSON.parse(localStorage.getItem("auth"))
+        : {};
+    return await axios
+        .put(
+            `/api/carts`, { items: cart },
+            {
+                headers:
+                {
+                    authorization: `Bearer ${token}`
+                }
+            },
+        )
+}
 
 
 export const addToCart = (item) => {
@@ -16,7 +35,40 @@ export const addToCart = (item) => {
     }
 }
 
-export const getCart = (item) => {
+// test
+export const getCartItems = () => {
+    return async (dispatch) => {
+        let { token } = localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth"))
+            : {};
+
+        await axios.get('/api/carts',
+            {
+                headers:
+                {
+                    authorization: `Bearer ${token}`
+                }
+            },
+        )
+            .then(res => {
+                let { data } = res
+
+                dispatch({
+                    type: GET_CART,
+                    payload: data,
+                });
+
+                // if (userID) {
+                //     dispatch(GET_CART(data))
+                // }
+            })
+            .catch(err => {
+                console.log(err.response);
+            })
+    }
+}
+
+export const getCarts = (item) => {
     return {
         type: GET_CART,
         payload: item
