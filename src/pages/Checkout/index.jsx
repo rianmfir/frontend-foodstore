@@ -10,7 +10,7 @@ import { formatRupiah, sumPrice } from '../../utils';
 import { owner } from '../../assets/owner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { createOrder } from '../../app/features/Order/actions';
+import { createOrder, setOrderId } from '../../app/features/Order/actions';
 import { BreadCrumb } from '../../components';
 
 const Checkout = () => {
@@ -20,8 +20,8 @@ const Checkout = () => {
     const navigate = useNavigate();
 
     const { address } = useSelector(state => state.address);
+    const { data } = useSelector(state => state.order);
     const cart = useSelector(state => state.cart);
-    const order = useSelector(state => state.order);
 
     const [selectedAddress, setSelectedAddress] = useState("");
     const [notSelect, setNotSelect] = useState(true);
@@ -54,15 +54,21 @@ const Checkout = () => {
             delivery_address: selectedAddress._id,
             delivery_fee: owner.data.ongkir
         }
-        dispatch(createOrder(payload));
-        if (!order.data?.error) {
-            navigate(`/invoices`)
-            dispatch(clearItem());
+        try {
+            dispatch(createOrder(payload));
+        } catch (error) {
+            console.log(error.message);
         }
-
     }
 
-    console.log("ID Address Dipilih : ", selectedAddress._id)
+    useEffect(() => {
+        if (data?._id) {
+            dispatch(setOrderId(data._id));
+            navigate(`/invoices`);
+            dispatch(clearItem());
+        }
+    }, [dispatch, navigate, data?._id])
+
 
     const breadcrumb = [
         { label: 'Home', path: '/' },
@@ -117,7 +123,7 @@ const Checkout = () => {
                                     </Col>
                                 </Row>
                                 :
-                                ""
+                                null
                         }
 
                         <Gap height={20} />
@@ -131,15 +137,16 @@ const Checkout = () => {
                                                 {
                                                     name: <span className='mx-auto fw-bolder'>Produk</span>,
                                                     cell: row =>
-                                                        <div className="d-flex flex-wrap py-3 mx-auto">
+                                                        <div className="d-flex flex-row py-4">
                                                             <Image
-                                                                src={`${baseURL}images/products/${row.image_url}`} rounded
+                                                                src={`${baseURL}images/products/${row.image_url}`}
                                                                 width="90"
                                                                 height="90"
                                                                 roundedCircle
+                                                                className="border border-grey"
                                                             />
                                                             <Gap width={10} />
-                                                            <div className='d-flex flex-column align-item-center justify-content-center '>
+                                                            <div className='d-flex flex-column align-item-center justify-content-center mx-auto'>
                                                                 <span className=''>{row.name}</span>
                                                                 <span className=''>{formatRupiah(row.price)}</span>
                                                             </div>
@@ -149,7 +156,7 @@ const Checkout = () => {
                                                 {
                                                     name: <span className='mx-auto fw-bolder'>Quantity</span>,
                                                     cell: row =>
-                                                        <div className='mx-auto'>
+                                                        <div className='mx-auto border'>
                                                             {row.qty}
                                                         </div>
                                                 },
@@ -209,9 +216,9 @@ const Checkout = () => {
                                             </li>
                                             <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <li className="d-flex">
+                                            <li className="d-flex justify-content-between">
                                                 <p>Nama Penerima</p>
-                                                <p className='ms-auto fw-bolder'>{owner.data.nama}</p>
+                                                <p className='fw-bolder text-end'>{owner.data.nama}</p>
                                             </li>
                                             <hr style={{ color: 'green' }} className='mt-0' />
 
@@ -220,7 +227,6 @@ const Checkout = () => {
                                                 <p className='ms-auto fw-bolder'>
                                                     {
                                                         selectedAddress
-                                                            // ? formatRupiah(sumPrice(cart) + parseInt(owner.data.ongkir))
                                                             ? formatRupiah(parseInt(sumPrice(cart) + (owner.data.ongkir)))
                                                             : "-"
                                                     }

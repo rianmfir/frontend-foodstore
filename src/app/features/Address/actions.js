@@ -12,7 +12,6 @@ import {
     LOADING,
     SUCCESS,
     UPDATE_ADDRESS,
-    SET_FORM,
     SET_FORM_ADDRESS,
     SET_FORM_DEFAULT
 } from "./constants"

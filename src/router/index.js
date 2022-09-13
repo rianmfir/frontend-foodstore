@@ -1,20 +1,18 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Account, Category, Dashboards, Navigation, Products, TopBar } from "../components";
+import { Account, Navigation, Products } from "../components";
 import {
     AdminDashboard,
-    AdminProducts,
-    FormProduct,
     ListCategories,
     ListProduct,
     ListTags,
     ListUsers
 } from "../components/Admin";
+import Logout from "../components/Logout";
 import {
     UserDashboard,
     UserOrder
 } from "../components/User";
-import Profile from "../components/User/Profile";
 import {
     Cart,
     Checkout,
@@ -30,11 +28,10 @@ const Routing = () => {
 
     const user = useSelector((state) => state.auth?.user?.user);
     const cart = useSelector((state) => state.cart);
+    const { id } = useSelector((state) => state.order);
 
     return (
-        // Ditaro dinavigation
         <>
-            {/* <Navigation /> */}
             <Routes>
                 <Route exact path="/" element={<Navigation />}>
                     <Route index element={<Home />} />
@@ -46,7 +43,12 @@ const Routing = () => {
                             : null
                     }
 
-                    <Route path="/invoices/" element={<Invoices />} />
+                    {
+                        id
+                            ?
+                            <Route path="/invoices/" element={<Invoices />} />
+                            : null
+                    }
                 </Route>
                 {
 
@@ -94,6 +96,8 @@ const Routing = () => {
                         </Route>
                         : null
                 }
+                <Route path='logout' element={<Logout />} />
+
                 <Route path='*' element={<Error />} />
             </Routes>
 

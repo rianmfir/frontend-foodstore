@@ -193,7 +193,6 @@ const productReducer = (state = productState, { type, payload, formValue, formDa
                 error: true,
                 data: payload
             };
-
         default:
             return state;
     }

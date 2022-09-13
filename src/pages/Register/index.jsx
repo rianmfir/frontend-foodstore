@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { dummyImage, RegisterBg } from '../../assets/images';
+import { RegisterBg } from '../../assets/images';
 import { userLogin, userRegister } from '../../app/features/Auth/actions';
-import store from '../../app/store';
-import { MdShoppingBasket } from 'react-icons/md';
 
-import { Col, Form, Image, Row } from 'react-bootstrap';
+import { Form, Image } from 'react-bootstrap';
 import { BackPage, Button, Gap, Input, Logo } from '../../components/atoms';
 import './register.scss';
 
@@ -15,12 +12,10 @@ const Register = () => {
     const [userState, setUserState] = useState({});
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
-    const navigate = useNavigate();
 
-    // const user = useSelector(state => state.auth.user);
     const message = auth.user?.fields
         ? auth.user?.fields
-        : ""
+        : null
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,10 +28,10 @@ const Register = () => {
                 email: userState.email,
                 password: userState.password
             }))
-            navigate('/');
         }
-    }, [auth.user?.password])
-    console.log(auth);
+    }, [dispatch, auth.user?.password, userState.email, userState.password])
+
+    console.log(auth)
 
     return (
 

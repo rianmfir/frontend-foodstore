@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Card, Col, Container } from 'react-bootstrap';
+import { Card, Col, Container, Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import { CgArrowLongLeftR } from 'react-icons/cg';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getInvoices, getOrders, setOrderId } from '../../app/features/Order/actions';
+import { useNavigate } from 'react-router-dom';
+import { getInvoices, getOrders } from '../../app/features/Order/actions';
 import { owner } from '../../assets/owner';
 import { Button, Gap } from '../../components';
-import { formatRupiah, sumPrice } from '../../utils';
+import { formatRupiah } from '../../utils';
 
 const Invoices = () => {
 
@@ -18,31 +17,32 @@ const Invoices = () => {
     const { data, invoices, id, loading } = useSelector(state => state.order);
 
     const [invoice, setInvoice] = useState([]);
-    const orderId = id === "" ? data?._id : id;
-
-    console.log("Data : ", data)
-    console.log("Invoices : ", invoices)
-    console.log("ID : ", orderId);
 
     useEffect(() => {
         dispatch(getOrders());
     }, [dispatch])
 
-    const invoiceDate = () => {
-        let date = new Date(invoices?.createdAt);
-        return (`${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`)
-    }
 
-    const invoiceAddress = () => {
-        return (
-            `${invoices.delivery_address?.detail}, ${invoices.delivery_address?.kelurahan}, ${invoices.delivery_address?.kecamatan},${invoices.delivery_address?.kabupaten}, ${invoices.delivery_address?.provinsi}`
-        )
-    }
+    // const invoiceDate = () => {
+    //     let date = new Date(invoices?.createdAt);
+    //     return (`${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`)
+    // }
+
+    // const invoiceAddress = () => {
+    //     return (
+    //         `${invoices.delivery_address?.detail}, ${invoices.delivery_address?.kelurahan}, ${invoices.delivery_address?.kecamatan},${invoices.delivery_address?.kabupaten}, ${invoices.delivery_address?.provinsi}`
+    //     )
+    // }
 
     const invoiceData = useCallback((data) => {
+        let date = new Date(data?.createdAt);
+        let invoiceDate = (`${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`);
+        let invoiceAddress = `${data.delivery_address?.detail}, ${data.delivery_address?.kelurahan}, ${data.delivery_address?.kecamatan},${data.delivery_address?.kabupaten}, ${data.delivery_address?.provinsi}`
+
+
         return [
-            { label: 'No. Invoice', value: `INV/${invoiceDate()}/FSEDW/${invoices?.order?.order_number}` },
-            { label: 'Status', value: invoices?.payment_status },
+            { label: 'No. Invoice', value: `INV/${invoiceDate}/FSEDW/${data?.order?.order_number}` },
+            { label: 'Status', value: data?.payment_status },
             {
                 label: 'Toko', value: <div>
                     <Gap height={5} />
@@ -61,7 +61,7 @@ const Invoices = () => {
                     <Gap height={1} />
                     {data?.user?.email}
                     <Gap height={5} />
-                    {invoiceAddress()}
+                    {invoiceAddress}
                     <Gap height={5} />
                 </div>
             },
@@ -112,24 +112,34 @@ const Invoices = () => {
                     </div >
             },
         ]
-    }, [invoiceDate(),
-    invoiceAddress(),
-    ]);
+    }, []);
+
+    // let invoice = id ? invoiceData(invoices) : "";
 
     useEffect(() => {
-        dispatch(getInvoices(orderId));
-        setInvoice(invoiceData(invoices));
-    }, [dispatch, orderId, invoiceData])
+        dispatch(getInvoices(id));
+    }, [dispatch, id])
 
+    useEffect(() => {
+        setInvoice(invoiceData(invoices));
+    }, [invoiceData, invoices])
 
     return (
 
-        <Container className="d-flex justify-content-center" style={{ minHeight: '100vh' }}>
-
+        <Container className="d-flex justify-content-center" style={{ minHeight: '85vh' }}>
             {
                 loading
                     ?
-                    <p>Loading . . . . .</p>
+                    <div className="d-flex justify-content-center mt-5">
+                        <div className="text-center">
+                            <Spinner animation="grow" variant="danger" />
+                            <Spinner animation="grow" variant="danger" />
+                            <Spinner animation="grow" variant="danger" />
+                            <Spinner animation="grow" variant="danger" />
+                            <Spinner animation="grow" variant="danger" />
+                            <p className="text-muted">L O A D I N G . . . . .</p>
+                        </div>
+                    </div>
                     :
                     <Col sm={12} md={8} className="pt-5 ">
                         <Card>

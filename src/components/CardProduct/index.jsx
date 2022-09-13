@@ -1,4 +1,3 @@
-// import { dummyImmage } from '../../assets/images';
 import { Col, Image, Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -9,7 +8,6 @@ import { Button } from '../atoms';
 import { formatRupiah } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import './cardProduct.scss';
-
 
 const CardProduct = ({ products }) => {
 

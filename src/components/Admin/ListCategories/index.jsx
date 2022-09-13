@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { createCategory, deleteCategory, getCategories, setForm, setFormDefault, updateCategory } from '../../../app/features/Product/actions';
 import { Button as CustomButton, Input } from '../../atoms';
@@ -32,7 +32,6 @@ const ListCategories = () => {
     const columns = [
         {
             name: <span className='fw-bolder'>No.</span>,
-            // cell: (row, index) => (perPage * (currentPage - 1)) + index + 1
             cell: (row, index) => index + 1
         },
         {
@@ -78,9 +77,6 @@ const ListCategories = () => {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         dispatch(updateCategory(id, form.category))
-                        // dispatch(updateCategory(id, form))
-                        // console.log("ID : ", id);
-                        // console.log("Form : ", form.category);
                         setIsUpdate(false)
                         navigate('/admin/products/category')
                         Swal.fire('Saved!', '', 'success')
@@ -95,7 +91,6 @@ const ListCategories = () => {
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong!',
-                    // footer: '<a href="">Why do I have this issue?</a>'
                 })
             }
 
@@ -108,7 +103,6 @@ const ListCategories = () => {
                     const formValidation = event.currentTarget;
                     if (formValidation.checkValidity() === false) {
                         event.stopPropagation();
-                        // console.log("FORM : ", form);
                     }
                     setValidated(true);
                 } else {
@@ -150,7 +144,6 @@ const ListCategories = () => {
                         'success'
                     )
                     dispatch(deleteCategory(id))
-                    // console.log(id)
                 }
             })
         } catch (error) {
@@ -159,7 +152,6 @@ const ListCategories = () => {
                 title: 'Oops...',
                 // text: 'Something went wrong!',
                 text: error.message,
-                // footer: '<a href="">Why do I have this issue?</a>'
             })
         }
 
@@ -207,7 +199,7 @@ const ListCategories = () => {
                                     <CustomButton style={{ backgroundColor: `grey` }} title={'Batal'} width="50" value={"kategori"} onClick={handleCancel} />
                                 </Col>
                                 :
-                                ""
+                                null
                         }
                     </Row>
                 </Form>

@@ -4,7 +4,7 @@ import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { clearItem, createAddress, deleteAddress, getAddresses, getKabupaten, getKecamatan, getKelurahan, getProvinsi, setFormAddress, updateAddress } from '../../../app/features/Address/actions';
+import { createAddress, getKabupaten, getKecamatan, getKelurahan, getProvinsi, setFormAddress, updateAddress } from '../../../app/features/Address/actions';
 import { Button, Input } from '../../atoms';
 
 function FormAddress({ show, toggleShow, updateData }) {
@@ -43,12 +43,10 @@ function FormAddress({ show, toggleShow, updateData }) {
         }
     }, [dispatch, updateData])
 
-    // console.log("updateData : ", updateData);
     const onSubmit = (event) => {
         event.preventDefault();
         const formValidation = event.currentTarget;
         if (isUpdate) {
-            // console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -58,7 +56,7 @@ function FormAddress({ show, toggleShow, updateData }) {
                     denyButtonText: `Don't save`,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // dispatch(updateAddress(updateData._id, form))
+                        dispatch(updateAddress(updateData._id, form))
                         console.log("UPDATE DATA");
                         setIsUpdate(false)
                         toggleShow();
@@ -83,7 +81,7 @@ function FormAddress({ show, toggleShow, updateData }) {
                 // console.log("Ada Yang Kosong");
             } else {
                 // console.log("Submit")
-                // dispatch(createAddress(form));
+                dispatch(createAddress(form));
                 console.log("TAMBAH DATA");
                 try {
                     setValidated(false)
@@ -94,7 +92,6 @@ function FormAddress({ show, toggleShow, updateData }) {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    // console.table(form);
                     toggleShow();
                 } catch (err) {
                     console.log(err.message);

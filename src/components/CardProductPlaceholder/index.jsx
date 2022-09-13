@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Col, Image, Placeholder } from 'react-bootstrap';
 import { Button } from '../atoms';
-// import './cardProductPlaceholder.scss';
+import './cardProductPlaceholder.scss';
 
 function CardProductPlaceholder({ perPage }) {
   return (
@@ -25,20 +25,6 @@ function CardProductPlaceholder({ perPage }) {
         </div>
       </Col>
     ))
-
-    // Array.from({length: 8}).map((_, idx) => (
-    //   <Col key={idx}>
-    //     <CardProductPlaceholder />
-    //   </Col>
-    // )) :  
-
   )
 }
-
 export default CardProductPlaceholder;
-
-// Array.from({ length: 8 }).map((_, idx) => (
-//   <Col key={idx}>
-//       <CardProductPlaceholder />
-//   </Col>
-// ))

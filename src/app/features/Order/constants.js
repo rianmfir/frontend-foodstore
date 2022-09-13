@@ -9,3 +9,5 @@ export const SET_ORDER_ID = "SET_ORDER_ID";
 export const CLEAR_ORDER = "CLEAR_ORDER";
 
 export const LOADING = "LOADING";
+
+export const SET_PAGE = "SET_PAGE";

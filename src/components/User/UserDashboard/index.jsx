@@ -12,6 +12,7 @@ import { setTitleDashboard } from '../../../app/features/Auth/actions';
 
 const UserDashboard = () => {
     const { orders } = useSelector(state => state.order);
+    const tes = useSelector(state => state.order);
 
     const dispatch = useDispatch();
 
@@ -21,18 +22,18 @@ const UserDashboard = () => {
         dispatch(setTitleDashboard('Dashboard'));
     }, [dispatch])
 
-    console.log(orders);
+    console.log("Tes : ", tes);
 
     const userDashboard =
         [
             {
                 label: 'Items',
-                count: orders.totalItems,
+                count: orders.totalItemsOrder,
                 icon: <IoFastFoodOutline size='5em' color='#FF7C57' />
             },
             {
                 label: 'Orders',
-                count: orders.data?.length,
+                count: orders.count,
                 icon: <MdOutlineSell size='5em' color='#FF7C57' />
             },
             {

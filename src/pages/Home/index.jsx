@@ -1,14 +1,12 @@
-import { Container, Col, Row, Card, Placeholder, Image } from 'react-bootstrap'
+import { Container, Col, Row, Alert } from 'react-bootstrap'
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Alert, CardProduct, Gap, FilterCategories, FilterTags, Tag, Button, CardProductPlaceholder, BreadCrumb } from "../../components";
-import { getCategories, getProducts, getTags, getTagsByCategory, setCategory, setPage } from '../../app/features/Product/actions';
-import { getCartItem } from '../../app/api/cart';
+import { CardProduct, Gap, FilterCategories, FilterTags, CardProductPlaceholder, BreadCrumb } from "../../components";
+import { getCategories, getProducts, getTags, getTagsByCategory, setPage } from '../../app/features/Product/actions';
 import Paginate from '../../components/Paginate';
 import { BsFilter } from 'react-icons/bs';
-import { clearOrder, setOrderId } from '../../app/features/Order/actions';
+import { clearOrder } from '../../app/features/Order/actions';
 import './home.scss';
-import { getCartItems, saveCarts } from '../../app/features/Cart/actions';
 
 const Home = () => {
 
@@ -26,46 +24,16 @@ const Home = () => {
         loading
     } = useSelector(state => state.products);
 
-    const auth = useSelector(state => state.auth.user);
-
-    const cart = useSelector(state => state.cart);
-
-    // let { token } = localStorage.getItem("auth")
-    //     ? JSON.parse(localStorage.getItem("auth"))
-    //     : {};
-
-    // let userID = auth !== null ? auth.user._id : auth;
-
-
-
-    // console.log("Auth : ", cart);
-
     useEffect(() => {
-        dispatch(getProducts());
         dispatch(getCategories());
         dispatch(getTags());
-        // dispatch(getCartItem(token, userID));
         dispatch(clearOrder());
-    }, [dispatch, currentPage, keyword]);
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getProducts());
         dispatch(getTagsByCategory(category));
-    }, [dispatch, category, tag, category])
-
-    useEffect(() => {
-        if (auth?.token) {
-            dispatch(getCartItems())
-        }
-    }, [dispatch])
-
-    useEffect(() => {
-        if (auth?.token) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-            saveCarts(cart);
-            console.log('CART TERINPUT');
-        }
-    }, [cart])
+    }, [dispatch, category, tag, keyword, currentPage])
 
     const breadcrumb = [
         { label: 'Home', path: '/' },
@@ -103,30 +71,41 @@ const Home = () => {
 
                 <Col md={9} >
 
-                    <h4 className="text-center">
-                        PRODUCT
-                    </h4>
 
-                    <Row className='ms-5 mx-auto'>
-                        {
-                            loading
-                                ?
-                                <CardProductPlaceholder perPage={perPage} />
-                                :
-                                <CardProduct products={product} />
 
-                        }
-                    </Row>
-                    <Row>
-                        <div className='d-flex justify-content-center my-5'>
-                            <Paginate
-                                activePage={currentPage}
-                                total={Math.ceil(totalItems / perPage)}
-                                onPageChange={(page) => dispatch(setPage(page))}
-                                coba={tags}
-                            />
-                        </div>
-                    </Row>
+                    {
+                        product.length !== 0
+                            ?
+                            <>
+                                <h4 className="text-center">
+                                    PRODUCT
+                                </h4>
+                                <Row className='ms-5 mx-auto'>
+                                    {
+                                        loading
+                                            ?
+                                            <CardProductPlaceholder perPage={perPage} />
+                                            :
+                                            <CardProduct products={product} />
+
+                                    }
+                                </Row>
+                                <Row>
+                                    <div className='d-flex justify-content-center my-5'>
+                                        <Paginate
+                                            activePage={currentPage}
+                                            total={Math.ceil(totalItems / perPage)}
+                                            onPageChange={(page) => dispatch(setPage(page))}
+                                            coba={tags}
+                                        />
+                                    </div>
+                                </Row>
+                            </>
+                            :
+                            <Alert key={'danger'} variant={'danger'} className="border align-items-center">
+                                Data Tidak Ditemukan!
+                            </Alert>
+                    }
                 </Col>
             </Row >
         </Container >

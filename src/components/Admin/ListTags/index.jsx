@@ -17,7 +17,6 @@ const ListTags = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    console.log("Data : ", data);
     const { id } = useParams();
     const handleEdit = (data) => {
         dispatch(setForm('tags', data));
@@ -66,7 +65,7 @@ const ListTags = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         if (id) {
-            console.log("Update")
+            // console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -96,7 +95,7 @@ const ListTags = () => {
             }
 
         } else {
-            console.log("Simpan");
+            // console.log("Simpan");
             dispatch(createTag(form.tags))
             try {
                 if (data?.error === 1 || !form.tags) {

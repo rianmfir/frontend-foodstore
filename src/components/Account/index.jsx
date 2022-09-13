@@ -12,12 +12,9 @@ import {
 import DataTable from "react-data-table-component";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom"
-
 import { FaEdit, FaTrash } from "react-icons/fa";
-
-import { AddAddress, FormAddress, UpdateAddress } from "../User";
-import { clearItem, deleteAddress, getAddresses, setFormDefault } from "../../app/features/Address/actions";
+import { FormAddress } from "../User";
+import { deleteAddress, getAddresses, setFormDefault } from "../../app/features/Address/actions";
 import Swal from 'sweetalert2';
 import { Button as CustomButton } from "../atoms";
 import { setTitleDashboard } from "../../app/features/Auth/actions";
@@ -28,14 +25,10 @@ const Account = () => {
 
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth.user);
-    const { address, data, loading } = useSelector(state => state.address);
-
-    const [formAddress, setFormAddress] = useState("");
-    const [dataAddress, setDataAddress] = useState("");
+    const { address, data } = useSelector(state => state.address);
 
     const [show, setShow] = useState(false);
     const [updateData, setUpdateData] = useState();
-
 
     const toggleShow = () => {
         setShow(false);
@@ -55,10 +48,7 @@ const Account = () => {
         setUpdateData(e)
     }
 
-
     const handleDelete = (id) => {
-
-        // Handle If Error Belum ??????
 
         Swal.fire({
             title: 'Are you sure?',
@@ -83,10 +73,11 @@ const Account = () => {
 
     useEffect(() => {
         dispatch(getAddresses())
-        dispatch(setTitleDashboard('Account'));
     }, [dispatch, data])
 
-
+    useEffect(() => {
+        dispatch(setTitleDashboard('Account'));
+    }, [dispatch])
 
     return (
         <>

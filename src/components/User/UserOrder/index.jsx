@@ -5,17 +5,18 @@ import DataTable from 'react-data-table-component';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { setTitleDashboard } from '../../../app/features/Auth/actions';
-import { clearOrder, getOrders, setOrderId } from '../../../app/features/Order/actions';
+import { clearOrder, getOrders, setOrderId, setPage } from '../../../app/features/Order/actions';
 import Invoices from '../../../pages/Invoices';
 import { formatRupiah, sumPrice, totalItemCart } from '../../../utils';
 import { Button } from '../../atoms';
+import Paginate from '../../Paginate';
 import './userOrder.scss';
 
 const UserOrder = () => {
 
     const dispatch = useDispatch();
 
-    const { orders, id } = useSelector(state => state.order)
+    const { orders, id, perPage, totalItems, currentPage } = useSelector(state => state.order)
 
     const [show, setShow] = useState(false);
 
@@ -33,8 +34,11 @@ const UserOrder = () => {
 
     useEffect(() => {
         dispatch(getOrders())
+    }, [dispatch, id, currentPage])
+
+    useEffect(() => {
         dispatch(setTitleDashboard('Orders'));
-    }, [dispatch, id])
+    }, [dispatch])
 
 
     const formatDate = (d) => {
@@ -45,6 +49,10 @@ const UserOrder = () => {
     const columns = [
 
         {
+            name: <span className='fw-bolder'>No</span>,
+            selector: (row, index) => (perPage * (currentPage - 1)) + index + 1
+        },
+        {
             name: <span className='fw-bolder'>Tanggal</span>,
             selector: row => formatDate(row.updatedAt)
         },
@@ -54,7 +62,6 @@ const UserOrder = () => {
         },
         {
             name: <span className='fw-bolder'>Total Harga</span>,
-            // selector: row => formatRupiah(parseInt(sumPrice(row.order_items) + (row.delivery_fee)))
             selector: row => formatRupiah(parseInt(sumPrice(row.order_items)))
 
         },
@@ -73,7 +80,7 @@ const UserOrder = () => {
             {
                 data.order_items.map((e, index) => {
                     return (
-                        <Col md={11} className="border-bottom border-warning fs-12 fw-bold" key={index}>
+                        <Col md={11} className="border-bottom border-warning fs-12" key={index}>
                             <p>{e.name} ( {e.qty} X {formatRupiah(e.price)} )</p>
                         </Col>
                     )
@@ -86,17 +93,25 @@ const UserOrder = () => {
         <>
             <Card>
                 <Card.Body>
-
                     <DataTable
                         columns={columns}
                         data={orders.data}
                         expandableRows
                         expandableRowsComponent={ExpandedComponent}
                     />
+                    <Row>
+                        <div className='d-flex justify-content-center my-5'>
+                            <Paginate
+                                activePage={currentPage}
+                                total={Math.ceil(totalItems / perPage)}
+                                onPageChange={(page) => dispatch(setPage(page))}
+                            />
+                        </div>
+                    </Row>
                 </Card.Body>
             </Card>
 
-            <Modal show={show} size="lg" onHide={toggleShow}>
+            <Modal show={show} size="lg" onHide={toggleShow} style={{ maxHeight: '80vh' }} >
                 <Modal.Header closeButton>
                     <Modal.Title></Modal.Title>
                 </Modal.Header>

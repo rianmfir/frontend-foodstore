@@ -5,32 +5,25 @@ import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { deleteProduct, getProducts, setFormDefault, setPage } from '../../../app/features/Product/actions';
 import { formatRupiah } from '../../../utils';
 import { Button as CustomButton } from '../../atoms';
 import Paginate from '../../Paginate';
+import Swal from 'sweetalert2';
 import FormProduct from '../FormProduct';
 
 const ListProduct = () => {
 
     const baseURL = axios.defaults.baseURL;
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const {
         data,
         product,
-        categories,
-        tags,
         currentPage,
         totalItems,
         perPage,
-        keyword,
-        category,
-        tag,
         loading
     } = useSelector(state => state.products);
 
@@ -84,11 +77,9 @@ const ListProduct = () => {
                 <div className="justify-content-between">
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
-                        {/* <Link to={`${row._id}`}> */}
                         <Button onClick={() => handleEdit(row)} variant='warning' className='me-2'>
                             <span><FaEdit color="white" size={22} /></span>
                         </Button>
-                        {/* </Link> */}
                     </OverlayTrigger>
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Hapus</Tooltip>}>
@@ -177,7 +168,6 @@ const ListProduct = () => {
                                     activePage={currentPage}
                                     total={Math.ceil(totalItems / perPage)}
                                     onPageChange={(page) => dispatch(setPage(page))}
-                                // coba={tags}
                                 />
                             </div>
                         </Card.Body>

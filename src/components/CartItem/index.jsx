@@ -1,45 +1,29 @@
 import axios from 'axios';
-import React, { useEffect } from 'react'
-import { Button, Col, Container, Image, Row } from 'react-bootstrap';
+import React from 'react'
+import { Button, Col, Container, Image } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { BsArrowRight } from 'react-icons/bs';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { addToCart, getCartItems, removeItem, saveCarts } from '../../app/features/Cart/actions';
-import { formatRupiah, sumPrice, totalItemCart } from '../../utils';
+import { useNavigate } from 'react-router-dom';
+import { addToCart, removeItem } from '../../app/features/Cart/actions';
+import { formatRupiah, sumPrice } from '../../utils';
 import { BackPage, Gap, Button as CheckOutButton } from '../atoms';
 import BreadCrumb from '../BreadCrumb';
 
 const CartItem = () => {
     const baseURL = axios.defaults.baseURL;
     const cart = useSelector(state => state.cart);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        dispatch(getCartItems())
-        console.log('GET CART DIPERBAHARUI');
-
-    }, [dispatch])
-
-    useEffect(() => {
-        saveCarts(cart);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('CART BERUBAH');
-
-    }, [totalItemCart(cart)])
-
-
 
     const handlePlus = (item) => {
-        // console.log("Ditambah");
-        // console.log("Cart From Basket", item);
         dispatch(addToCart(item))
     };
 
     const handleMinus = (item) => {
-        // console.log("Dikurang");
         dispatch(removeItem(item));
     };
 

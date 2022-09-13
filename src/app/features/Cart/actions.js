@@ -4,17 +4,14 @@ import {
     REMOVE_ITEM,
     GET_CART,
     CLEAR_ITEM,
-    SAVE_CART
 } from "./constants";
 
-// test
 export const saveCarts = async (cart) => {
     let { token } = localStorage.getItem("auth")
         ? JSON.parse(localStorage.getItem("auth"))
         : {};
     return await axios
-        .put(
-            `/api/carts`, { items: cart },
+        .put(`/api/carts`, { items: cart },
             {
                 headers:
                 {
@@ -23,7 +20,6 @@ export const saveCarts = async (cart) => {
             },
         )
 }
-
 
 export const addToCart = (item) => {
     return {
@@ -35,7 +31,6 @@ export const addToCart = (item) => {
     }
 }
 
-// test
 export const getCartItems = () => {
     return async (dispatch) => {
         let { token } = localStorage.getItem("auth")
@@ -57,10 +52,6 @@ export const getCartItems = () => {
                     type: GET_CART,
                     payload: data,
                 });
-
-                // if (userID) {
-                //     dispatch(GET_CART(data))
-                // }
             })
             .catch(err => {
                 console.log(err.response);

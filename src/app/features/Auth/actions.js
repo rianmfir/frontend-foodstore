@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
 import { GET_USERS, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS, SET_TITLE_DASHBOARD } from "./constants";
 
 const userRegister = (user) => {
@@ -53,25 +52,28 @@ const userLogin = (user) => {
 }
 
 const userLogout = () => {
-    let { token } = JSON.parse(localStorage.getItem("auth"));
     return async (dispatch) => {
-        await axios.post('auth/logout', null, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        let { token } = localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth"))
+            : {};
+        await axios
+            .post('auth/logout', null, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             .then(res => {
                 localStorage.removeItem('auth');
                 localStorage.removeItem('cart');
                 let { data } = res;
-                if (data.error === 0) {
-                    dispatch({
-                        type: LOGOUT_SUCCESS,
-                        payload: data.message
-                    })
-                }
-                console.log(data);
-                window.location.href = "/";
+                // if (data.error === 0) {
+                dispatch({
+                    type: LOGOUT_SUCCESS,
+                    payload: data.message
+                })
+                // }
+                // window.location.pathname = '/';
+                // window.location.replace = '/';
             })
             .catch(err => {
                 console.log(err);

@@ -46,8 +46,10 @@ const authReducer = (state = initState, { type, payload }) => {
         case LOGOUT_SUCCESS:
             return {
                 ...state,
-                // isLoggedIn: false,
-                message: payload
+                message: payload,
+                isLoggedIn: false,
+                user: null,
+                titleDashboard: ''
             }
         case SET_TITLE_DASHBOARD:
             return {

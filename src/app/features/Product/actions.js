@@ -150,9 +150,7 @@ export const updateProduct = (id, data) => {
 
     return async (dispatch) => {
         const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
-        // dispatch({
-        //     type: LOADING
-        // })
+
         await axios
             .put(`/api/products/${id}`, payload, {
                 headers: {
@@ -440,18 +438,6 @@ export const setCategory = (category) => ({
     type: SET_CATEGORY,
     payload: category,
 })
-// export const setCategory = (category) => {
-//     return (dispatch) => {
-//         dispatch({
-//             type: SET_CATEGORY,
-//             payload: category,
-//         })
-//         dispatch({
-//             type: SET_TAG,
-//             payload: []
-//         })
-//     }
-// }
 
 export const setTag = (tag) => ({
     type: SET_TAG,
