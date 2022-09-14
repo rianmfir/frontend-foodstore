@@ -40,14 +40,14 @@ const Home = () => {
     ];
 
     return (
-        <Container fluid style={{ backgroundColor: "#f9f9f9" }} >
+        <Container fluid >
             <Gap height={30} />
             <Container>
                 <Col md={9} className="me-auto">
                     <BreadCrumb items={breadcrumb} />
                 </Col>
             </Container>
-            <Gap height={30} />
+            <Gap height={10} />
             <Row className="justify-content-center">
                 <Col md={2} className='filter'>
                     <div >
@@ -71,41 +71,37 @@ const Home = () => {
 
                 <Col md={9} >
 
-
-
-                    {
-                        product.length !== 0
-                            ?
-                            <>
-                                <h4 className="text-center">
-                                    PRODUCT
-                                </h4>
-                                <Row className='ms-5 mx-auto'>
-                                    {
-                                        loading
-                                            ?
-                                            <CardProductPlaceholder perPage={perPage} />
-                                            :
+                    <>
+                        <h4 className="text-center">
+                            PRODUCT
+                        </h4>
+                        <Row className='ms-5 mx-auto'>
+                            {
+                                loading
+                                    ?
+                                    <CardProductPlaceholder perPage={perPage} />
+                                    : product.length !== 0 ?
+                                        <>
                                             <CardProduct products={product} />
+                                            <Row>
+                                                <div className='d-flex justify-content-center my-5'>
+                                                    <Paginate
+                                                        activePage={currentPage}
+                                                        total={Math.ceil(totalItems / perPage)}
+                                                        onPageChange={(page) => dispatch(setPage(page))}
+                                                        coba={tags}
+                                                    />
+                                                </div>
+                                            </Row>
+                                        </>
+                                        :
+                                        <Alert key={'danger'} variant={'danger'} className="border align-items-center">
+                                            Data Tidak Ditemukan!
+                                        </Alert>
+                            }
+                        </Row>
 
-                                    }
-                                </Row>
-                                <Row>
-                                    <div className='d-flex justify-content-center my-5'>
-                                        <Paginate
-                                            activePage={currentPage}
-                                            total={Math.ceil(totalItems / perPage)}
-                                            onPageChange={(page) => dispatch(setPage(page))}
-                                            coba={tags}
-                                        />
-                                    </div>
-                                </Row>
-                            </>
-                            :
-                            <Alert key={'danger'} variant={'danger'} className="border align-items-center">
-                                Data Tidak Ditemukan!
-                            </Alert>
-                    }
+                    </>
                 </Col>
             </Row >
         </Container >

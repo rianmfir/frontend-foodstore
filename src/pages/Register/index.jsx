@@ -15,7 +15,7 @@ const Register = () => {
 
     const message = auth.user?.fields
         ? auth.user?.fields
-        : null
+        : ''
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,8 +30,6 @@ const Register = () => {
             }))
         }
     }, [dispatch, auth.user?.password, userState.email, userState.password])
-
-    console.log(auth)
 
     return (
 
@@ -63,7 +61,7 @@ const Register = () => {
                         }}
                     />
                     <span style={{ fontSize: '14px', color: '#dc3545' }} className="ms-3 pt-0">
-                        <i>{message.full_name?.message}</i>
+                        <i>{message ? message.full_name?.message : ''}</i>
                     </span>
                     <Gap height={5} />
                     <Input
@@ -78,7 +76,7 @@ const Register = () => {
                         }}
                     />
                     <span style={{ fontSize: '14px', color: '#dc3545' }} className="ms-3 pt-0">
-                        <i>{message.email?.message}</i>
+                        <i>{message ? message.email?.message : ''}</i>
                     </span>
                     <Gap height={5} />
                     <Input

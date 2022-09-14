@@ -29,9 +29,6 @@ const UserOrder = () => {
         dispatch(clearOrder());
     }
 
-    console.log(orders);
-    console.log("Order ID : ", id)
-
     useEffect(() => {
         dispatch(getOrders())
     }, [dispatch, id, currentPage])

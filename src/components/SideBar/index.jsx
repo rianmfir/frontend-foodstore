@@ -31,6 +31,7 @@ const SideBar = () => {
                         )
                     })
                 }
+                <hr />
                 <NavLink to={'/logout'} className="item-menu" style={{ cursor: 'pointer', bottom: 0 }}>
                     <div className='icon-menu'>
                         <IoMdLogOut

@@ -59,13 +59,6 @@ export const getCartItems = () => {
     }
 }
 
-export const getCarts = (item) => {
-    return {
-        type: GET_CART,
-        payload: item
-    }
-}
-
 export function removeItem(item) {
     return {
         type: REMOVE_ITEM,

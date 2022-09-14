@@ -29,7 +29,7 @@ const CardProduct = ({ products }) => {
                 {
                     products?.map((item, index) => {
                         return (
-                            <Col lg="3" md="4" sm="6" xs="12" key={index}>
+                            <Col xxl="2" xl="3" md="4" sm="6" xs="12" key={index}>
                                 <div className="food-card d-flex justify-content-center align-items-center flex-column mx-auto ">
                                     <div className="food-img">
                                         <Image src={`${baseURL}images/products/${item.image_url}`} alt="" roundedCircle />

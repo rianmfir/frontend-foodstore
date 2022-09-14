@@ -3,13 +3,20 @@ import { useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers, setTitleDashboard } from '../../../app/features/Auth/actions';
+import { getUsers, setPage, setTitleDashboard } from '../../../app/features/Auth/actions';
+import Paginate from '../../Paginate';
 import './listUsers.scss';
 
 function ListUsers() {
 
     const dispatch = useDispatch();
-    const { users } = useSelector(state => state.auth.data)
+    // const { users } = useSelector(state => state.auth.data)
+    const {
+        data,
+        currentPage,
+        totalItems,
+        perPage
+    } = useSelector(state => state.auth)
 
     const status = (status) => {
         if (status === 1) {
@@ -20,12 +27,17 @@ function ListUsers() {
     }
     const columns = [
         {
-            name: <span className='fw-bolder'>Customer_Id</span>,
-            cell: row => row.customer_id
+            name: <span className='fw-bolder'>No</span>,
+            selector: (row, index) => (perPage * (currentPage - 1)) + index + 1
         },
+
         {
             name: <span className='fw-bolder'>Email</span>,
             selector: row => row.email
+        },
+        {
+            name: <span className='fw-bolder'>Customer_Id</span>,
+            cell: row => row.customer_id
         },
         {
             name: <span className='fw-bolder'>Status</span>,
@@ -41,15 +53,22 @@ function ListUsers() {
     useEffect(() => {
         dispatch(getUsers())
         dispatch(setTitleDashboard('Users'));
-    }, [dispatch])
+    }, [dispatch, currentPage])
 
     return (
         <>
             <Card>
                 <DataTable
                     columns={columns}
-                    data={users}
+                    data={data.users}
                 />
+                <div className='d-flex justify-content-center'>
+                    <Paginate
+                        activePage={currentPage}
+                        total={Math.ceil(totalItems / perPage)}
+                        onPageChange={(page) => dispatch(setPage(page))}
+                    />
+                </div>
             </Card>
         </>
     )

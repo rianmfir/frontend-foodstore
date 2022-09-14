@@ -22,7 +22,6 @@ import {
     DELETE_TAG,
     UPDATE_TAG,
     DELETE_PRODUCT,
-    TITLE,
     SET_TITLE,
     UPDATE_PRODUCT
 } from "./constants";
@@ -38,8 +37,6 @@ export const createProduct = (data) => {
         payload.append("tags", data.tags[i].value);
     }
     payload.append("image", data.image);
-
-
 
     return async (dispatch) => {
         const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
@@ -82,7 +79,7 @@ export const getProducts = () => {
 
     return async (dispatch, getState) => {
 
-        let perPage = getState().products.perPage || 8;
+        let perPage = getState().products.perPage || 12;
         let currentPage = getState().products.currentPage || 1;
         let category = getState().products.category || '';
         let tags = getState().products.tag || '';

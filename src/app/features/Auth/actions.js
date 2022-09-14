@@ -1,9 +1,22 @@
 import axios from "axios";
-import { GET_USERS, LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT_SUCCESS, REGISTER_FAIL, REGISTER_SUCCESS, SET_TITLE_DASHBOARD } from "./constants";
+import {
+    CLEAR_AUTH,
+    GET_USERS,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT_SUCCESS,
+    REGISTER_FAIL,
+    REGISTER_SUCCESS,
+    SET_PAGE,
+    SET_TITLE_DASHBOARD
+} from "./constants";
 
 const userRegister = (user) => {
 
     return async (dispatch) => {
+        dispatch({
+            type: CLEAR_AUTH
+        })
         await axios.post('/auth/register', user)
             .then(res => {
                 console.log(res.data);
@@ -66,14 +79,11 @@ const userLogout = () => {
                 localStorage.removeItem('auth');
                 localStorage.removeItem('cart');
                 let { data } = res;
-                // if (data.error === 0) {
                 dispatch({
                     type: LOGOUT_SUCCESS,
                     payload: data.message
                 })
-                // }
-                // window.location.pathname = '/';
-                // window.location.replace = '/';
+
             })
             .catch(err => {
                 console.log(err);
@@ -82,10 +92,18 @@ const userLogout = () => {
 }
 
 const getUsers = () => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
 
-        await axios.get(`/auth/users`, {
+        let perPage = getState().auth.perPage || 10;
+        let currentPage = getState().auth.currentPage || 1;
+
+        const params = {
+            limit: perPage,
+            skip: (currentPage * perPage) - perPage,
+        }
+
+        await axios.get(`auth/users?limit=${params.limit}&skip=${params.skip}`, {
             headers: {
                 authorization: `Bearer ${token}`,
             },
@@ -108,9 +126,16 @@ export const setTitleDashboard = (title) => ({
     payload: title
 })
 
+export const setPage = (page = 1) => ({
+    type: SET_PAGE,
+    payload: {
+        currentPage: page
+    }
+})
+
 export {
-    userRegister,
+    getUsers,
     userLogin,
     userLogout,
-    getUsers
+    userRegister,
 };

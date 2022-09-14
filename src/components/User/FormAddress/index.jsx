@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Row, Modal, Form } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { Col, Row, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { createAddress, getKabupaten, getKecamatan, getKelurahan, getProvinsi, setFormAddress, updateAddress } from '../../../app/features/Address/actions';
@@ -15,12 +13,10 @@ function FormAddress({ show, toggleShow, updateData }) {
     const [isUpdate, setIsUpdate] = useState(false);
 
     const {
-        data,
         provinsi,
         kabupaten,
         kecamatan,
         kelurahan,
-        error,
         form } = useSelector(state => state.address)
 
     useEffect(() => {

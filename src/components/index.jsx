@@ -22,6 +22,7 @@ export {
     FilterTags,
     Footer,
     Navigation,
+    Logout,
     Products,
     SideBar,
     TopBar,

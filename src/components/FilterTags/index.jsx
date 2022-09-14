@@ -17,10 +17,8 @@ const FilterTags = ({ tag, tags, category }) => {
         let updatedList = [...filterTag];
         if (event.target.checked) {
             updatedList = [...filterTag, event.target.value];
-            // console.log("Checked");
         } else {
             updatedList.splice(filterTag.indexOf(event.target.value), 1);
-            // console.log("Unchecked");
         }
         setFilterTag(updatedList);
     };
@@ -28,13 +26,11 @@ const FilterTags = ({ tag, tags, category }) => {
     useEffect(() => {
         dispatch(setTag(filterTag))
         setLoading(false)
-        // console.log("Loading 3 : ", loading)
     }, [dispatch, filterTag])
 
     useEffect(() => {
         setFilterTag([]);
         setLoading(true)
-        // console.log("Loading 2 : ", loading)
     }, [category]);
 
     return (

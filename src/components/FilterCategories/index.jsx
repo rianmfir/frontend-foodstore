@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from 'react';
-import { Col, Form, ListGroup, Row } from 'react-bootstrap';
+import { Col, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { loading, setCategory } from '../../app/features/Product/actions';
 import './filterCategories.scss';
 
-const FilterCategories = ({ categories, category, onFilterCategory }) => {
+const FilterCategories = ({ categories, category }) => {
 
     const dispatch = useDispatch();
 
@@ -18,11 +18,9 @@ const FilterCategories = ({ categories, category, onFilterCategory }) => {
         const Checked = () => {
             dispatch(setCategory(''))
             dispatch(loading);
-            // console.log("Checked : 1")
         }
         const unChecked = () => {
             dispatch(setCategory(state))
-            // console.log("Checked : 2")
         }
         checked
             ?

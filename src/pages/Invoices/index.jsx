@@ -23,17 +23,6 @@ const Invoices = () => {
     }, [dispatch])
 
 
-    // const invoiceDate = () => {
-    //     let date = new Date(invoices?.createdAt);
-    //     return (`${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`)
-    // }
-
-    // const invoiceAddress = () => {
-    //     return (
-    //         `${invoices.delivery_address?.detail}, ${invoices.delivery_address?.kelurahan}, ${invoices.delivery_address?.kecamatan},${invoices.delivery_address?.kabupaten}, ${invoices.delivery_address?.provinsi}`
-    //     )
-    // }
-
     const invoiceData = useCallback((data) => {
         let date = new Date(data?.createdAt);
         let invoiceDate = (`${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`);
@@ -80,8 +69,6 @@ const Invoices = () => {
                                 )
                             })
                         }
-
-
                         <Gap height={5} />
                     </div>
             },
@@ -114,8 +101,6 @@ const Invoices = () => {
         ]
     }, []);
 
-    // let invoice = id ? invoiceData(invoices) : "";
-
     useEffect(() => {
         dispatch(getInvoices(id));
     }, [dispatch, id])
@@ -126,7 +111,7 @@ const Invoices = () => {
 
     return (
 
-        <Container className="d-flex justify-content-center" style={{ minHeight: '85vh' }}>
+        <Container className="d-flex justify-content-center">
             {
                 loading
                     ?
@@ -172,7 +157,6 @@ const Invoices = () => {
                     </Col >
 
             }
-
         </Container >
     )
 }

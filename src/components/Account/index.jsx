@@ -151,18 +151,8 @@ const Account = () => {
 
             <>
                 <FormAddress show={show} toggleShow={toggleShow} updateData={updateData} />
-
-                {/* {
-                formAddress === "add"
-                    ?
-                    // <AddAddress show={show} toggleShow={toggleShow} />
-                    <FormAddress show={show} toggleShow={toggleShow} />
-                    :
-                    <UpdateAddress show={show} toggleShow={toggleShow} dataAddress={dataAddress} />
-            } */}
             </>
         </>
-        // </Container >
     )
 }
 

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Account, Navigation, Products } from "../components";
+import { Account, Logout, Navigation, Products } from "../components";
 import {
     AdminDashboard,
     ListCategories,
@@ -8,7 +8,6 @@ import {
     ListTags,
     ListUsers
 } from "../components/Admin";
-import Logout from "../components/Logout";
 import {
     UserDashboard,
     UserOrder
@@ -54,9 +53,11 @@ const Routing = () => {
 
                 }
                 <Route path="/login" element={
-                    user?.role
-                        ? <Navigate to="/" replace />
-                        : <Login />
+                    user?.role === 'admin'
+                        ? <Navigate to="/admin/dashboard" replace />
+                        : user?.role === 'user'
+                            ? <Navigate to="/" replace />
+                            : <Login />
                 } />
                 <Route path="/register" element={
                     user?.role

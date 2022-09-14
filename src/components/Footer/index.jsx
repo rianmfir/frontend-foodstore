@@ -3,7 +3,7 @@ import { Row } from 'react-bootstrap';
 
 const Footer = () => {
     return (
-        <div className="py-3"
+        <div className=""
             style={{
                 position: 'relative',
                 borderTop: '1px solid #e8e8e8',
@@ -11,6 +11,7 @@ const Footer = () => {
                 backgroundColor: 'white',
                 bottom: 0,
                 width: '100%',
+                lineHeight: 5,
                 textAlign: 'center',
             }}>
             <Row>

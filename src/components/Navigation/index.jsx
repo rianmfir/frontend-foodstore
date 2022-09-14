@@ -15,13 +15,11 @@ import { useEffect, useState } from "react";
 
 import { FaSearch } from "react-icons/fa";
 import { BsFilter } from "react-icons/bs";
-import { Link, NavLink, Outlet } from 'react-router-dom';
-import { userLogout } from '../../app/features/Auth/actions';
+import { Link, Outlet } from 'react-router-dom';
 import { getCategories, getTagsByCategory, setCategory, setKeyword } from '../../app/features/Product/actions';
 import Logo from '../atoms/Logo';
 import { MenuBar, ShoppingCart } from '../atoms';
 import Footer from '../Footer';
-import { clearOrder } from '../../app/features/Order/actions';
 import FilterCategories from '../FilterCategories';
 import FilterTags from '../FilterTags';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +27,6 @@ import { useDispatch, useSelector } from 'react-redux';
 const Navigation = () => {
 
     const dispatch = useDispatch();
-    const { keyword } = useSelector(state => state.products)
 
     const [key, setKey] = useState('');
 
@@ -48,18 +45,10 @@ const Navigation = () => {
         dispatch(setKeyword(key.keywords));
     }
 
-    const handleLogout = (e) => {
-        e.preventDefault();
-        dispatch(userLogout());
-    }
-
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getTagsByCategory(category));
     }, [dispatch, category, tag]);
-
-    // console.log("windowResolution : ", windowResolution);
-
 
     return (
         <>
@@ -167,9 +156,10 @@ const Navigation = () => {
                 </Container>
             </Navbar>
 
-            <div>
+            <div style={{ minHeight: '100vh', backgroundColor: "#f9f9f9" }}>
                 <Outlet />
             </div>
+
             <Footer />
 
         </>

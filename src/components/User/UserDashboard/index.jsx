@@ -1,9 +1,9 @@
 import React from 'react'
-import { Card, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { MdOutlineSell } from 'react-icons/md';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import { formatRupiah, sumPrice } from '../../../utils';
+import { formatRupiah } from '../../../utils';
 import { DashboardCard } from '../../atoms';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -12,7 +12,6 @@ import { setTitleDashboard } from '../../../app/features/Auth/actions';
 
 const UserDashboard = () => {
     const { orders } = useSelector(state => state.order);
-    const tes = useSelector(state => state.order);
 
     const dispatch = useDispatch();
 
@@ -21,8 +20,6 @@ const UserDashboard = () => {
         console.log('UserDashboard');
         dispatch(setTitleDashboard('Dashboard'));
     }, [dispatch])
-
-    console.log("Tes : ", tes);
 
     const userDashboard =
         [

@@ -36,8 +36,9 @@ const Login = () => {
                 <Logo type="md" />
                 {/* <Gap height={10} /> */}
                 <Form onSubmit={handleSubmit}>
-                    <p className='message'>{message}</p>
-                    <Gap height={60} />
+                    <Gap height={30} />
+                    <p className='message fs-6'><i>{message}</i></p>
+                    <Gap height={30} />
                     <p className='title'>Login</p>
                     <Gap height={18} />
 
@@ -47,6 +48,7 @@ const Login = () => {
                         type="teks"
                         placeholder="jhon@example.com"
                         required
+                        className={auth.user?.error === 1 ? 'loginError' : ''}
                         onChange={(e) => {
                             const email = e.target.value;
                             setUserState({ ...userState, ...{ email } });
@@ -59,6 +61,7 @@ const Login = () => {
                         type="password"
                         placeholder="********"
                         required
+                        className={auth.user?.error === 1 ? 'loginError' : ''}
                         onChange={(e) => {
                             const password = e.target.value;
                             setUserState({ ...userState, ...{ password } });

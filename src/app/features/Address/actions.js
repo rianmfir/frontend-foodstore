@@ -202,7 +202,7 @@ export const deleteAddress = (id) => async (dispatch) => {
             },
         })
         .then((res) => {
-            console.log("Data Yang Di Hapus : ", res.data)
+            // console.log("Data Yang Di Hapus : ", res.data)
 
             dispatch({
                 type: DELETE_ADDRESS,

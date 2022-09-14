@@ -39,7 +39,7 @@ const productState = {
         image: '',
     },
     imagePreview: '',
-    perPage: 8,
+    perPage: 12,
     totalItems: 0,
     currentPage: 1,
     category: '',

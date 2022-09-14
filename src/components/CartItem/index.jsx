@@ -74,7 +74,7 @@ const CartItem = () => {
 
     return (
 
-        <div style={{ minHeight: '85vh', backgroundColor: "#f9f9f9" }} >
+        <div >
             <Container >
                 <Gap height={30} />
                 <Col md={9}>

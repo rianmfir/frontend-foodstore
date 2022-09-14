@@ -35,12 +35,12 @@ const ListProduct = () => {
             cell: (row, index) => (perPage * (currentPage - 1)) + index + 1
         },
         {
-            name: <span className='ms-5 fw-bolder'>Gambar</span>,
+            name: <span className='text-center fw-bolder'>Gambar</span>,
             selector: row =>
                 <Image
                     style={{ height: '5rem', width: '5rem' }}
                     src={`${baseURL}/images/products/${row.image_url}`}
-                    className="my-2 ms-4"
+                    className="my-2 mx-auto border"
                     roundedCircle
                 />
         },

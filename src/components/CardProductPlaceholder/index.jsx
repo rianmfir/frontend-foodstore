@@ -6,7 +6,7 @@ import './cardProductPlaceholder.scss';
 function CardProductPlaceholder({ perPage }) {
   return (
     Array.from({ length: perPage }).map((_, idx) => (
-      <Col xs="6" md="4" lg="3" key={idx}>
+      <Col xxl="2" xl="3" md="4" sm="6" xs="12" key={idx}>
         <div className="food-card d-flex justify-content-center align-items-center flex-column">
           <div className="food-img">
             <Image src={`https://via.placeholder.com/130x130`} alt="" roundedCircle />

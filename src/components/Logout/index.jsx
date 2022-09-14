@@ -2,27 +2,33 @@ import React from 'react'
 import { useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { userLogout } from '../../app/features/Auth/actions';
+import { setCategory } from '../../app/features/Product/actions';
 
 const Logout = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        dispatch(userLogout());
+        dispatch(setCategory(''));
         setTimeout(function () {
-            dispatch(userLogout());
-            window.location.href = '/';
+            navigate('/');
         }, 1500);
-    }, [dispatch])
+    }, [dispatch, navigate])
 
     return (
-        <div className="d-flex justify-content-center align-items-center bg-black bg-opacity-50" style={{ height: ' 100vh' }}>
+        <div className="d-flex justify-content-center align-items-center bg-dark bg-opacity-10" style={{ height: ' 100vh' }}>
             <div className="text-center">
                 <Spinner animation="grow" variant="danger" />
                 <Spinner animation="grow" variant="danger" />
                 <Spinner animation="grow" variant="danger" />
                 <Spinner animation="grow" variant="danger" />
-                <p className="text-muted">L O G O U T . . .</p>
+                <Spinner animation="grow" variant="danger" />
+                <br />
+                <span className="color-primary">L   O   G   O   U   T   .   .   .   .   .</span>
             </div>
         </div>
     )
