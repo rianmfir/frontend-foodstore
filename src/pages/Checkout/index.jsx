@@ -28,6 +28,7 @@ const Checkout = () => {
     const [notSelect, setNotSelect] = useState(true);
 
     const [select, setSelect] = useState(false);
+    const [titleBtn, setTitleBtn] = useState('Bayar Sekarang');
 
     const fee = owner.data.ongkir;
 
@@ -55,6 +56,7 @@ const Checkout = () => {
             delivery_address: selectedAddress._id,
             delivery_fee: owner.data.ongkir
         }
+        setTitleBtn('Process . . .')
         try {
             dispatch(createOrder(payload));
         } catch (error) {
@@ -261,7 +263,7 @@ const Checkout = () => {
                                                 onClick={handleSubmit}
                                             >
                                                 <span style={{ color: 'white' }}>
-                                                    Bayar Sekarang
+                                                    {titleBtn}
                                                 </span>
                                             </Button>
                                         </ul>

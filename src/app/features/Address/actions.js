@@ -16,6 +16,8 @@ import {
     SET_FORM_DEFAULT
 } from "./constants"
 
+const baseURL = 'https://rianmfir.github.io/api-wilayah-indonesia';
+
 export const createAddress = (data) => {
 
     return async (dispatch) => {
@@ -132,7 +134,7 @@ export const getProvinsi = () => async (dispatch) => {
         type: LOADING
     })
     await axios
-        .get(`http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
+        .get(`${baseURL}/api/provinces.json`)
         .then(res => {
             dispatch({
                 type: GET_PROVINSI,
@@ -147,7 +149,7 @@ export const getProvinsi = () => async (dispatch) => {
 
 export const getKabupaten = (id) => async (dispatch) => {
     await axios
-        .get(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
+        .get(`${baseURL}/api/regencies/${id}.json`)
         .then(res => {
             dispatch({
                 type: GET_KABUPATEN,
@@ -160,7 +162,7 @@ export const getKabupaten = (id) => async (dispatch) => {
 }
 export const getKecamatan = (id) => async (dispatch) => {
     await axios
-        .get(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
+        .get(`${baseURL}/api/districts/${id}.json`)
         .then(res => {
             dispatch({
                 type: GET_KECAMATAN,
@@ -174,7 +176,7 @@ export const getKecamatan = (id) => async (dispatch) => {
 
 export const getKelurahan = (id) => async (dispatch) => {
     await axios
-        .get(`http://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
+        .get(`${baseURL}/api/villages/${id}.json`)
         .then(res => {
             dispatch({
                 type: GET_KELURAHAN,
