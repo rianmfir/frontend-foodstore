@@ -33,7 +33,6 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getTags());
-        // console.log(updateData);
         if (updateData?._id) {
             dispatch(setForm('name', updateData.name));
             dispatch(setForm('price', updateData.price));
@@ -57,8 +56,6 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
         const formValidation = event.currentTarget;
 
         if (isUpdate) {
-
-            console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -91,15 +88,10 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
             if (formValidation.checkValidity() === false) {
                 event.stopPropagation();
                 setValidated(true);
-                console.log("Ada Yang Kosong");
             } else {
-
-                console.log("Oke");
                 if (form.tags.length === 0) {
-                    console.log("Tags Masih Kosong");
                     setValidated(true)
                 } else {
-                    console.log("Submit")
                     dispatch(createProduct(form));
                     try {
                         setValidated(false)

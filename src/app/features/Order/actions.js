@@ -63,7 +63,7 @@ export const getOrders = () => {
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 };
@@ -85,7 +85,7 @@ export const getTotalSell = () => async (dispatch) => {
             });
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 };
 export const getInvoices = (order_id) => async (dispatch) => {
@@ -106,7 +106,7 @@ export const getInvoices = (order_id) => async (dispatch) => {
             });
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 };
 

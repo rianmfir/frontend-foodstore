@@ -18,26 +18,19 @@ const ShoppingCart = () => {
   const [Qty, setQty] = useState();
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn === true) {
       dispatch(getCartItems());
     }
   }, [dispatch, isLoggedIn])
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn === true) {
       saveCarts(cart);
       setQty(totalItemCart(cart));
       localStorage.setItem('cart', JSON.stringify(cart));
-      console.log("Cart Berubah")
+      // console.log("Cart Berubah")
     }
   }, [cart, isLoggedIn])
-
-
-  // useEffect(() => {
-  //   if (!cart?.error && user?.token) {
-  //     setQty(totalItemCart(cart));
-  //   }
-  // }, [cart])
 
   return (
     <Nav className='ms-auto '>

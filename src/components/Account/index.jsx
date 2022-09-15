@@ -34,13 +34,11 @@ const Account = () => {
         setShow(false);
         dispatch(setFormDefault());
         setUpdateData("");
-        console.log("Toggle");
     }
 
     const handleShow = () => {
         setShow(true);
         setUpdateData("");
-        console.log("Show");
     }
 
     const handleEdit = (e) => {

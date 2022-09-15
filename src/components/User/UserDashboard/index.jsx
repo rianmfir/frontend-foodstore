@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getOrders } from '../../../app/features/Order/actions';
 import { setTitleDashboard } from '../../../app/features/Auth/actions';
+import { CgNotes } from 'react-icons/cg';
 
 const UserDashboard = () => {
     const { orders } = useSelector(state => state.order);
@@ -17,7 +18,6 @@ const UserDashboard = () => {
 
     useEffect(() => {
         dispatch(getOrders());
-        console.log('UserDashboard');
         dispatch(setTitleDashboard('Dashboard'));
     }, [dispatch])
 
@@ -31,7 +31,7 @@ const UserDashboard = () => {
             {
                 label: 'Orders',
                 count: orders.count,
-                icon: <MdOutlineSell size='5em' color='#FF7C57' />
+                icon: <CgNotes size='5em' color='#FF7C57' />
             },
             {
                 label: 'Payment',

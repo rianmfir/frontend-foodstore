@@ -21,10 +21,9 @@ function FormAddress({ show, toggleShow, updateData }) {
 
     useEffect(() => {
         dispatch(getProvinsi());
-        console.log(updateData);
         if (updateData?._id) {
             setIsUpdate(true);
-            console.log("Ada Data Update")
+            // console.log("Ada Data Update")
             dispatch(setFormAddress("nama", updateData.nama))
             dispatch(setFormAddress("provinsi", updateData.provinsi))
             dispatch(setFormAddress("kabupaten", updateData.kabupaten))
@@ -53,7 +52,6 @@ function FormAddress({ show, toggleShow, updateData }) {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         dispatch(updateAddress(updateData._id, form))
-                        console.log("UPDATE DATA");
                         setIsUpdate(false)
                         toggleShow();
                         Swal.fire('Saved!', '', 'success')
@@ -78,7 +76,7 @@ function FormAddress({ show, toggleShow, updateData }) {
             } else {
                 // console.log("Submit")
                 dispatch(createAddress(form));
-                console.log("TAMBAH DATA");
+                // console.log("TAMBAH DATA");
                 try {
                     setValidated(false)
                     Swal.fire({
@@ -102,8 +100,6 @@ function FormAddress({ show, toggleShow, updateData }) {
         }
     };
 
-
-    console.log("IsUpdate : ", isUpdate);
     // Get Provinsi
     useEffect(() => {
         if (provinsi.length) {

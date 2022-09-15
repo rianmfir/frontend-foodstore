@@ -20,7 +20,7 @@ const Invoices = () => {
 
     useEffect(() => {
         dispatch(getOrders());
-    }, [dispatch])
+    }, [dispatch, id])
 
 
     const invoiceData = useCallback((data) => {
@@ -102,7 +102,9 @@ const Invoices = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(getInvoices(id));
+        if (id) {
+            dispatch(getInvoices(id));
+        }
     }, [dispatch, id])
 
     useEffect(() => {

@@ -19,14 +19,13 @@ const userRegister = (user) => {
         })
         await axios.post('/auth/register', user)
             .then(res => {
-                console.log(res.data);
                 dispatch({
                     type: REGISTER_SUCCESS,
                     payload: res.data
                 })
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
                 dispatch({
                     type: REGISTER_FAIL,
                     payload: {}
@@ -56,10 +55,7 @@ const userLogin = (user) => {
                 }
             })
             .catch(err => {
-                console.log("Ini Pesan Errornya : ", err)
-
-
-
+                console.log(err.message)
             })
     }
 }
@@ -86,7 +82,7 @@ const userLogout = () => {
 
             })
             .catch(err => {
-                console.log(err);
+                console.log(err.message);
             })
     }
 }

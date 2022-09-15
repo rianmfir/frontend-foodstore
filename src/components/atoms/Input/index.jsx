@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
+import { FloatingLabel, Form } from 'react-bootstrap';
 import './input.scss';
 
 const Input = ({ customType, dataAddress, label, options, error, ...rest }) => {

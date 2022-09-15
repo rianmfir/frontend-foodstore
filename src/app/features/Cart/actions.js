@@ -54,7 +54,7 @@ export const getCartItems = () => {
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }

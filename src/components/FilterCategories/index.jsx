@@ -14,7 +14,6 @@ const FilterCategories = ({ categories, category }) => {
     const handleChange = (state) => {
         setChecked(!checked);
         dispatch(setCategory(state));
-        console.log(checked)
         const Checked = () => {
             dispatch(setCategory(''))
             dispatch(loading);

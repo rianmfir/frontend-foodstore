@@ -127,7 +127,6 @@ const ListProduct = () => {
                         'success'
                     )
                     dispatch(deleteProduct(id))
-                    // console.log(id)
                 }
             })
         } catch (error) {

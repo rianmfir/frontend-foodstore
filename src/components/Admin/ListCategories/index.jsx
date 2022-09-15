@@ -17,7 +17,6 @@ const ListCategories = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    console.log("Data : ", data);
     const { id } = useParams();
     const handleEdit = (data) => {
         dispatch(setForm('category', data));
@@ -66,7 +65,6 @@ const ListCategories = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         if (id) {
-            console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -96,7 +94,6 @@ const ListCategories = () => {
 
 
         } else {
-            console.log("Simpan");
             dispatch(createCategory(form.category))
             try {
                 if (data?.error === 1 || form.category === "") {
@@ -199,7 +196,7 @@ const ListCategories = () => {
                                     <CustomButton style={{ backgroundColor: `grey` }} title={'Batal'} width="50" value={"kategori"} onClick={handleCancel} />
                                 </Col>
                                 :
-                                null
+                                ""
                         }
                     </Row>
                 </Form>

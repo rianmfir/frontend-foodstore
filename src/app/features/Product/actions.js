@@ -98,7 +98,6 @@ export const getProducts = () => {
         await axios.get('/api/products', { params })
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: SUCCESS
                 })
@@ -108,7 +107,7 @@ export const getProducts = () => {
                 })
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -123,14 +122,13 @@ export const deleteProduct = (id) => {
         })
             .then(res => {
                 let { data } = res
-                console.log(data);
                 dispatch({
                     type: DELETE_PRODUCT,
                     payload: data
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -220,7 +218,6 @@ export const getCategories = () => {
         await axios.get('/api/categories')
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: GET_CATEGORIES,
                     payload: data
@@ -280,14 +277,13 @@ export const deleteCategory = (id) => {
         })
             .then(res => {
                 let { data } = res
-                console.log(data);
                 dispatch({
                     type: DELETE_CATEGORY,
                     payload: data
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -331,7 +327,6 @@ export const getTags = () => {
         await axios.get('/api/tags')
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: GET_TAGS,
                     payload: data
@@ -349,17 +344,13 @@ export const getTagsByCategory = (category) => {
         await axios.get(`/api/tags/${category}`)
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: GET_TAGS_BY_CATEGORY,
                     payload: data
                 })
-                // dispatch({
-                //     type: SUCCESS,
-                // })
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -412,14 +403,13 @@ export const deleteTag = (id) => {
         })
             .then(res => {
                 let { data } = res
-                console.log(data);
                 dispatch({
                     type: DELETE_TAG,
                     payload: data
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }

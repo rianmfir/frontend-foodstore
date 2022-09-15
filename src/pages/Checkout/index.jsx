@@ -20,7 +20,6 @@ const Checkout = () => {
     const baseURL = axios.defaults.baseURL;
     const navigate = useNavigate();
 
-    // const { address, data } = useSelector(state => state.address);
     const address = useSelector(state => state.address);
     const { data } = useSelector(state => state.order);
     const cart = useSelector(state => state.cart);
@@ -175,7 +174,7 @@ const Checkout = () => {
                                                 {
                                                     name: <span className='mx-auto fw-bolder'>Quantity</span>,
                                                     cell: row =>
-                                                        <div className='mx-auto border'>
+                                                        <div className='mx-auto'>
                                                             {row.qty}
                                                         </div>
                                                 },
