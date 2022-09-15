@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Card, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { AiOutlineUser } from 'react-icons/ai';
 import { MdOutlineSell } from 'react-icons/md';
 import { IoFastFoodOutline } from 'react-icons/io5';

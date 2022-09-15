@@ -6,7 +6,8 @@ import {
     GET_ORDERS,
     SET_ORDER_ID,
     LOADING,
-    GET_TOTAL_SELL
+    GET_TOTAL_SELL,
+    SET_PAGE,
 } from "./constants";
 
 export const createOrder = (payload) => {
@@ -34,26 +35,37 @@ export const createOrder = (payload) => {
     }
 }
 
-export const getOrders = () => async (dispatch) => {
-    let { token } = localStorage.getItem("auth")
-        ? JSON.parse(localStorage.getItem("auth"))
-        : {};
+export const getOrders = () => {
 
-    await axios
-        .get(`api/orders`, {
-            headers: {
-                authorization: `Bearer ${token}`,
-            },
-        })
-        .then((res) => {
-            dispatch({
-                type: GET_ORDERS,
-                payload: res.data,
-            });
-        })
-        .catch(err => {
-            console.log(err.response);
-        })
+    return async (dispatch, getState) => {
+        let { token } = localStorage.getItem("auth")
+            ? JSON.parse(localStorage.getItem("auth"))
+            : {};
+
+        let perPage = getState().order.perPage || 10;
+        let currentPage = getState().order.currentPage || 1;
+
+        const params = {
+            limit: perPage,
+            skip: (currentPage * perPage) - perPage,
+        }
+
+        await axios
+            .get(`api/orders?limit=${params.limit}&skip=${params.skip}`, {
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            })
+            .then((res) => {
+                dispatch({
+                    type: GET_ORDERS,
+                    payload: res,
+                });
+            })
+            .catch(err => {
+                console.log(err.message);
+            })
+    }
 };
 
 export const getTotalSell = () => async (dispatch) => {
@@ -73,7 +85,7 @@ export const getTotalSell = () => async (dispatch) => {
             });
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 };
 export const getInvoices = (order_id) => async (dispatch) => {
@@ -94,7 +106,7 @@ export const getInvoices = (order_id) => async (dispatch) => {
             });
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 };
 
@@ -110,3 +122,10 @@ export function clearOrder() {
         type: CLEAR_ORDER
     }
 }
+
+export const setPage = (page = 1) => ({
+    type: SET_PAGE,
+    payload: {
+        currentPage: page
+    }
+})

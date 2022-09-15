@@ -3,15 +3,16 @@ import { useState } from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAddresses } from '../../app/features/Address/actions';
+import { getAddresses, setFormDefault } from '../../app/features/Address/actions';
 import { clearItem } from '../../app/features/Cart/actions';
-import { Gap } from '../../components/atoms';
+import { Button as CustomButton, Gap } from '../../components/atoms';
 import { formatRupiah, sumPrice } from '../../utils';
 import { owner } from '../../assets/owner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { createOrder } from '../../app/features/Order/actions';
+import { createOrder, setOrderId } from '../../app/features/Order/actions';
 import { BreadCrumb } from '../../components';
+import { FormAddress } from '../../components/User';
 
 const Checkout = () => {
     const dispatch = useDispatch();
@@ -19,9 +20,9 @@ const Checkout = () => {
     const baseURL = axios.defaults.baseURL;
     const navigate = useNavigate();
 
-    const { address } = useSelector(state => state.address);
+    const address = useSelector(state => state.address);
+    const { data } = useSelector(state => state.order);
     const cart = useSelector(state => state.cart);
-    const order = useSelector(state => state.order);
 
     const [selectedAddress, setSelectedAddress] = useState("");
     const [notSelect, setNotSelect] = useState(true);
@@ -33,7 +34,7 @@ const Checkout = () => {
     useEffect(() => {
         dispatch(getAddresses())
 
-    }, [dispatch])
+    }, [dispatch, address.data])
 
     const handleAddress = row => {
         if (row.selectedCount > 0) {
@@ -54,23 +55,41 @@ const Checkout = () => {
             delivery_address: selectedAddress._id,
             delivery_fee: owner.data.ongkir
         }
-        dispatch(createOrder(payload));
-        if (!order.data?.error) {
-            navigate(`/invoices`)
-            dispatch(clearItem());
+        try {
+            dispatch(createOrder(payload));
+        } catch (error) {
+            console.log(error.message);
         }
-
     }
 
-    console.log("ID Address Dipilih : ", selectedAddress._id)
+    useEffect(() => {
+        if (data?._id) {
+            dispatch(setOrderId(data._id));
+            navigate(`/invoices`);
+            dispatch(clearItem());
+        }
+    }, [dispatch, navigate, data?._id])
+
+
+    const [show, setShow] = useState(false);
+
+    const toggleShow = () => {
+        setShow(false);
+        dispatch(setFormDefault());
+    }
+
+    const handleShow = () => {
+        setShow(true);
+    }
+
 
     const breadcrumb = [
         { label: 'Home', path: '/' },
         { label: 'Checkout', path: 'checkout' },
     ];
-    return (
-        <div style={{ minHeight: '100vh', backgroundColor: "#f9f9f9" }} >
 
+    return (
+        <div>
             <Container >
                 <Gap height={30} />
                 <Col md={9}>
@@ -78,6 +97,10 @@ const Checkout = () => {
                 </Col>
                 <Row>
                     <Col lg="8">
+                        <Col md={3} className="ms-auto my-3">
+                            {/* <CustomButton onClick={handleShowAdd} title={'Tambah Alamat'} /> */}
+                            <CustomButton onClick={handleShow} title={'Tambah Alamat'} />
+                        </Col>
                         <Row className="shadow-lg p-3 mb-4 bg-body rounded">
                             <Col style={{ cursor: "pointer" }} onClick={addressMenu}>
                                 {
@@ -107,7 +130,7 @@ const Checkout = () => {
                                                         cell: row => `${row.detail}, ${row.kelurahan}, ${row.kecamatan}, ${row.kabupaten}, ${row.provinsi}`
                                                     }
                                                 ]}
-                                                data={address}
+                                                data={address.address}
                                                 onSelectedRowsChange={handleAddress}
                                                 selectableRows
                                                 selectableRowsSingle={true}
@@ -117,10 +140,11 @@ const Checkout = () => {
                                     </Col>
                                 </Row>
                                 :
-                                ""
+                                null
                         }
 
                         <Gap height={20} />
+
                         <Row>
                             <Container>
                                 <Card className='mb-5'>
@@ -131,17 +155,18 @@ const Checkout = () => {
                                                 {
                                                     name: <span className='mx-auto fw-bolder'>Produk</span>,
                                                     cell: row =>
-                                                        <div className="d-flex flex-wrap py-3 mx-auto">
+                                                        <div className="d-flex flex-row py-4">
                                                             <Image
-                                                                src={`${baseURL}images/products/${row.image_url}`} rounded
+                                                                src={`${baseURL}images/products/${row.image_url}`}
                                                                 width="90"
                                                                 height="90"
                                                                 roundedCircle
+                                                                className="border border-grey"
                                                             />
                                                             <Gap width={10} />
-                                                            <div className='d-flex flex-column align-item-center justify-content-center '>
-                                                                <span className=''>{row.name}</span>
-                                                                <span className=''>{formatRupiah(row.price)}</span>
+                                                            <div className='d-flex flex-column align-item-center justify-content-center mx-auto'>
+                                                                <span>{row.name}</span>
+                                                                <span>{formatRupiah(row.price)}</span>
                                                             </div>
 
                                                         </div>
@@ -209,9 +234,9 @@ const Checkout = () => {
                                             </li>
                                             <hr style={{ color: 'green' }} className='mt-0' />
 
-                                            <li className="d-flex">
+                                            <li className="d-flex justify-content-between">
                                                 <p>Nama Penerima</p>
-                                                <p className='ms-auto fw-bolder'>{owner.data.nama}</p>
+                                                <p className='fw-bolder text-end'>{owner.data.nama}</p>
                                             </li>
                                             <hr style={{ color: 'green' }} className='mt-0' />
 
@@ -220,7 +245,6 @@ const Checkout = () => {
                                                 <p className='ms-auto fw-bolder'>
                                                     {
                                                         selectedAddress
-                                                            // ? formatRupiah(sumPrice(cart) + parseInt(owner.data.ongkir))
                                                             ? formatRupiah(parseInt(sumPrice(cart) + (owner.data.ongkir)))
                                                             : "-"
                                                     }
@@ -247,6 +271,11 @@ const Checkout = () => {
                         </Row>
                     </Col>
                 </Row >
+
+                <>
+                    <FormAddress show={show} toggleShow={toggleShow} />
+                </>
+
             </Container >
         </div>
     )

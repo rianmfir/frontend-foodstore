@@ -5,32 +5,25 @@ import DataTable from 'react-data-table-component';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { deleteProduct, getProducts, setFormDefault, setPage } from '../../../app/features/Product/actions';
 import { formatRupiah } from '../../../utils';
 import { Button as CustomButton } from '../../atoms';
 import Paginate from '../../Paginate';
+import Swal from 'sweetalert2';
 import FormProduct from '../FormProduct';
 
 const ListProduct = () => {
 
     const baseURL = axios.defaults.baseURL;
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const {
         data,
         product,
-        categories,
-        tags,
         currentPage,
         totalItems,
         perPage,
-        keyword,
-        category,
-        tag,
         loading
     } = useSelector(state => state.products);
 
@@ -42,12 +35,12 @@ const ListProduct = () => {
             cell: (row, index) => (perPage * (currentPage - 1)) + index + 1
         },
         {
-            name: <span className='ms-5 fw-bolder'>Gambar</span>,
+            name: <span className='text-center fw-bolder'>Gambar</span>,
             selector: row =>
                 <Image
                     style={{ height: '5rem', width: '5rem' }}
                     src={`${baseURL}/images/products/${row.image_url}`}
-                    className="my-2 ms-4"
+                    className="my-2 mx-auto border"
                     roundedCircle
                 />
         },
@@ -84,11 +77,9 @@ const ListProduct = () => {
                 <div className="justify-content-between">
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Edit</Tooltip>}>
-                        {/* <Link to={`${row._id}`}> */}
                         <Button onClick={() => handleEdit(row)} variant='warning' className='me-2'>
                             <span><FaEdit color="white" size={22} /></span>
                         </Button>
-                        {/* </Link> */}
                     </OverlayTrigger>
 
                     <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Hapus</Tooltip>}>
@@ -136,7 +127,6 @@ const ListProduct = () => {
                         'success'
                     )
                     dispatch(deleteProduct(id))
-                    // console.log(id)
                 }
             })
         } catch (error) {
@@ -177,7 +167,6 @@ const ListProduct = () => {
                                     activePage={currentPage}
                                     total={Math.ceil(totalItems / perPage)}
                                     onPageChange={(page) => dispatch(setPage(page))}
-                                // coba={tags}
                                 />
                             </div>
                         </Card.Body>

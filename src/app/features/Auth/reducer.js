@@ -6,20 +6,23 @@ import {
     LOGOUT_SUCCESS,
     GET_USERS,
     SET_TITLE_DASHBOARD,
+    SET_PAGE,
+    CLEAR_AUTH,
 } from "./constants";
 
 const auth = localStorage.getItem('auth');
 const user = JSON.parse(auth);
 const initState = auth
-    ? { isLoggedIn: true, user, data: [], titleDashboard: '' }
-    : { isLoggedIn: false, user: null, data: [], titleDashboard: '' };
+    ? { isLoggedIn: true, user, data: [], titleDashboard: '', perPage: 10, totalItems: 0, currentPage: 1 }
+    : { isLoggedIn: false, user: null, data: [], titleDashboard: '', perPage: 10, totalItems: 0, currentPage: 1 };
 
 const authReducer = (state = initState, { type, payload }) => {
     switch (type) {
         case GET_USERS:
             return {
                 ...state,
-                data: payload
+                data: payload,
+                totalItems: payload.count
             }
         case REGISTER_SUCCESS:
             return {
@@ -40,19 +43,30 @@ const authReducer = (state = initState, { type, payload }) => {
         case LOGIN_FAIL:
             return {
                 ...state,
-                isLoggedIn: false,
                 user: payload,
             }
         case LOGOUT_SUCCESS:
             return {
                 ...state,
-                // isLoggedIn: false,
-                message: payload
+                isLoggedIn: false,
+                data: [],
+                user: null,
+                titleDashboard: ''
             }
         case SET_TITLE_DASHBOARD:
             return {
                 ...state,
                 titleDashboard: payload,
+            }
+        case CLEAR_AUTH:
+            return {
+                ...state,
+                user: null
+            }
+        case SET_PAGE:
+            return {
+                ...state,
+                currentPage: payload.currentPage
             }
         default:
             return state;

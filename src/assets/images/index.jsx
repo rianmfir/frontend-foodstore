@@ -1,7 +1,7 @@
-import dummyImage from './login-bg.jpg';
+import LoginBg from './login-bg.jpg';
 import RegisterBg from './register-bg.jpg';
 
 export {
-    dummyImage,
+    LoginBg,
     RegisterBg,
 };

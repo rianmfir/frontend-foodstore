@@ -7,7 +7,8 @@ const Logo = ({ type }) => {
     return (
         <div>
             {
-                type === "md" ?
+                type === "md"
+                    ?
                     <div as={Link} to='/' className='pt-3 text-decoration-none'>
                         <div className='d-flex justify-content-center'>
                             <MdShoppingBasket size={70} className="me-1 text-success" />
@@ -18,11 +19,13 @@ const Logo = ({ type }) => {
                     </div>
                     :
                     <div as={Link} to='/' className='pt-3 text-decoration-none'>
-                        <MdShoppingBasket size={30} className="me-1 text-success" />
-                        <strong>
-                            <span style={{ color: '#FF7C57' }}>Food</span>
-                            <span style={{ color: '#9eeb47f7' }}>Store</span>
-                        </strong>
+                        <div className='d-flex my-auto'>
+                            <MdShoppingBasket size={30} className="me-1 text-success" />
+                            <strong >
+                                <span style={{ color: '#FF7C57' }}>Food</span>
+                                <span style={{ color: '#9eeb47f7' }}>Store</span>
+                            </strong>
+                        </div>
                     </div>
             }
         </div>

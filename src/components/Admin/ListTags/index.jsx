@@ -17,7 +17,6 @@ const ListTags = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    console.log("Data : ", data);
     const { id } = useParams();
     const handleEdit = (data) => {
         dispatch(setForm('tags', data));
@@ -66,7 +65,6 @@ const ListTags = () => {
     const onSubmit = (event) => {
         event.preventDefault();
         if (id) {
-            console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -91,19 +89,16 @@ const ListTags = () => {
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong!',
-                    // footer: '<a href="">Why do I have this issue?</a>'
                 })
             }
 
         } else {
-            console.log("Simpan");
             dispatch(createTag(form.tags))
             try {
                 if (data?.error === 1 || !form.tags) {
                     const formValidation = event.currentTarget;
                     if (formValidation.checkValidity() === false) {
                         event.stopPropagation();
-                        // console.log("FORM : ", form);
                     }
                     setValidated(true);
                 } else {
@@ -145,7 +140,6 @@ const ListTags = () => {
                         'success'
                     )
                     dispatch(deleteTag(id))
-                    // console.log(id)
                 }
             })
         } catch (error) {

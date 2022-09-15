@@ -52,11 +52,8 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: var(--background);
-    // background-color: var(--red);
     padding: 150px 50px;
-    transition: all 0.5 ease;
     margin-left: 240px;
-
 }
 
 .menus {
@@ -65,37 +62,6 @@ body {
     margin-left: 30px;
     gap: 24px;
 }
-
-// .item-menu {
-//     display: flex;
-//     gap: 16px;
-//     color: var(--dark-grey);
-//     font-size: 16px;
-//     position: relative;
-//     text-decoration: none;
-// }
-
-// .item-menu.active span,
-// .item-menu:hover span {
-//     color: var(--dark-blue);
-//     font-weight: 500;
-// }
-
-// .item-menu.active .icon-menu,
-// .item-menu:hover .icon-menu {
-//     color: var(--purple);
-// }
-
-// .item-menu.active::after {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     right: 0;
-//     bottom: 0;
-//     width: 3px;
-//     border-radius: 4px;
-//     background-color: var(--blue);
-// }
 
 .nav-tabs .nav-link {
     color: #000000;

@@ -12,7 +12,7 @@ const BreadCrumb = ({ items }) => {
                     <Breadcrumb.Item
                         key={i}
                         active={i + 1 === items.length}
-                        onClick={() => i + 1 !== items.length ? navigate(`${item.path}`) : null}
+                        onClick={() => i + 1 !== items.length ? navigate(`${item.path}`) : ''}
                     >
                         {item.label}
                     </Breadcrumb.Item>

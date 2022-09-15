@@ -1,14 +1,15 @@
 import React from 'react'
-import { Card, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { MdOutlineSell } from 'react-icons/md';
 import { IoFastFoodOutline } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import { formatRupiah, sumPrice } from '../../../utils';
+import { formatRupiah } from '../../../utils';
 import { DashboardCard } from '../../atoms';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getOrders } from '../../../app/features/Order/actions';
 import { setTitleDashboard } from '../../../app/features/Auth/actions';
+import { CgNotes } from 'react-icons/cg';
 
 const UserDashboard = () => {
     const { orders } = useSelector(state => state.order);
@@ -17,23 +18,20 @@ const UserDashboard = () => {
 
     useEffect(() => {
         dispatch(getOrders());
-        console.log('UserDashboard');
         dispatch(setTitleDashboard('Dashboard'));
     }, [dispatch])
-
-    console.log(orders);
 
     const userDashboard =
         [
             {
                 label: 'Items',
-                count: orders.totalItems,
+                count: orders.totalItemsOrder,
                 icon: <IoFastFoodOutline size='5em' color='#FF7C57' />
             },
             {
                 label: 'Orders',
-                count: orders.data?.length,
-                icon: <MdOutlineSell size='5em' color='#FF7C57' />
+                count: orders.count,
+                icon: <CgNotes size='5em' color='#FF7C57' />
             },
             {
                 label: 'Payment',

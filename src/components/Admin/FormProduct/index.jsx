@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Col, FloatingLabel, Form, Image, InputGroup, Modal, Row, Tooltip } from 'react-bootstrap';
+import { Col, Form, Image, Modal, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { createProduct, deleteProduct, getCategories, getTags, getTagsByCategory, setForm, setImagePreview, updateProduct } from '../../../app/features/Product/actions';
+import { createProduct, getCategories, getTags, setForm, setImagePreview, updateProduct } from '../../../app/features/Product/actions';
 import { Button, Input } from '../../atoms';
-import Select, { components, ControlProps, ContainerProps } from 'react-select';
+import Select, { components } from 'react-select';
 import './formProduct.scss';
 
 
@@ -13,12 +13,10 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
 
     const dispatch = useDispatch();
     const baseURL = axios.defaults.baseURL;
-    console.log("Base URL : ", baseURL);
+
     const {
         categories,
         tags,
-        data,
-        error,
         form,
         imagePreview
     } = useSelector(state => state.products);
@@ -30,33 +28,24 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
         const file = e.target.files[0];
         dispatch(setForm("image", file))
         dispatch(setImagePreview(URL.createObjectURL(file)));
-        // setImagess(file);
-        // setImagePreviewss(URL.createObjectURL(file));
     }
-
-    // console.log("SetImage : ", imagePreview)
-    // console.log("isUpdate : ", isUpdate)
-    // console.table('ID : ', updateData?._id);
 
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getTags());
-        console.log(updateData);
         if (updateData?._id) {
             dispatch(setForm('name', updateData.name));
             dispatch(setForm('price', updateData.price));
             dispatch(setForm('category', updateData.category));
             dispatch(setForm('tags', options(updateData.tags)));
-            // dispatch(setForm('image', updateData.image_url));
             dispatch(setImagePreview(`${baseURL}images/products/${updateData.image_url}`));
             setIsUpdate(true);
-            console.table(updateData);
 
             return () => {
                 setIsUpdate(false);
             }
         }
-    }, [dispatch, updateData])
+    }, [dispatch, baseURL, updateData])
 
     useEffect(() => {
         setValidated(false)
@@ -67,8 +56,6 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
         const formValidation = event.currentTarget;
 
         if (isUpdate) {
-
-            console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -93,7 +80,6 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong!',
-                    // footer: '<a href="">Why do I have this issue?</a>'
                 })
             }
 
@@ -102,16 +88,10 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
             if (formValidation.checkValidity() === false) {
                 event.stopPropagation();
                 setValidated(true);
-                // dispatch(createProduct(form));
-                console.log("Ada Yang Kosong");
             } else {
-
-                console.log("Oke");
                 if (form.tags.length === 0) {
-                    console.log("Tags Masih Kosong");
                     setValidated(true)
                 } else {
-                    console.log("Submit")
                     dispatch(createProduct(form));
                     try {
                         setValidated(false)
@@ -149,8 +129,6 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
         })
     }
 
-    console.log("Image : ", form.image)
-
     const handleChanges = (e) => {
         dispatch(setForm('tags', e));
     };
@@ -187,11 +165,9 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
                                     type="teks"
                                     placeholder="Kentang Goreng"
                                     value={form?.name}
-                                    // isInvalid={isInvalidName}
                                     onChange={(e) => {
                                         dispatch(setForm("name", e.target.value))
                                     }}
-
                                 />
                                 <Input
                                     label={"Harga"}
@@ -254,7 +230,7 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
                                             <span style={{ fontSize: '14px', color: '#dc3545' }} className="pt-0">
                                                 Tags harus dipilih
                                             </span>
-                                            : null
+                                            : ''
                                     }
 
                                 </div>
@@ -268,12 +244,8 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
                                         label={"Pilih Gambar"}
                                         customType='file'
                                         required
-                                        // value={form?.image}
                                         onChange={(e) => {
                                             onImageUpload(e);
-                                            // const image = e.target.files[0];
-                                            // setImagePreview(URL.createObjectURL(image));
-                                            // setInputProduct({ ...inputProduct, ...{ image } });
                                         }}
                                     />
                                 </div>

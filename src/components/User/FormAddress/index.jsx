@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Row, Modal, Form } from 'react-bootstrap';
-import DataTable from 'react-data-table-component';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { Col, Row, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { clearItem, createAddress, deleteAddress, getAddresses, getKabupaten, getKecamatan, getKelurahan, getProvinsi, setFormAddress, updateAddress } from '../../../app/features/Address/actions';
+import { createAddress, getKabupaten, getKecamatan, getKelurahan, getProvinsi, setFormAddress, updateAddress } from '../../../app/features/Address/actions';
 import { Button, Input } from '../../atoms';
 
 function FormAddress({ show, toggleShow, updateData }) {
@@ -15,20 +13,17 @@ function FormAddress({ show, toggleShow, updateData }) {
     const [isUpdate, setIsUpdate] = useState(false);
 
     const {
-        data,
         provinsi,
         kabupaten,
         kecamatan,
         kelurahan,
-        error,
         form } = useSelector(state => state.address)
 
     useEffect(() => {
         dispatch(getProvinsi());
-        console.log(updateData);
         if (updateData?._id) {
             setIsUpdate(true);
-            console.log("Ada Data Update")
+            // console.log("Ada Data Update")
             dispatch(setFormAddress("nama", updateData.nama))
             dispatch(setFormAddress("provinsi", updateData.provinsi))
             dispatch(setFormAddress("kabupaten", updateData.kabupaten))
@@ -43,12 +38,10 @@ function FormAddress({ show, toggleShow, updateData }) {
         }
     }, [dispatch, updateData])
 
-    // console.log("updateData : ", updateData);
     const onSubmit = (event) => {
         event.preventDefault();
         const formValidation = event.currentTarget;
         if (isUpdate) {
-            // console.log("Update")
             try {
                 Swal.fire({
                     title: 'Do you want to save the changes?',
@@ -58,8 +51,7 @@ function FormAddress({ show, toggleShow, updateData }) {
                     denyButtonText: `Don't save`,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // dispatch(updateAddress(updateData._id, form))
-                        console.log("UPDATE DATA");
+                        dispatch(updateAddress(updateData._id, form))
                         setIsUpdate(false)
                         toggleShow();
                         Swal.fire('Saved!', '', 'success')
@@ -83,8 +75,8 @@ function FormAddress({ show, toggleShow, updateData }) {
                 // console.log("Ada Yang Kosong");
             } else {
                 // console.log("Submit")
-                // dispatch(createAddress(form));
-                console.log("TAMBAH DATA");
+                dispatch(createAddress(form));
+                // console.log("TAMBAH DATA");
                 try {
                     setValidated(false)
                     Swal.fire({
@@ -94,7 +86,6 @@ function FormAddress({ show, toggleShow, updateData }) {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    // console.table(form);
                     toggleShow();
                 } catch (err) {
                     console.log(err.message);
@@ -109,8 +100,6 @@ function FormAddress({ show, toggleShow, updateData }) {
         }
     };
 
-
-    console.log("IsUpdate : ", isUpdate);
     // Get Provinsi
     useEffect(() => {
         if (provinsi.length) {

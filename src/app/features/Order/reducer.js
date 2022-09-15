@@ -1,7 +1,19 @@
-import { CLEAR_ORDER, CREATE_ORDER, GET_INVOICES, GET_ORDERS, GET_TOTAL_SELL, LOADING, SET_ORDER_ID } from "./constants";
+import {
+    CLEAR_ORDER,
+    CREATE_ORDER,
+    GET_INVOICES,
+    GET_ORDERS,
+    GET_TOTAL_SELL,
+    LOADING,
+    SET_ORDER_ID,
+    SET_PAGE
+} from "./constants";
 
 const productState = {
     orders: [],
+    perPage: 10,
+    totalItems: 0,
+    currentPage: 1,
     invoices: [],
     loading: false,
     data: [],
@@ -30,8 +42,8 @@ const orderReducer = (state = productState, { type, payload }) => {
         case GET_ORDERS:
             return {
                 ...state,
-                orders: payload
-                // loading: false
+                orders: payload.data,
+                totalItems: payload.data.count,
             };
         case GET_TOTAL_SELL:
             return {
@@ -49,6 +61,12 @@ const orderReducer = (state = productState, { type, payload }) => {
             return {
                 ...state,
                 loading: true
+            };
+
+        case SET_PAGE:
+            return {
+                ...state,
+                currentPage: payload.currentPage
             };
         default:
             return state;

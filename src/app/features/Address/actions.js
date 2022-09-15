@@ -12,7 +12,6 @@ import {
     LOADING,
     SUCCESS,
     UPDATE_ADDRESS,
-    SET_FORM,
     SET_FORM_ADDRESS,
     SET_FORM_DEFAULT
 } from "./constants"
@@ -54,7 +53,7 @@ export const createAddress = (data) => {
                     type: ERROR,
                     payload: err.message
                 })
-                console.log("ERROR : ", err.message);
+                console.log(err.message);
             })
     }
 }
@@ -82,7 +81,7 @@ export const getAddresses = () => async (dispatch) => {
             });
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 };
 
@@ -123,7 +122,7 @@ export const updateAddress = (id, data) => {
                     type: ERROR,
                     payload: err.message
                 })
-                console.log("ERROR : ", err.message);
+                console.log(err.message);
             })
     }
 }
@@ -135,7 +134,6 @@ export const getProvinsi = () => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`)
         .then(res => {
-            // console.log("Daftar Provinsi : ", res.data)
             dispatch({
                 type: GET_PROVINSI,
                 payload: res.data
@@ -143,7 +141,7 @@ export const getProvinsi = () => async (dispatch) => {
             )
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 }
 
@@ -151,28 +149,26 @@ export const getKabupaten = (id) => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`)
         .then(res => {
-            // console.log("Daftar Kota/Kabupaten : ", res.data)
             dispatch({
                 type: GET_KABUPATEN,
                 payload: res.data
             })
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 }
 export const getKecamatan = (id) => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`)
         .then(res => {
-            // console.log("Daftar Kecamatan : ", res.data)
             dispatch({
                 type: GET_KECAMATAN,
                 payload: res.data
             })
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 }
 
@@ -180,14 +176,13 @@ export const getKelurahan = (id) => async (dispatch) => {
     await axios
         .get(`http://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`)
         .then(res => {
-            console.log("Daftar Kelurahan : ", res.data)
             dispatch({
                 type: GET_KELURAHAN,
                 payload: res.data
             })
         })
         .catch(err => {
-            console.log(err.response);
+            console.log(err.message);
         })
 }
 
@@ -203,8 +198,6 @@ export const deleteAddress = (id) => async (dispatch) => {
             },
         })
         .then((res) => {
-            console.log("Data Yang Di Hapus : ", res.data)
-
             dispatch({
                 type: DELETE_ADDRESS,
                 payload: res.data

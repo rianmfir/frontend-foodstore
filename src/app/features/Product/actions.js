@@ -22,7 +22,6 @@ import {
     DELETE_TAG,
     UPDATE_TAG,
     DELETE_PRODUCT,
-    TITLE,
     SET_TITLE,
     UPDATE_PRODUCT
 } from "./constants";
@@ -38,8 +37,6 @@ export const createProduct = (data) => {
         payload.append("tags", data.tags[i].value);
     }
     payload.append("image", data.image);
-
-
 
     return async (dispatch) => {
         const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
@@ -82,7 +79,7 @@ export const getProducts = () => {
 
     return async (dispatch, getState) => {
 
-        let perPage = getState().products.perPage || 8;
+        let perPage = getState().products.perPage || 12;
         let currentPage = getState().products.currentPage || 1;
         let category = getState().products.category || '';
         let tags = getState().products.tag || '';
@@ -101,7 +98,6 @@ export const getProducts = () => {
         await axios.get('/api/products', { params })
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: SUCCESS
                 })
@@ -111,7 +107,7 @@ export const getProducts = () => {
                 })
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -126,14 +122,13 @@ export const deleteProduct = (id) => {
         })
             .then(res => {
                 let { data } = res
-                console.log(data);
                 dispatch({
                     type: DELETE_PRODUCT,
                     payload: data
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -150,9 +145,7 @@ export const updateProduct = (id, data) => {
 
     return async (dispatch) => {
         const { token } = localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : {};
-        // dispatch({
-        //     type: LOADING
-        // })
+
         await axios
             .put(`/api/products/${id}`, payload, {
                 headers: {
@@ -225,7 +218,6 @@ export const getCategories = () => {
         await axios.get('/api/categories')
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: GET_CATEGORIES,
                     payload: data
@@ -285,14 +277,13 @@ export const deleteCategory = (id) => {
         })
             .then(res => {
                 let { data } = res
-                console.log(data);
                 dispatch({
                     type: DELETE_CATEGORY,
                     payload: data
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -336,7 +327,6 @@ export const getTags = () => {
         await axios.get('/api/tags')
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: GET_TAGS,
                     payload: data
@@ -354,17 +344,13 @@ export const getTagsByCategory = (category) => {
         await axios.get(`/api/tags/${category}`)
             .then(res => {
                 let { data } = res
-                // console.log(data);
                 dispatch({
                     type: GET_TAGS_BY_CATEGORY,
                     payload: data
                 })
-                // dispatch({
-                //     type: SUCCESS,
-                // })
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -417,14 +403,13 @@ export const deleteTag = (id) => {
         })
             .then(res => {
                 let { data } = res
-                console.log(data);
                 dispatch({
                     type: DELETE_TAG,
                     payload: data
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.message);
             })
     }
 }
@@ -440,18 +425,6 @@ export const setCategory = (category) => ({
     type: SET_CATEGORY,
     payload: category,
 })
-// export const setCategory = (category) => {
-//     return (dispatch) => {
-//         dispatch({
-//             type: SET_CATEGORY,
-//             payload: category,
-//         })
-//         dispatch({
-//             type: SET_TAG,
-//             payload: []
-//         })
-//     }
-// }
 
 export const setTag = (tag) => ({
     type: SET_TAG,

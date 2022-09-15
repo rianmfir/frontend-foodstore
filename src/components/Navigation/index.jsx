@@ -2,52 +2,37 @@ import './navigation.scss';
 
 import {
     Container,
-    FormControl,
+
     InputGroup,
     Nav, Navbar,
-    Dropdown,
     Form,
     Button,
-    NavDropdown,
     Offcanvas,
     Col
 } from 'react-bootstrap';
-// import { Button } from '../atoms'
 
 import { useEffect, useState } from "react";
 
 import { FaSearch } from "react-icons/fa";
-import { BsFilter, BsPersonCircle } from "react-icons/bs";
-import { MdClose, MdOutlineDashboard, MdShoppingBasket, MdShoppingCart } from 'react-icons/md'
-import { CgNotes, CgShoppingCart } from 'react-icons/cg'
-import { IoMdLogOut } from 'react-icons/io'
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, Outlet } from 'react-router-dom';
-import { userLogout } from '../../app/features/Auth/actions';
+import { BsFilter } from "react-icons/bs";
+import { Link, Outlet } from 'react-router-dom';
 import { getCategories, getTagsByCategory, setCategory, setKeyword } from '../../app/features/Product/actions';
 import Logo from '../atoms/Logo';
-import { AiOutlineUser } from 'react-icons/ai';
-import { totalItemCart } from '../../utils';
 import { MenuBar, ShoppingCart } from '../atoms';
 import Footer from '../Footer';
-import { clearOrder } from '../../app/features/Order/actions';
 import FilterCategories from '../FilterCategories';
 import FilterTags from '../FilterTags';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navigation = () => {
 
     const dispatch = useDispatch();
-
-    // let cart = useSelector((state) => state.cart);
-    const { keyword } = useSelector(state => state.products)
 
     const [key, setKey] = useState('');
 
     const auth = JSON.parse(localStorage.getItem('auth'));
 
     const windowResolution = window.innerWidth;
-    // console.log("Resolution : ", windowResolution)
-
     const {
         categories,
         tags,
@@ -55,41 +40,9 @@ const Navigation = () => {
         tag
     } = useSelector(state => state.products);
 
-
-    // useEffect(() => {
-    //     const navs = [
-    //         {
-    //             name: "Dashboard",
-    //             path: "/user/dashboard",
-    //             icon: <MdOutlineDashboard strokeWidth='0.5' size="1em" color='#fbd560' className="me-1 " />
-
-    //         },
-    //         {
-    //             name: "Account",
-    //             path: "/user/account",
-    //             icon: <AiOutlineUser strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
-
-    //         },
-    //         {
-    //             name: "Orders",
-    //             path: "/user/order",
-    //             icon: <CgNotes strokeWidth='0.5' size="1.2em" color='#fbd560' className="me-1 " />
-
-    //         }
-    //     ];
-    //     setNavLinks(navs);
-    //     setQty(totalItemCart(cart));
-    //     }, [cart, keyword, windowResolution])
-    // }, [cart])
-
     const handleSearch = (e) => {
         e.preventDefault();
         dispatch(setKeyword(key.keywords));
-    }
-
-    const handleLogout = (e) => {
-        e.preventDefault();
-        dispatch(userLogout());
     }
 
     useEffect(() => {
@@ -145,7 +98,6 @@ const Navigation = () => {
 
                                         </Nav>
 
-
                                     </Offcanvas.Body>
                                 </Navbar.Offcanvas>
                             </Container>
@@ -186,7 +138,7 @@ const Navigation = () => {
                     {/* Profile/Account */}
                     {
                         auth && auth.user?.full_name ?
-                            <MenuBar />
+                            <MenuBar type='home' />
                             :
                             <Nav className='ms-auto'>
 
@@ -199,15 +151,15 @@ const Navigation = () => {
                                 </Button>
                             </Nav>
                     }
-
                     {/* Akhir Profile/Account */}
 
                 </Container>
             </Navbar>
-            {/* <div style={{ minHeight: '100vh', height: '100%' }}> */}
-            <div>
+
+            <div style={{ minHeight: '100vh', backgroundColor: "#f9f9f9" }}>
                 <Outlet />
             </div>
+
             <Footer />
 
         </>

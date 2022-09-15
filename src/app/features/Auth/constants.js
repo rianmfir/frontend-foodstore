@@ -10,3 +10,6 @@ export const LOGOUT_FAIL = "LOGOUT_FAIL";
 export const GET_USERS = "GET_USERS";
 
 export const SET_TITLE_DASHBOARD = "SET_TITLE_DASHBOARD";
+
+export const SET_PAGE = "SET_PAGE";
+export const CLEAR_AUTH = "CLEAR_AUTH";

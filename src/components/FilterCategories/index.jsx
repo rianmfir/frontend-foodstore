@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from 'react';
-import { Col, Form, ListGroup, Row } from 'react-bootstrap';
+import { Col, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { loading, setCategory } from '../../app/features/Product/actions';
 import './filterCategories.scss';
 
-const FilterCategories = ({ categories, category, onFilterCategory }) => {
-    // const { tags } = useSelector(state => state.products);
-    // console.log("Tag Paginate : ", tags);
+const FilterCategories = ({ categories, category }) => {
+
     const dispatch = useDispatch();
 
     const [checked, setChecked] = useState(false)
@@ -15,15 +14,12 @@ const FilterCategories = ({ categories, category, onFilterCategory }) => {
     const handleChange = (state) => {
         setChecked(!checked);
         dispatch(setCategory(state));
-        console.log(checked)
         const Checked = () => {
             dispatch(setCategory(''))
             dispatch(loading);
-            console.log("Checked : 1")
         }
         const unChecked = () => {
             dispatch(setCategory(state))
-            console.log("Checked : 2")
         }
         checked
             ?
@@ -49,11 +45,6 @@ const FilterCategories = ({ categories, category, onFilterCategory }) => {
                             style={{ cursor: 'pointer' }}
                             disabled={checked && category !== state.name}
                             onClick={() => handleChange(state.name)}
-                            // onClick={() => onFilterCategory(state.name)}
-                            // disabled={category !== state.name && category === ""}
-                            // disabled={checked && category !== state.name}
-                            // disabled={checked && category !== state.name}
-                            variant={'warning'}
                         />
                     ))
                 }
