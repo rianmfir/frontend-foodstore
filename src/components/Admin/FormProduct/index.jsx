@@ -146,7 +146,6 @@ const FormProduct = ({ show, toggleShow, updateData }) => {
         );
     };
 
-
     return (
         <>
             <Modal show={show} fullscreen={'xl-down'} onHide={toggleShow} size="lg">

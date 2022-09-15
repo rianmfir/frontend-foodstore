@@ -25,17 +25,17 @@ const UserDashboard = () => {
         [
             {
                 label: 'Items',
-                count: orders.totalItemsOrder,
+                count: orders.totalItemsOrder || 0,
                 icon: <IoFastFoodOutline size='5em' color='#FF7C57' />
             },
             {
                 label: 'Orders',
-                count: orders.count,
+                count: orders.count || 0,
                 icon: <CgNotes size='5em' color='#FF7C57' />
             },
             {
                 label: 'Payment',
-                count: formatRupiah(orders.totalPayment),
+                count: formatRupiah(orders.totalPayment || 0),
                 icon: <MdOutlineSell size='5em' color='#FF7C57' />
             },
         ]

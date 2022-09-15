@@ -68,7 +68,7 @@ const Navigation = () => {
                                 <Navbar.Offcanvas
                                     id={`offcanvasNavbar-expand-sm`}
                                     aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
-                                    placement="end"
+                                    placement="start"
                                 >
                                     <Offcanvas.Header closeButton>
                                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
