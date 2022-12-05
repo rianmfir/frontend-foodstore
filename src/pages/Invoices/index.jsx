@@ -137,7 +137,7 @@ const Invoices = () => {
                             </Card.Header>
                             <Card.Body>
                                 <DataTable
-                                    className='text-center'
+                                    className='text-start'
                                     data={invoice}
                                     columns={[
                                         { selector: row => row.label },

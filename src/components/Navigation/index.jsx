@@ -62,7 +62,7 @@ const Navigation = () => {
                     </Navbar.Brand>
 
                     <>
-                        <Navbar key={'md'} bg="light" expand={'md'} className="mb-3">
+                        <Navbar key={'md'} bg="light" expand={'md'} className="mb-3 d-md-none">
                             <Container fluid>
                                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
                                 <Navbar.Offcanvas
@@ -102,6 +102,52 @@ const Navigation = () => {
                                 </Navbar.Offcanvas>
                             </Container>
                         </Navbar>
+
+
+
+
+
+
+                        {/* <Navbar key={'md'} bg="light" expand={'md'} className="mb-3">
+                            <Container fluid>
+                                <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+                                <Navbar.Offcanvas
+                                    id={`offcanvasNavbar-expand-sm`}
+                                    aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
+                                    placement="start"
+                                >
+                                    <Offcanvas.Header closeButton>
+                                        <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
+                                            <span className="d-flex" size="1.5 rem">
+                                                <BsFilter />
+                                                <h4 >
+                                                    FILTER
+                                                </h4>
+                                            </span>
+                                        </Offcanvas.Title>
+                                    </Offcanvas.Header>
+                                    <Offcanvas.Body>
+                                        <Nav className="justify-content-end flex-grow-1 pe-3">
+
+                                            <Col md={2} >
+                                                <div>
+                                                    <FilterCategories
+                                                        categories={categories}
+                                                        category={category}
+                                                        onFilterCategory={(category) => { dispatch(setCategory(category)) }}
+                                                    />
+                                                    <FilterTags
+                                                        tags={tags}
+                                                    />
+                                                </div>
+                                            </Col>
+
+                                        </Nav>
+
+                                    </Offcanvas.Body>
+                                </Navbar.Offcanvas>
+                            </Container>
+                        </Navbar> */}
 
                     </>
 
